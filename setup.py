@@ -8,7 +8,7 @@ test_requirements = open('Facsimile/requirements-test.txt').read().split("\n")
 
 
 setup(
-    name='confu',
+    name='cfu',
     version=version,
     author='20C',
     author_email='code@20c.com',
