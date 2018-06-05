@@ -1,0 +1,4 @@
+include LICENSE
+recursive-include Facsimile *.txt
+recursive-include confu *.py
+include Facsimile/VERSION

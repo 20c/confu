@@ -1,0 +1,15 @@
+{
+  "int_attr" : 1,
+  "str_attr" : "test",
+  "list_attr" : [
+    {
+      "int_attr" : 1
+    },
+    {
+      "int_attr" : 2
+    }
+  ],
+  "nested" : {
+    "int_attr" : "test"
+  }
+}
