@@ -161,9 +161,9 @@ python do_stuff.py --help
 Usage: do_stuff.py [OPTIONS]
 
 Options:
-  --sub--nested-string UNICODEATTRIBUTE
+  --sub--nested-string STRINGATTRIBUTE
                                   A nested string
-  --some-string UNICODEATTRIBUTE  An arbitrary string
+  --some-string STRINGATTRIBUTE  An arbitrary string
   --some-number INTATTRIBUTE      Some integer
   --some-list LISTATTRIBUTE       A list of integers
   --some-bool / --no-some-bool
