@@ -8,7 +8,7 @@ from confu.schema import (
     IntAttribute,
     FloatAttribute,
     BoolAttribute,
-    UnicodeAttribute,
+    StringAttribute,
     CollectValidationExceptions
 )
 
@@ -18,7 +18,7 @@ from .schemas import (
 
 
 @pytest.mark.parametrize("AttributeClass,value_pass,validated,value_fail,init", [
-    (UnicodeAttribute, "test", "test", 123,{}),
+    (StringAttribute, "test", "test", 123,{}),
     (IntAttribute, 123, 123, "test",{}),
     (FloatAttribute, 1.23, 1.23, "test",{}),
     (BoolAttribute, True, True, "test",{}),

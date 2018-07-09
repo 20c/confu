@@ -1,3 +1,4 @@
+import six
 import collections
 
 from inspect import isclass
@@ -85,16 +86,16 @@ class Attribute(object):
 
 
 
-class UnicodeAttribute(Attribute):
+class StringAttribute(Attribute):
 
     """
-    Attribute that requires a unicode value
+    Attribute that requires a string value
     """
 
     def validate(self, value, path, **kwargs):
-        if not isinstance(value, str):
+        if not isinstance(value, six.string_types):
             raise ValidationError(self, path, value, "string expected")
-        return super(UnicodeAttribute, self).validate(value, path, **kwargs)
+        return super(StringAttribute, self).validate(value, path, **kwargs)
 
 
 class BoolAttribute(Attribute):

@@ -3,7 +3,7 @@ import pytest
 from confu.schema import (
     Schema,
     Attribute,
-    UnicodeAttribute,
+    StringAttribute,
     IntAttribute,
     FloatAttribute,
     BoolAttribute,
@@ -13,7 +13,7 @@ from confu.schema import (
 
 
 @pytest.mark.parametrize("AttributeClass", [
-    UnicodeAttribute,
+    StringAttribute,
     IntAttribute,
     FloatAttribute,
     BoolAttribute])
@@ -27,8 +27,8 @@ def test_init(AttributeClass):
 
 
 @pytest.mark.parametrize("AttributeClass,choices_in,choices_out", [
-    (UnicodeAttribute, ["a","b"], ["a","b"]),
-    (UnicodeAttribute, lambda x: ["a","b"], ["a","b"]),
+    (StringAttribute, ["a","b"], ["a","b"]),
+    (StringAttribute, lambda x: ["a","b"], ["a","b"]),
     (IntAttribute, [1,2], [1,2]),
     (IntAttribute, lambda x: [1,2], [1,2]),
     (FloatAttribute, [1.2,2.3], [1.2,2.3]),
@@ -43,8 +43,8 @@ def test_choices(AttributeClass, choices_in, choices_out):
 
 
 @pytest.mark.parametrize("AttributeClass,default_in,default_out", [
-    (UnicodeAttribute, "test", "test"),
-    (UnicodeAttribute, lambda x: "test", "test"),
+    (StringAttribute, "test", "test"),
+    (StringAttribute, lambda x: "test", "test"),
     (IntAttribute, 123, 123),
     (IntAttribute, lambda x: 123, 123),
     (FloatAttribute, 1.23, 1.23),
