@@ -30,12 +30,12 @@ from confu import schema
 
 class MySchema(schema.Schema):
     some_number = schema.IntAttribute("some_number", help="Some integer")
-    some_string = schema.UnicodeAttribute("some_string", default="something", help="An arbitrary string")
+    some_string = schema.StringAttribute("some_string", default="something", help="An arbitrary string")
     some_list = schema.ListAttribute("some_list", schema.IntAttribute("some_list.item"), help="A list of integers")
     some_bool = schema.BoolAttribute("some_bool", default=False)
 
     class sub(schema.Schema):
-        nested_string = schema.UnicodeAttribute("nested_string", default="something nested", help="A nested string")
+        nested_string = schema.StringAttribute("nested_string", default="something nested", help="A nested string")
 ```
 
 ## Validating a schema
