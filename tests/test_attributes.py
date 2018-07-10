@@ -7,7 +7,8 @@ from confu.schema import (
     IntAttribute,
     FloatAttribute,
     BoolAttribute,
-    ListAttribute
+    ListAttribute,
+    DirectoryAttribute
 )
 
 
@@ -16,7 +17,8 @@ from confu.schema import (
     StringAttribute,
     IntAttribute,
     FloatAttribute,
-    BoolAttribute])
+    BoolAttribute,
+    DirectoryAttribute])
 def test_init(AttributeClass):
     """
     test attribute initiation
@@ -32,7 +34,9 @@ def test_init(AttributeClass):
     (IntAttribute, [1,2], [1,2]),
     (IntAttribute, lambda x: [1,2], [1,2]),
     (FloatAttribute, [1.2,2.3], [1.2,2.3]),
-    (FloatAttribute, lambda x: [1.2,2.3], [1.2,2.3])
+    (FloatAttribute, lambda x: [1.2,2.3], [1.2,2.3]),
+    (DirectoryAttribute, ["/a", "/b"], ["/a", "/b"]),
+    (DirectoryAttribute, lambda x: ["/a","/b"], ["/a","/b"])
 ])
 def test_choices(AttributeClass, choices_in, choices_out):
     """
@@ -50,7 +54,9 @@ def test_choices(AttributeClass, choices_in, choices_out):
     (FloatAttribute, 1.23, 1.23),
     (FloatAttribute, lambda x: 1.23, 1.23),
     (BoolAttribute, True, True),
-    (BoolAttribute, lambda x: True, True)
+    (BoolAttribute, lambda x: True, True),
+    (DirectoryAttribute, "/test", "/test"),
+    (DirectoryAttribute, lambda x: "/test", "/test"),
 ])
 def test_default(AttributeClass, default_in, default_out):
     """

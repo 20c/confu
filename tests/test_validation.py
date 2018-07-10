@@ -9,12 +9,16 @@ from confu.schema import (
     FloatAttribute,
     BoolAttribute,
     StringAttribute,
+    DirectoryAttribute,
     CollectValidationExceptions
 )
 
 from .schemas import (
     Schema_01,
 )
+
+
+basedir = os.path.join(os.path.dirname(__file__))
 
 
 @pytest.mark.parametrize("AttributeClass,value_pass,validated,value_fail,init", [
@@ -31,6 +35,7 @@ from .schemas import (
     (BoolAttribute, "no", False, "test",{}),
     (BoolAttribute, "0", False, "test",{}),
     (BoolAttribute, 0, False, "test",{}),
+    (DirectoryAttribute, os.path.join(basedir, "data"), os.path.join(basedir, "data"), 123,{}),
     (ListAttribute, [1,2,3], [1,2,3], "test", {"item":IntAttribute("test")}),
     (ListAttribute, [1,2,3], [1,2,3], ["test"], {"item":IntAttribute("test")})
 ])
