@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+## [0.3.0]
+### Added
 
 - py2.7 support
 - DirectoryAttribute
@@ -17,6 +25,4 @@
 
 - renamed `UnicodeAttribute` to `StringAttribute` that is now looking for either string or unicode types during validation
 
-### Deprecated
-### Removed
-### Security
+
