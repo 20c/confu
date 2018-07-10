@@ -98,6 +98,23 @@ class StringAttribute(Attribute):
         return super(StringAttribute, self).validate(value, path, **kwargs)
 
 
+class DirectoryAttribute(StringAttribute):
+
+    """
+    Attribute that requires an existing directory path
+    """
+
+    def validate(self, value, path, **kwargs):
+        value = super(DirectoryAttribute, self).validate(value,
+                                                         path, **kwargs)
+
+        valid = (os.path.exists(value) and os.path.isdir(value))
+        if not valid:
+            raise ValidationError(self, path, value, "valid path to directory expected")
+
+        return value
+
+
 class BoolAttribute(Attribute):
     """
     Attribute that requires a boolean value

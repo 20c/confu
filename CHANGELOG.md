@@ -4,6 +4,7 @@
 ### Added
 
 - py2.7 support
+- DirectoryAttribute
 
 ### Fixed
 ### Changed
