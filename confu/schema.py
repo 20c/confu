@@ -312,6 +312,8 @@ class Schema(object):
             if name not in config and getattr(attribute, "default_handler", None) is None:
                 errors.error(ValidationError(attribute, path+[name], None, "missing"))
 
+        return config
+
 
 def validate(schema, config, raise_errors=False, log=None):
     """
