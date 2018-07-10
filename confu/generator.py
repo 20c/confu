@@ -23,3 +23,11 @@ class ConfigGenerator(object):
             return [self.generate(item) for item in schema]
         return schema
 
+
+def generate(schema, generator=None):
+    """
+    generate config shortcut function
+    """
+    if not generator:
+        generator = ConfigGenerator()
+    return generator.generate(schema)

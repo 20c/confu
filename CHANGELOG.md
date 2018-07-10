@@ -5,6 +5,7 @@
 
 - py2.7 support
 - DirectoryAttribute
+- generator.generate shortcut
 
 ### Fixed
 ### Changed
