@@ -306,7 +306,7 @@ class Schema(object):
             except ValidationError as error:
                 errors.error(error)
             except ValidationWarning as warning:
-                errors.warning(warning)
+                warnings.warning(warning)
 
         for name, attribute in cls.attributes():
             if name not in config and getattr(attribute, "default_handler", None) is None:
