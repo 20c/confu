@@ -11,7 +11,7 @@ class ValidationErrorBase(ValueError):
 
     @property
     def pretty(self):
-        return "{}: {}".format(".".join(self.details["path"]), self.details["reason"])
+        return "{}: {}".format(".".join([str(i) for i in self.details["path"]]), self.details["reason"])
 
     def __eq__(self, other):
         if type(other) != type(self):
