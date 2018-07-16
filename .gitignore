@@ -4,6 +4,7 @@
 release.sh
 .cache
 .coverage
+.pytest_cache/
 .tox
 coverage.xml
 /dist
