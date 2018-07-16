@@ -300,7 +300,7 @@ class Schema(object):
             try:
                 attribute = getattr(cls, key, None)
                 if attribute is None:
-                    raise ValidationWarning(key, path, value, "unknown attribute")
+                    raise ValidationWarning(key, path, value, "unknown attribute '{}'".format(key))
                 else:
                     attribute.validate(value, path+[key], errors=errors, warnings=warnings)
             except ValidationError as error:
