@@ -13,7 +13,7 @@ class Attribute(object):
     """
 
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name="", **kwargs):
         # attribute name in the schema
         self.name = name
 
@@ -41,6 +41,8 @@ class Attribute(object):
         self.help =  kwargs.get("help","")
 
         self.cli = kwargs.get("cli", True)
+
+        self.container = None
 
 
     @property
@@ -80,6 +82,10 @@ class Attribute(object):
                 against config data, you can pass an empty list to it when
                 calling this manually
         """
+
+        if not self.container and not self.name:
+            raise ValidationError(self, path, value, "attribute at top level defined without a name")
+
         if self.choices_handler:
             if value not in self.choices:
                 raise ValidationError(self, path, value, "invalid choice")
@@ -87,7 +93,7 @@ class Attribute(object):
 
 
 
-class StringAttribute(Attribute):
+class Str(Attribute):
 
     """
     Attribute that requires a string value
@@ -96,18 +102,21 @@ class StringAttribute(Attribute):
     def validate(self, value, path, **kwargs):
         if not isinstance(value, six.string_types):
             raise ValidationError(self, path, value, "string expected")
-        return super(StringAttribute, self).validate(value, path, **kwargs)
+        return super(Str, self).validate(value, path, **kwargs)
 
 
-class DirectoryAttribute(StringAttribute):
+class Directory(Str):
 
     """
     Attribute that requires an existing directory path
     """
 
     def validate(self, value, path, **kwargs):
-        value = super(DirectoryAttribute, self).validate(value,
+        value = super(Directory, self).validate(value,
                                                          path, **kwargs)
+
+        # make sure env vars get expanded
+        value = os.path.expandvars(value)
 
         valid = (os.path.exists(value) and os.path.isdir(value))
         if not valid:
@@ -116,7 +125,7 @@ class DirectoryAttribute(StringAttribute):
         return value
 
 
-class BoolAttribute(Attribute):
+class Bool(Attribute):
     """
     Attribute that requires a boolean value
     """
@@ -132,7 +141,7 @@ class BoolAttribute(Attribute):
                 value = False
             else:
                 raise ValidationError(self, path, value, "boolean expected")
-        return super(BoolAttribute,self).validate(bool(value), path, **kwargs)
+        return super(Bool,self).validate(bool(value), path, **kwargs)
 
     def finalize_click(self, param, name):
         del param["type"]
@@ -148,7 +157,7 @@ class BoolAttribute(Attribute):
             name = "--no-{}".format(name.strip("-"))
         return name
 
-class IntAttribute(Attribute):
+class Int(Attribute):
 
     """
     Attribute that requires an integer value
@@ -159,10 +168,10 @@ class IntAttribute(Attribute):
             value = int(value)
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "integer expected")
-        return super(IntAttribute, self).validate(value, path, **kwargs)
+        return super(Int, self).validate(value, path, **kwargs)
 
 
-class FloatAttribute(Attribute):
+class Float(Attribute):
 
     """
     Attribute that requires a float value
@@ -173,10 +182,10 @@ class FloatAttribute(Attribute):
             value = float(value)
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "float expected")
-        return super(FloatAttribute, self).validate(value, path, **kwargs)
+        return super(Float, self).validate(value, path, **kwargs)
 
 
-class ListAttribute(Attribute):
+class List(Attribute):
 
     """
     Attribute that requires a list value
@@ -189,7 +198,10 @@ class ListAttribute(Attribute):
         if isclass(item):
             kwargs["cli"] = False
 
-        super(ListAttribute, self).__init__(name, **kwargs)
+        if isinstance(item, Attribute):
+            item.container = self
+
+        super(List, self).__init__(name, **kwargs)
 
         if not isinstance(item, Attribute) and not issubclass(item, Schema):
             raise TypeError("item needs to either be an Attribute instance or a schema class")
@@ -214,7 +226,7 @@ class ListAttribute(Attribute):
                 kwargs.get("errors", ValidationErrorProcessor()).error(error)
             except ValidationWarning as warning:
                 kwargs.get("warnings", ValidationErrorProcessor()).warning(warning)
-        return super(ListAttribute, self).validate(value, path, **kwargs)
+        return super(List, self).validate(value, path, **kwargs)
 
 class ValidationErrorProcessor(object):
     """

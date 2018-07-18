@@ -4,12 +4,12 @@ import pytest
 from confu.exceptions import *
 from confu.schema import (
     Schema,
-    ListAttribute,
-    IntAttribute,
-    FloatAttribute,
-    BoolAttribute,
-    StringAttribute,
-    DirectoryAttribute,
+    List,
+    Int,
+    Float,
+    Bool,
+    Str,
+    Directory,
     CollectValidationExceptions
 )
 
@@ -21,26 +21,26 @@ from .schemas import (
 basedir = os.path.join(os.path.dirname(__file__))
 
 
-@pytest.mark.parametrize("AttributeClass,value_pass,validated,value_fail,init", [
-    (StringAttribute, "test", "test", 123,{}),
-    (IntAttribute, 123, 123, "test",{}),
-    (FloatAttribute, 1.23, 1.23, "test",{}),
-    (BoolAttribute, True, True, "test",{}),
-    (BoolAttribute, "True", True, "test",{}),
-    (BoolAttribute, "yes", True, "test",{}),
-    (BoolAttribute, "1", True, "test",{}),
-    (BoolAttribute, 1, True, "test",{}),
-    (BoolAttribute, False, False, "test",{}),
-    (BoolAttribute, "False", False, "test",{}),
-    (BoolAttribute, "no", False, "test",{}),
-    (BoolAttribute, "0", False, "test",{}),
-    (BoolAttribute, 0, False, "test",{}),
-    (DirectoryAttribute, os.path.join(basedir, "data"), os.path.join(basedir, "data"), 123,{}),
-    (ListAttribute, [1,2,3], [1,2,3], "test", {"item":IntAttribute("test")}),
-    (ListAttribute, [1,2,3], [1,2,3], ["test"], {"item":IntAttribute("test")})
+@pytest.mark.parametrize("Class,value_pass,validated,value_fail,init", [
+    (Str, "test", "test", 123,{}),
+    (Int, 123, 123, "test",{}),
+    (Float, 1.23, 1.23, "test",{}),
+    (Bool, True, True, "test",{}),
+    (Bool, "True", True, "test",{}),
+    (Bool, "yes", True, "test",{}),
+    (Bool, "1", True, "test",{}),
+    (Bool, 1, True, "test",{}),
+    (Bool, False, False, "test",{}),
+    (Bool, "False", False, "test",{}),
+    (Bool, "no", False, "test",{}),
+    (Bool, "0", False, "test",{}),
+    (Bool, 0, False, "test",{}),
+    (Directory, os.path.join(basedir, "data"), os.path.join(basedir, "data"), 123,{}),
+    (List, [1,2,3], [1,2,3], "test", {"item":Int("test")}),
+    (List, [1,2,3], [1,2,3], ["test"], {"item":Int("test")})
 ])
-def test_attribute(AttributeClass, value_pass, validated, value_fail, init):
-    attribute = AttributeClass("test", **init)
+def test_attribute(Class, value_pass, validated, value_fail, init):
+    attribute = Class("test", **init)
     assert attribute.validate(value_pass, []) == validated
     with pytest.raises(ValidationError):
         attribute.validate(value_fail, [])
@@ -82,3 +82,17 @@ def test_schema_collect_exc(SchemaClass, config_fail, error):
     SchemaClass.validate(config, errors=errors)
 
     assert errors[0] == error
+
+
+def test_attr_name_validation():
+
+    attr = Str()
+    with pytest.raises(ValidationError) as exception_info:
+        attr.validate("test", [])
+
+    item = Str()
+    attr = List("list", item)
+    assert item.container == attr
+    assert attr.validate(["test"], []) == ["test"]
+
+

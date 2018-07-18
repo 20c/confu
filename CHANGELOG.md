@@ -4,6 +4,13 @@
 ### Added
 ### Fixed
 ### Changed
+- Attribute name is now optional when attribute is member of list
+- renamed `ListAttribute` to `List`
+- renamed `StringAttribute` to `Str`
+- renamed `IntAttribute` to `Int`
+- renamed `FloatAttribute` to `Float`
+- renamed `BooleanAttribute` to `Bool`
+- renamed `DirectoryAttribute` to `Directory`
 ### Deprecated
 ### Removed
 ### Security
