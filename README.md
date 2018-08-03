@@ -34,8 +34,9 @@ class MySchema(schema.Schema):
     some_list = schema.List("some_list", schema.Int("some_list.item"), help="A list of integers")
     some_bool = schema.Bool("some_bool", default=False)
 
-    class sub(schema.Schema):
+    class Sub(schema.Schema):
         nested_string = schema.Str("nested_string", default="something nested", help="A nested string")
+    sub = Sub()
 ```
 
 ## Validating a schema

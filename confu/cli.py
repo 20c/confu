@@ -1,5 +1,5 @@
 import argparse
-from confu.schema import validate
+from confu.schema import validate, Schema
 
 try:
     import click

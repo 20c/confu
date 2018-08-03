@@ -40,7 +40,7 @@ class Attribute(object):
         # help text describing the attribute
         self.help =  kwargs.get("help","")
 
-        self.cli = kwargs.get("cli", True)
+        self.cli_toggle = kwargs.get("cli", True)
 
         self.container = None
 
@@ -50,7 +50,7 @@ class Attribute(object):
         """
         Return the default value for this attribute
         """
-        default = self.default_handler
+        default = getattr(self, "default_handler", None)
         if callable(default):
             return default(self)
         return default
@@ -64,9 +64,15 @@ class Attribute(object):
         choices
         """
 
-        if callable(self.choices_handler):
+        choices_handler = getattr(self, "choices_handler", None)
+
+        if callable(choices_handler):
             return self.choices_handler(self)
-        return self.choices_handler
+        return choices_handler
+
+    @property
+    def cli(self):
+        return getattr(self, "cli_toggle", True)
 
     def validate(self, value, path, **kwargs):
         """
@@ -203,10 +209,17 @@ class List(Attribute):
 
         super(List, self).__init__(name, **kwargs)
 
-        if not isinstance(item, Attribute) and not issubclass(item, Schema):
-            raise TypeError("item needs to either be an Attribute instance or a schema class")
+        if not isinstance(item, Attribute):
+            raise TypeError("item needs to be a confu attribute")
 
         self.item = item
+
+
+    @property
+    def cli(self):
+        if isinstance(self.item, Schema):
+            return False
+        return super(List, self).cli
 
 
     def validate(self, value, path, **kwargs):
@@ -257,28 +270,36 @@ class CollectValidationExceptions(ValidationErrorProcessor):
     def warning(self, warning):
         self.exceptions.append(warning)
 
-class Schema(object):
+class Schema(Attribute):
 
-    @classmethod
-    def attributes(cls):
-        for name in dir(cls):
-            attr = getattr(cls, name)
-            if isinstance(attr, Attribute) or (isclass(attr) and issubclass(attr, Schema)):
-                yield (name, attr)
+    def __init__(self, *args, **kwargs):
+        # collect attributes
+        self._attr = {}
+        for name in dir(self):
+            attr = getattr(self, name)
+            if isinstance(attr, Attribute):
+                self._attr[name] = attr
 
-    @classmethod
-    def walk(cls, callback, path=None):
+        super(Schema, self).__init__(*args, **kwargs)
+
+
+    def attributes(self):
+        # redundant?
+        for name, attr in self._attr.items():
+            yield (name, attr)
+
+
+    def walk(self, callback, path=None):
         if not path:
             path = []
-        for name, attribute in cls.attributes():
-            if isinstance(attribute, Attribute):
-                callback(attribute, path+[name])
-            if isclass(attribute) and issubclass(attribute, Schema):
+        for name, attribute in self.attributes():
+            if isinstance(attribute, Schema):
                 attribute.walk(callback, path=path+[name])
+            else:
+                callback(attribute, path+[name])
 
 
-    @classmethod
-    def validate(cls, config, path=None, errors=None, warnings=None):
+    def validate(self, config, path=None, errors=None, warnings=None):
 
         """
         Validate config data against this schema
@@ -310,7 +331,7 @@ class Schema(object):
 
         for key, value in config.items():
             try:
-                attribute = getattr(cls, key, None)
+                attribute = getattr(self, key, None)
                 if attribute is None:
                     raise ValidationWarning(key, path, value, "unknown attribute '{}'".format(key))
                 else:
@@ -320,7 +341,7 @@ class Schema(object):
             except ValidationWarning as warning:
                 warnings.warning(warning)
 
-        for name, attribute in cls.attributes():
+        for name, attribute in self.attributes():
             if name not in config and getattr(attribute, "default_handler", None) is None:
                 errors.error(ValidationError(attribute, path+[name], None, "missing"))
 
@@ -333,7 +354,7 @@ def validate(schema, config, raise_errors=False, log=None):
     errors
 
     Arguments:
-        - schema <Schema>
+        - schema <Schema>: schema instance
         - config <dict|munge.Config>
 
     Keyword Arguments:

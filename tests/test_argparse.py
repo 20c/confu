@@ -11,8 +11,7 @@ from confu.cli import argparse_options
 def test_click():
 
     parser = argparse.ArgumentParser()
-    argparse_options(parser, Schema_03)
-
+    argparse_options(parser, Schema_03())
 
     parsed = parser.parse_args([])
 

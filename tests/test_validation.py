@@ -56,13 +56,14 @@ def test_attribute(Class, value_pass, validated, value_fail, init):
      ValidationError(None, ["int_attr"], None, "missing"))
 ])
 def test_schema(SchemaClass, config_pass, config_fail, error):
+    schema = SchemaClass()
     with open(os.path.join(os.path.dirname(__file__),"data",config_pass)) as fh:
         config = json.load(fh)
-    SchemaClass.validate(config)
+    schema.validate(config)
     with open(os.path.join(os.path.dirname(__file__),"data",config_fail)) as fh:
         config = json.load(fh)
     with pytest.raises(ValidationError) as exception_info:
-        SchemaClass.validate(config)
+        schema.validate(config)
 
     assert exception_info.value == error
 
@@ -79,7 +80,8 @@ def test_schema_collect_exc(SchemaClass, config_fail, error):
         config = json.load(fh)
 
     errors = CollectValidationExceptions()
-    SchemaClass.validate(config, errors=errors)
+    schema = SchemaClass()
+    schema.validate(config, errors=errors)
 
     assert errors[0] == error
 

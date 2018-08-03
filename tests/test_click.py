@@ -10,13 +10,15 @@ from confu.cli import click_options
 
 def test_click():
     @click.command()
-    @click_options(Schema_03)
+    @click_options(Schema_03())
     def command(**kwargs):
         print(json.dumps(kwargs))
 
     runner = CliRunner()
 
     result = json.loads(runner.invoke(command, []).output)
+
+    print(result)
     assert result["nested__int_attr_choices"] == 1
     assert result["nested__int_attr"] == None
     assert result["list_attr_str"] == []

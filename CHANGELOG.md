@@ -4,6 +4,7 @@
 ### Added
 ### Fixed
 ### Changed
+- Schema now extends Attribute and is now working on instances rather than classmethod based
 - Attribute name is now optional when attribute is member of list
 - renamed `ListAttribute` to `List`
 - renamed `StringAttribute` to `Str`

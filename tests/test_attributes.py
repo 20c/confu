@@ -77,7 +77,8 @@ def test_list():
 
     class Item(Schema):
         test_sub = Int("test_sub")
-    attribute = List("test", Item)
-    assert attribute.item == Item
+    item = Item()
+    attribute = List("test", item)
+    assert attribute.item == item
 
     attribute = List("test", Int())
