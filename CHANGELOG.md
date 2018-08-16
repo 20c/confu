@@ -6,6 +6,9 @@
 - `apply_defaults` to apply schema defaults to a config dict
 
 ### Fixed
+
+- `Schema.walk` now triggers the callback before entering subschemas
+
 ### Changed
 
 - Schema now extends Attribute and is now working on instances rather than classmethod based
