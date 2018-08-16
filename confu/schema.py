@@ -350,7 +350,7 @@ class Schema(Attribute):
 
 def validate(schema, config, raise_errors=False, log=None):
     """
-    Helper function that allows schema validation to either either collect or raise errors
+    Helper function that allows schema validation to either collect or raise errors
 
     Arguments:
         - schema <Schema>: schema instance
