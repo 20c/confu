@@ -43,5 +43,5 @@ def test_schema_walk():
 
 ])
 def test_apply_defaults(SchemaClass, config, expected):
-    apply_defaults(Schema_04(), config)
+    apply_defaults(SchemaClass(), config)
     assert expected == config
