@@ -2,8 +2,12 @@
 
 ## [Unreleased]
 ### Added
+
+- `apply_defaults` to apply schema defaults to a config dict
+
 ### Fixed
 ### Changed
+
 - Schema now extends Attribute and is now working on instances rather than classmethod based
 - Attribute name is now optional when attribute is member of list
 - renamed `ListAttribute` to `List`
@@ -12,6 +16,7 @@
 - renamed `FloatAttribute` to `Float`
 - renamed `BooleanAttribute` to `Bool`
 - renamed `DirectoryAttribute` to `Directory`
+
 ### Deprecated
 ### Removed
 ### Security

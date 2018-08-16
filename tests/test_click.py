@@ -15,8 +15,9 @@ def test_click():
         print(json.dumps(kwargs))
 
     runner = CliRunner()
-
-    result = json.loads(runner.invoke(command, []).output)
+    output = runner.invoke(command, []).output
+    print(output)
+    result = json.loads(output)
 
     print(result)
     assert result["nested__int_attr_choices"] == 1

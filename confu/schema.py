@@ -280,6 +280,11 @@ class Schema(Attribute):
             if isinstance(attr, Attribute):
                 self._attr[name] = attr
 
+        if "default" not in kwargs:
+            kwargs["default"] = {}
+
+        kwargs["cli"] = False
+
         super(Schema, self).__init__(*args, **kwargs)
 
 
@@ -294,6 +299,7 @@ class Schema(Attribute):
             path = []
         for name, attribute in self.attributes():
             if isinstance(attribute, Schema):
+                callback(attribute, path+[name])
                 attribute.walk(callback, path=path+[name])
             else:
                 callback(attribute, path+[name])
@@ -384,3 +390,40 @@ def validate(schema, config, raise_errors=False, log=None):
                 log("{} errors, {} warnings in config".format(len(errors), len(warnings)))
 
         return (success, errors, warnings)
+
+
+
+def apply_default(config, attribute, path):
+    """
+    Apply attribute default to config dict at the specified path
+
+    Arguments:
+        - config <dict>: the config dictonary
+        - attribute <Attribute>: attribute instance
+        - path <list<str>>: full path of the attribute in the schema
+    """
+
+    _config = config
+    prev = None
+
+    for section in path:
+        prev = _config
+        _config = _config.get(section)
+
+    if _config is None and attribute.default_handler is not None:
+        prev[section] = attribute.default
+
+
+def apply_defaults(schema, config):
+    """
+    Take a config object and apply a schema's default values to keys that
+    are missing.
+
+    Arguments:
+        - schema <Schema>: schema instance
+        - config <dict>: the config dictonary
+    """
+
+    def callback(attribute, path):
+        apply_default(config, attribute, path)
+    schema.walk(callback)

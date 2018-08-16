@@ -38,3 +38,12 @@ class Schema_03(Schema):
     list_attr_schema = List("list_attr_schema", NestedSchema_01())
     nested = NestedSchema_02("nested")
     int_attr_disabled = Int("int_attr_disabled", cli=False)
+
+class Schema_04(Schema):
+    int_attr = Int("int_attr", default=123)
+    str_attr = Str("str_attr", default="test")
+    list_attr = List("list_attr", NestedSchema_01())
+    list_attr_w_default = List("list_attr_w_default", Int(), default=[1,2,3])
+    nested = NestedSchema_02("nested")
+
+
