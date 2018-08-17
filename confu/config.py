@@ -54,11 +54,22 @@ class Config(collections.Mapping):
         """ return a read only copy of schema """
         return copy.deepcopy(self._schema)
 
+    def get_nested(self, *args):
+        """
+        get a nested value, returns None if path does not exist
+        """
+        data = self.data
+        for key in args:
+            if key not in data:
+                return None
+            data = data[key]
+        return data
+
     def __getitem__(self, key):
-        return self._data[key]
+        return self.data[key]
 
     def __iter__(self):
-        return iter(self._data)
+        return iter(self.data)
 
     def __len__(self):
-        return len(self._data)
+        return len(self.data)

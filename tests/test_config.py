@@ -12,6 +12,12 @@ def test_config_init():
     assert data == cfg.data
 
 
+def test_empty_config():
+    cfg = Config(Schema_04())
+
+    assert len(cfg)
+
+
 def test_config_copy():
     cfg = Config(Schema_04())
     cp = cfg.copy()
