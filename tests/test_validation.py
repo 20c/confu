@@ -15,6 +15,7 @@ from confu.schema import (
 
 from .schemas import (
     Schema_01,
+    Schema_05
 )
 
 
@@ -97,4 +98,5 @@ def test_attr_name_validation():
     assert item.container == attr
     assert attr.validate(["test"], []) == ["test"]
 
-
+def test_attr_name_same_as_property_name():
+    Schema_05().validate({"name":"test"})

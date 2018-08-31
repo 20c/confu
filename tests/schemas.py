@@ -46,4 +46,5 @@ class Schema_04(Schema):
     list_attr_w_default = List("list_attr_w_default", Int(), default=[1,2,3])
     nested = NestedSchema_02("nested")
 
-
+class Schema_05(Schema):
+    name = Str("name")
