@@ -337,7 +337,7 @@ class Schema(Attribute):
 
         for key, value in config.items():
             try:
-                attribute = getattr(self, key, None)
+                attribute = self._attr.get(key, None)
                 if attribute is None:
                     raise ValidationWarning(key, path, value, "unknown attribute '{}'".format(key))
                 else:
