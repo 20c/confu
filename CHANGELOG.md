@@ -25,6 +25,7 @@
 
 - `ProxySchema`
 - `apply_defaults` to apply schema defaults to a config dict
+- `Config` object
 
 ### Fixed
 

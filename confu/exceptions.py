@@ -27,7 +27,6 @@ class ValidationErrorBase(ValueError):
                 self.details["reason"] == other.details["reason"])
 
 
-
 class ValidationWarning(ValidationErrorBase):
     pass
 
