@@ -1,0 +1,13 @@
+{
+  "proxies" : [
+    {
+      "int_attr" : 123,
+      "str_attr" : "test",
+      "list_attr" : [],
+      "nested" : { "int_attr" : 123 }
+    },
+    {
+      "name" : "hello"
+    }
+  ]
+}

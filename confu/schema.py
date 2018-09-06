@@ -354,6 +354,28 @@ class Schema(Attribute):
         return config
 
 
+class ProxySchema(Schema):
+
+    """
+    An object that can be used in place of a schema in order to
+    dynamically obtain a schema instance from somewhere else during
+    validate
+    """
+
+    def schema(self, config):
+        """
+        return a schema instance
+        """
+        raise NotImplementedError()
+
+    def validate(self, config, path=None, errors=None, warnings=None):
+        """
+        call validate on the schema returned by self.schema
+        """
+        return self.schema(config).validate(config, path=path, errors=errors, warnings=warnings)
+
+
+
 def validate(schema, config, raise_errors=False, log=None):
     """
     Helper function that allows schema validation to either collect or raise errors

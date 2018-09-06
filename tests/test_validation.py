@@ -4,6 +4,7 @@ import pytest
 from confu.exceptions import *
 from confu.schema import (
     Schema,
+    ProxySchema,
     List,
     Int,
     Float,
@@ -15,7 +16,8 @@ from confu.schema import (
 
 from .schemas import (
     Schema_01,
-    Schema_05
+    Schema_05,
+    Schema_06
 )
 
 
@@ -54,7 +56,9 @@ def test_attribute(Class, value_pass, validated, value_fail, init):
     (Schema_01, "nesting/success.json", "nesting/failure03.json",
      ValidationError(None, ["list_attr",0], 1, "dictionary expected")),
     (Schema_01, "nesting/success.json", "nesting/failure04.json",
-     ValidationError(None, ["int_attr"], None, "missing"))
+     ValidationError(None, ["int_attr"], None, "missing")),
+    (Schema_06, "nesting/proxy_success.json", "nesting/proxy_failure01.json",
+     ValidationError(None, ["proxies", 0, "int_attr"], None, "missing"))
 ])
 def test_schema(SchemaClass, config_pass, config_fail, error):
     schema = SchemaClass()
@@ -67,6 +71,7 @@ def test_schema(SchemaClass, config_pass, config_fail, error):
         schema.validate(config)
 
     assert exception_info.value == error
+
 
 @pytest.mark.parametrize("SchemaClass,config_fail,error", [
     (Schema_01,"nesting/failure01.json",
@@ -100,3 +105,4 @@ def test_attr_name_validation():
 
 def test_attr_name_same_as_property_name():
     Schema_05().validate({"name":"test"})
+

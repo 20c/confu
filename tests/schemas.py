@@ -1,5 +1,6 @@
 from confu.schema import (
     Schema,
+    ProxySchema,
     List,
     Int,
     Float,
@@ -48,3 +49,12 @@ class Schema_04(Schema):
 
 class Schema_05(Schema):
     name = Str("name")
+
+class ProxySchema_01(ProxySchema):
+    def schema(self, config):
+        if "name" in config:
+            return Schema_05()
+        return Schema_01()
+
+class Schema_06(Schema):
+    proxies = List("proxies", ProxySchema_01())
