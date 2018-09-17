@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+
+## [0.4.0]
+### Added
 
 - `ProxySchema`
 - `apply_defaults` to apply schema defaults to a config dict
@@ -20,10 +29,6 @@
 - renamed `FloatAttribute` to `Float`
 - renamed `BooleanAttribute` to `Bool`
 - renamed `DirectoryAttribute` to `Directory`
-
-### Deprecated
-### Removed
-### Security
 
 ## [0.3.0]
 ### Added
