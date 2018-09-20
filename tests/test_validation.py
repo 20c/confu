@@ -11,6 +11,7 @@ from confu.schema import (
     Bool,
     Str,
     Directory,
+    Email,
     CollectValidationExceptions
 )
 
@@ -40,7 +41,9 @@ basedir = os.path.join(os.path.dirname(__file__))
     (Bool, 0, False, "test",{}),
     (Directory, os.path.join(basedir, "data"), os.path.join(basedir, "data"), 123,{}),
     (List, [1,2,3], [1,2,3], "test", {"item":Int("test")}),
-    (List, [1,2,3], [1,2,3], ["test"], {"item":Int("test")})
+    (List, [1,2,3], [1,2,3], ["test"], {"item":Int("test")}),
+    (Email, "a@b.com", "a@b.com", "invalid", {}),
+    (Email, "a@localhost", "a@localhost", "invalid", {})
 ])
 def test_attribute(Class, value_pass, validated, value_fail, init):
     attribute = Class("test", **init)
