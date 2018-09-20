@@ -3,7 +3,8 @@ import six
 import collections
 
 from inspect import isclass
-from .exceptions import ValidationError, ValidationWarning
+
+from confu.exceptions import ValidationError, ValidationWarning
 
 class Attribute(object):
 
