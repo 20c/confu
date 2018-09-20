@@ -134,7 +134,26 @@ class Directory(Str):
 
     """
     Attribute that requires an existing directory path
+
+    Keyword Arguments:
+        - create: if set, instead of raising a ValidationError
+            on a non-existing directory, attempt to create directory first
+            using the value passed as mode (chmod)
+
     """
+
+    def __init__(self, name="", **kwargs):
+        super(Directory, self).__init__(name=name, **kwargs)
+
+        self.create = kwargs.get("create")
+
+    def makedir(self, value, config_path):
+        try:
+            os.mkdir(value, self.create)
+        except Exception as err:
+            raise ValidationError(self, config_path, value,
+                                  "tried to create directory  but failed with error" \
+                                  ": {}".format(err))
 
     def validate(self, value, path, **kwargs):
         value = super(Directory, self).validate(value,
@@ -142,6 +161,9 @@ class Directory(Str):
 
         # make sure env vars get expanded
         value = os.path.expandvars(value)
+
+        if self.create is not None and not os.path.exists(value):
+            self.makedir(value, path)
 
         valid = (os.path.exists(value) and os.path.isdir(value))
         if not valid:

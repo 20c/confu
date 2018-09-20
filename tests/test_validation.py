@@ -127,3 +127,22 @@ def test_attr_name_validation():
 def test_attr_name_same_as_property_name():
     Schema_05().validate({"name":"test"})
 
+
+def test_directory_create(tmpdir):
+    attr = Directory(name="test", create=0o777)
+    path = os.path.join(str(tmpdir), "test")
+    assert attr.validate(path, []) == path
+
+    attr = Directory(name="test")
+    path = os.path.join(str(tmpdir), "test2")
+    with pytest.raises(ValidationError) as exception_info:
+        attr.validate(path, [])
+
+    attr = Directory(name="test", create="invalid mode")
+    path = os.path.join(str(tmpdir), "test3")
+    with pytest.raises(ValidationError) as exception_info:
+        attr.validate(path, [])
+
+
+
+
