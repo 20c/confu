@@ -2,8 +2,14 @@
 
 ## [Unreleased]
 ### Added
+
+- `Email` attribute
+
 ### Fixed
 ### Changed
+
+- schema moved to directory so it's easier to group and add new attributes going forward, imports remain unaffected.
+
 ### Deprecated
 ### Removed
 ### Security
