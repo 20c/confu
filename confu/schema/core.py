@@ -112,6 +112,24 @@ class Str(Attribute):
         return super(Str, self).validate(value, path, **kwargs)
 
 
+class File(Str):
+    """
+    Attribute that requires a file to exist at path
+    """
+
+    def validate(self, value, path, **kwargs):
+        value = super(File, self).validate(value, path, **kwargs)
+
+        # make sure env vars get expanded
+        value = os.path.expandvars(value)
+
+        valid = (os.path.exists(value) and not os.path.isdir(value))
+        if not valid:
+            raise ValidationError(self, path, value, "file does not exist")
+
+        return value
+
+
 class Directory(Str):
 
     """

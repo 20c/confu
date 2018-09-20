@@ -10,6 +10,7 @@ from confu.schema import (
     Float,
     Bool,
     Str,
+    File,
     Directory,
     Email,
     Url,
@@ -24,6 +25,11 @@ from .schemas import (
 
 
 basedir = os.path.join(os.path.dirname(__file__))
+valid_dir = os.path.join(basedir, "data")
+invalid_dir = os.path.join(basedir, "does", "not", "exist")
+valid_file = os.path.join(basedir, "__init__.py")
+invalid_file = os.path.join(basedir, "__invalid__.py")
+
 
 
 @pytest.mark.parametrize("Class,value_pass,validated,value_fail,init", [
@@ -40,7 +46,8 @@ basedir = os.path.join(os.path.dirname(__file__))
     (Bool, "no", False, "test",{}),
     (Bool, "0", False, "test",{}),
     (Bool, 0, False, "test",{}),
-    (Directory, os.path.join(basedir, "data"), os.path.join(basedir, "data"), 123,{}),
+    (Directory, valid_dir, valid_dir, invalid_dir,{}),
+    (File, valid_file, valid_file, invalid_file,{}),
     (List, [1,2,3], [1,2,3], "test", {"item":Int("test")}),
     (List, [1,2,3], [1,2,3], ["test"], {"item":Int("test")}),
     (Email, "a@b.com", "a@b.com", "invalid", {}),

@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 
+- `File` attribute
 - `Email` attribute
 - `Url` attribute
 
