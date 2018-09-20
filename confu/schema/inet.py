@@ -44,8 +44,11 @@ class Url(Str):
         except:
             raise ValidationError(self, path, value, "url expected")
 
-        if not result.scheme or not result.netloc:
+        if not result.scheme:
             raise ValidationError(self, path, value, "no url scheme specified")
+
+        if not result.netloc:
+            raise ValidationError(self, path, value, "no url netloc specified")
 
         if self.schemes and result.scheme not in self.schemes:
             raise ValidationError(self, path, value, "invalid url scheme: {}".format(result.scheme))
