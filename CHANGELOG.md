@@ -4,6 +4,7 @@
 ### Added
 
 - `Email` attribute
+- `Url` attribute
 
 ### Fixed
 ### Changed

@@ -12,6 +12,7 @@ from confu.schema import (
     Str,
     Directory,
     Email,
+    Url,
     CollectValidationExceptions
 )
 
@@ -43,7 +44,17 @@ basedir = os.path.join(os.path.dirname(__file__))
     (List, [1,2,3], [1,2,3], "test", {"item":Int("test")}),
     (List, [1,2,3], [1,2,3], ["test"], {"item":Int("test")}),
     (Email, "a@b.com", "a@b.com", "invalid", {}),
-    (Email, "a@localhost", "a@localhost", "invalid", {})
+    (Email, "a@localhost", "a@localhost", "invalid", {}),
+    (Url, "http://example.com", "http://example.com", "bla", {}),
+    (Url, "https://example.com", "https://example.com", "bla", {}),
+    (Url, "http://localhost", "http://localhost", "bla", {}),
+    (Url, "ftp://example.com", "ftp://example.com", "bla", {}),
+    (Url, "http://example.com/some/path?123", "http://example.com/some/path?123", "bla", {}),
+    (Url, "http://1.2.3.4", "http://1.2.3.4", "bla", {}),
+    (Url, "http://2001:0db8:85a3:0000:0000:8a2e:0370:7334", "http://2001:0db8:85a3:0000:0000:8a2e:0370:7334", "bla", {}),
+    (Url, "http://example.com", "http://example.com", "telenet://example.com", {"schemes":["http"]}),
+    (Url, "http://example.com", "http://example.com", "/no/scheme/and/netloc", {}),
+    (Url, "http://example.com", "http://example.com", "http:///no/netloc", {}),
 ])
 def test_attribute(Class, value_pass, validated, value_fail, init):
     attribute = Class("test", **init)
