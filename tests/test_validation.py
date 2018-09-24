@@ -1,6 +1,8 @@
 import os
 import json
 import pytest
+import ipaddress
+
 from confu.exceptions import *
 from confu.schema import (
     Schema,
@@ -14,6 +16,7 @@ from confu.schema import (
     Directory,
     Email,
     Url,
+    IpAddress,
     CollectValidationExceptions
 )
 
@@ -29,6 +32,8 @@ valid_dir = os.path.join(basedir, "data")
 invalid_dir = os.path.join(basedir, "does", "not", "exist")
 valid_file = os.path.join(basedir, "__init__.py")
 invalid_file = os.path.join(basedir, "__invalid__.py")
+ipv4 = u"127.0.0.1"
+ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
 
 
 
@@ -62,6 +67,10 @@ invalid_file = os.path.join(basedir, "__invalid__.py")
     (Url, "http://example.com", "http://example.com", "telenet://example.com", {"schemes":["http"]}),
     (Url, "http://example.com", "http://example.com", "/no/scheme/and/netloc", {}),
     (Url, "http://example.com", "http://example.com", "http:///no/netloc", {}),
+    (IpAddress, ipv4, ipaddress.IPv4Address(ipv4), "1.2.3", {}),
+    (IpAddress, ipv6, ipaddress.IPv6Address(ipv6), "1.2.3", {}),
+    (IpAddress, ipv4, ipaddress.IPv4Address(ipv4), ipv6, {"protocol":4}),
+    (IpAddress, ipv6, ipaddress.IPv6Address(ipv6), ipv4, {"protocol":6}),
 ])
 def test_attribute(Class, value_pass, validated, value_fail, init):
     attribute = Class("test", **init)

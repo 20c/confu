@@ -1,3 +1,8 @@
+class SoftDependencyError(ImportError):
+    def __init__(self, dep_name):
+        super(SoftDependencyError, self).__init__(
+            "To use this feature this dependency is required: {}".format(dep_name))
+
 class ValidationErrorBase(ValueError):
     def __init__(self, attribute, path, value, reason):
         msg = "{}: {}".format(path, reason)

@@ -6,6 +6,7 @@
 - `File` attribute
 - `Email` attribute
 - `Url` attribute
+- `IpAddress` attribute
 
 ### Fixed
 ### Changed
