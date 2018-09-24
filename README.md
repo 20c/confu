@@ -7,8 +7,13 @@
 
 Configuration validation and generation
 
-Supports:
+# Supports
+
   - python 2.7
   - python 3.4
   - python 3.5
   - python 3.6
+
+# Documentation 
+
+**latest**: https://confu.readthedocs.io/en/latest/quickstart/
