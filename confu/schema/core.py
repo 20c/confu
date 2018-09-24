@@ -136,10 +136,11 @@ class Directory(Str):
     Attribute that requires an existing directory path
 
     Keyword Arguments:
-        - create: if set, instead of raising a ValidationError
+        - create <octal>: if set, instead of raising a ValidationError
             on a non-existing directory, attempt to create directory first
             using the value passed as mode (chmod)
 
+            e.g., create=0o777
     """
 
     def __init__(self, name="", **kwargs):
