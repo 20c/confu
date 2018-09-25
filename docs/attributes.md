@@ -80,7 +80,7 @@ validates a url
 Special Properties:
   - *schemes* - `list` - default: `[]`: A list of supported schemes - an empty list will allow all schemes
 
-### confu.schema.IpAddress
+### IpAddress
 validates a v4 or v6 ip address
 
 **Special Properties**
