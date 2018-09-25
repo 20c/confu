@@ -40,6 +40,16 @@ They can all be imported from `confu.schema`
 ### Schema
 holds a collection of attributes - can nest additional schemas
 
+**Special properties**
+
+*item* - `Attribute` - default: `None`: attribute that describes items held by this schema
+if the schema describes a dict with arbitrary keys.
+
+!!! Tip "`item` property cannot be set on schemas with defined attributes"
+  The `item` property is solely used to allow a schema to validate a dictonary
+  that has arbitrary key names. As such trying to set the `item` property on a schema
+  that has attributes defined within will raise a `ValueError`
+
 ### Str
 validates a string value
 
