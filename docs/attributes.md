@@ -40,7 +40,7 @@ They can all be imported from `confu.schema`
 ### Schema
 holds a collection of attributes - can nest additional schemas
 
-#### Str
+### Str
 validates a string value
 
 ### Int
