@@ -46,9 +46,9 @@ holds a collection of attributes - can nest additional schemas
 if the schema describes a dict with arbitrary keys.
 
 !!! Tip "`item` property cannot be set on schemas with defined attributes"
-  The `item` property is solely used to allow a schema to validate a dictonary
-  that has arbitrary key names. As such trying to set the `item` property on a schema
-  that has attributes defined within will raise a `ValueError`
+    The `item` property is solely used to allow a schema to validate a dictonary
+    that has arbitrary key names. As such trying to set the `item` property on a schema
+    that has attributes defined within will raise a `ValueError`
 
 ### Str
 validates a string value
@@ -94,9 +94,9 @@ Special Properties:
 validates a v4 or v6 ip address
 
 !!! Tip "ipaddress module required"
-  To use this attribute please install the python ipaddress module
+    To use this attribute please install the python ipaddress module
 
-  `pip install ipaddress`
+    `pip install ipaddress`
 
 **Special Properties**
 
