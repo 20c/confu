@@ -406,8 +406,11 @@ class Schema(Attribute):
 
 
 class Dict(Schema):
-    def __init__(self, item, *args, **kwargs):
-        return super(Dict, self).__init__(item=item, *args, **kwargs)
+    """
+    Wrapper for schema with arbitrary keys
+    """
+    def __init__(self, name, item, *args, **kwargs):
+        return super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
 
 
 class ProxySchema(Schema):
