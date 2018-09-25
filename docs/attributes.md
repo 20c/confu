@@ -96,7 +96,7 @@ Special Properties:
 validates a v4 or v6 ip address
 
 
-!!! Tip "ipaddress module required"
+!!! Tip "Requirements"
     To use this attribute please install the python ipaddress module
 
     ```
