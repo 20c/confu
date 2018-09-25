@@ -327,7 +327,15 @@ class Schema(Attribute):
 
         kwargs["cli"] = False
 
+        self.item = kwargs.get("item")
+        if self.item and self._attr:
+            raise ValueError("You cannot specify an `item` attribute on a " \
+                             "Schema instance that has attributes defined within")
+        elif self.item:
+            self.item.container = self
+
         super(Schema, self).__init__(*args, **kwargs)
+
 
 
     def attributes(self):
@@ -379,11 +387,12 @@ class Schema(Attribute):
 
         for key, value in config.items():
             try:
-                attribute = self._attr.get(key, None)
+                attribute = self._attr.get(key, self.item)
+
                 if attribute is None:
                     raise ValidationWarning(key, path, value, "unknown attribute '{}'".format(key))
                 else:
-                    attribute.validate(value, path+[key], errors=errors, warnings=warnings)
+                    config[key] = attribute.validate(value, path+[key], errors=errors, warnings=warnings)
             except ValidationError as error:
                 errors.error(error)
             except ValidationWarning as warning:
@@ -394,6 +403,11 @@ class Schema(Attribute):
                 errors.error(ValidationError(attribute, path+[name], None, "missing"))
 
         return config
+
+
+class Dict(Schema):
+    def __init__(self, item, *args, **kwargs):
+        return super(Dict, self).__init__(item=item, *args, **kwargs)
 
 
 class ProxySchema(Schema):
