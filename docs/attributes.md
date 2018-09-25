@@ -37,19 +37,19 @@ Confu comes with several commonly used attributes out of the box.
 
 They can all be imported from `confu.schema`
 
-### confu.schema.Schema
+### Schema
 holds a collection of attributes - can nest additional schemas
 
-### confu.schema.Str
+#### Str
 validates a string value
 
-### confu.schema.Int
+### Int
 validates an integer value
 
-### confu.schema.Float
+### Float
 validates a float value
 
-### confu.schema.List
+### List
 validates a list
 
 **Special Properties**
@@ -60,10 +60,10 @@ validates a list
 my_list = confu.schema.List(name="my_list", item=confu.schema.Str())
 ```
 
-### confu.schema.File
+### File
 validates a file path, will raise a ValidationError if the specified file does not exist
 
-### confu.schema.Directory
+### Directory
 validates a directory path, the default behaviour is to raide a ValidationError if the specified
 directory does not exist
 
@@ -71,10 +71,10 @@ directory does not exist
 
   - *create* - `bool` - default: `False`: if True will create the directory
 
-### confu.schema.Email
+### Email
 validates an email address
 
-### confu.schema.Url
+### Url
 validates a url
 
 Special Properties:
