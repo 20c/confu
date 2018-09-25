@@ -38,9 +38,13 @@ Confu comes with several commonly used attributes out of the box.
 They can all be imported from `confu.schema`
 
 **confu.schema.Schema** - a collection of attributes - can nest additional schemas
+
 **confu.schema.Str** - a string value
+
 **confu.schema.Int** - an integer value
+
 **confu.schema.Float** - a float value
+
 **confu.schema.List** - a list
 
 Special Properties:
