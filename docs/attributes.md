@@ -93,6 +93,11 @@ Special Properties:
 ### IpAddress
 validates a v4 or v6 ip address
 
+!!! Tip "ipaddress module required"
+  To use this attribute please install the python ipaddress module
+
+  `pip install ipaddress`
+
 **Special Properties**
 
   - *protocol* - `int` - default: `None`: Specifies the protocol can be `4`, `6` or `None`. If `None` both 4 and 6 type addresses are allowed.
