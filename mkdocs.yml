@@ -6,6 +6,7 @@ theme: readthedocs
 pages:
   - Home: index.md
   - Quickstart: quickstart.md
+  - Attributes: attributes.md
   - CLI: cli.md
 
 markdown_extensions:
