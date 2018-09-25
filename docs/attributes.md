@@ -37,36 +37,52 @@ Confu comes with several commonly used attributes out of the box.
 
 They can all be imported from `confu.schema`
 
-**confu.schema.Schema** - a collection of attributes - can nest additional schemas
+### confu.schema.Schema
+holds a collection of attributes - can nest additional schemas
 
-**confu.schema.Str** - a string value
+### confu.schema.Str
+validates a string value
 
-**confu.schema.Int** - an integer value
+### confu.schema.Int
+validates an integer value
 
-**confu.schema.Float** - a float value
+### confu.schema.Float
+validates a float value
 
-**confu.schema.List** - a list
+### confu.schema.List
+validates a list
 
-Special Properties:
-  - *item* - `Attribute` - default: `None`: attribute that describes items held by this list
+**Special Properties**
+
+*item* - `Attribute` - default: `None`: attribute that describes items held by this list
 
 ```py
 my_list = confu.schema.List(name="my_list", item=confu.schema.Str())
 ```
 
-**confu.schema.File** - a filepath
-**confu.schema.Directory** a directory path
+### confu.schema.File
+validates a file path, will raise a ValidationError if the specified file does not exist
 
-Special Properties:
+### confu.schema.Directory
+validates a directory path, the default behaviour is to raide a ValidationError if the specified
+directory does not exist
+
+**Special Properties**
+
   - *create* - `bool` - default: `False`: if True will create the directory
 
-**confu.schema.Email** - an email address
-**confu.schema.Url** - a url
+### confu.schema.Email
+validates an email address
+
+### confu.schema.Url
+validates a url
 
 Special Properties:
   - *schemes* - `list` - default: `[]`: A list of supported schemes - an empty list will allow all schemes
 
-**confu.schema.IpAddress** - an ip address
+### confu.schema.IpAddress
+validates a v4 or v6 ip address
 
-Special Properties:
+**Special Properties**
+
   - *protocol* - `int` - default: `None`: Specifies the protocol can be `4`, `6` or `None`. If `None` both 4 and 6 type addresses are allowed.
