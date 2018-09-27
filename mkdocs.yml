@@ -7,6 +7,7 @@ pages:
   - Home: index.md
   - Quickstart: quickstart.md
   - Attributes: attributes.md
+  - Examples: examples.md
   - CLI: cli.md
 
 markdown_extensions:
