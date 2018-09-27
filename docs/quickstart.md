@@ -48,18 +48,18 @@ config_fails = {
 
 # validate succesfully
 # success = True
-success, errors, warnings = validate(MySchema, config_passes)
+success, errors, warnings = validate(MySchema(), config_passes)
 
 # fail to validate
 # sucess = False
-success, errors, warnings = validate(MySchema, config_fails)
+success, errors, warnings = validate(MySchema(), config_fails)
 ```
 
 ### Print errors on failed validation
 
 ```py
 # fail to validate and print warnings
-success, errors, warnings = validate(MySchema, config_fails, log=print)
+success, errors, warnings = validate(MySchema(), config_fails, log=print)
 ```
 
 Will output
