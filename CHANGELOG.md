@@ -7,7 +7,7 @@
 - `Email` attribute
 - `Url` attribute
 - `IpAddress` attribute
-- `Sceham` attribute now has an optional `item` argument that if set allows for validation of dicts with arbitrary keys.
+- `Schema` attribute now has an optional `item` argument that if set allows for validation of dicts with arbitrary keys.
 
 ### Fixed
 ### Changed
