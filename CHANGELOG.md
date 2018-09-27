@@ -8,6 +8,7 @@
 - `Url` attribute
 - `IpAddress` attribute
 - `Schema` attribute now has an optional `item` argument that if set allows for validation of dicts with arbitrary keys.
+- Support for ConfigParser instances in validate
 
 ### Fixed
 ### Changed

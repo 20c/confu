@@ -5,6 +5,12 @@ import collections
 from inspect import isclass
 
 from confu.exceptions import ValidationError, ValidationWarning
+from confu.util import config_parser_dict
+
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 class Attribute(object):
 
@@ -381,6 +387,8 @@ class Schema(Attribute):
         # munge Config support without having to import munge
         if isinstance(config, collections.MutableMapping) and hasattr(config, "data"):
             config = config.data
+        elif isinstance(config, configparser.ConfigParser):
+            config = config_parser_dict(config)
 
         if not isinstance(config, dict):
             return errors.error(ValidationError(path[-1], path, config, "dictionary expected"))
