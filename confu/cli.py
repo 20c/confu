@@ -11,9 +11,11 @@ def option_name(path, delimiter="--"):
     """returns a cli option name from attribute path"""
     return "--{}".format(delimiter.join(path).replace("_","-"))
 
+
 def destination_name(path, delimiter="__"):
     """returns a cli option destination name from attribute path"""
     return "{}".format(delimiter.join(path))
+
 
 def argparse_options(parser, schema):
     def optionize(attribute, path):
@@ -35,7 +37,6 @@ def argparse_options(parser, schema):
         parser.add_argument(name, **kwargs)
 
     schema.walk(optionize)
-
 
 
 class click_options(object):
