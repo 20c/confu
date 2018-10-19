@@ -2,9 +2,9 @@
 from setuptools import find_packages, setup
 
 
-version = open('Facsimile/VERSION').read().strip()
-requirements = open('Facsimile/requirements.txt').read().split("\n")
-test_requirements = open('Facsimile/requirements-test.txt').read().split("\n")
+version = open('Ctl/VERSION').read().strip()
+requirements = open('Ctl/requirements.txt').read().split("\n")
+test_requirements = open('Ctl/requirements-test.txt').read().split("\n")
 
 
 setup(
