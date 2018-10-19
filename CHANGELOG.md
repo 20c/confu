@@ -14,6 +14,7 @@
 ### Changed
 
 - schema moved to directory so it's easier to group and add new attributes going forward, imports remain unaffected.
+- `validate` will now pass **kwargs on to `Schema.validate`
 
 ### Deprecated
 ### Removed

@@ -443,7 +443,7 @@ class ProxySchema(Schema):
 
 
 
-def validate(schema, config, raise_errors=False, log=None):
+def validate(schema, config, raise_errors=False, log=None, **kwargs):
     """
     Helper function that allows schema validation to either collect or raise errors
 
@@ -458,15 +458,19 @@ def validate(schema, config, raise_errors=False, log=None):
             If False it will instead collect errors and warnings and return a tuple:
 
             success<bool>, errors<CollectValidationExceptions>, warnings<CollectValidationException>
+        - log <callable>: function to use to log errors, will be passed
+            a str message
+
+        - any additional kwargs will be passed on to Schema.validate
     """
 
     if raise_errors:
-        schema.validate(config)
+        schema.validate(config, **kwargs)
 
     else:
         errors = CollectValidationExceptions()
         warnings = CollectValidationExceptions()
-        schema.validate(config, errors=errors, warnings=warnings)
+        schema.validate(config, errors=errors, warnings=warnings, **kwargs)
 
         success = len(errors) == 0
 
