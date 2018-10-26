@@ -3,6 +3,9 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+
+- `apply_defaults` no properly works with nested items
+
 ### Changed
 ### Deprecated
 ### Removed
