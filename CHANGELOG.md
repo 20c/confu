@@ -3,14 +3,14 @@
 ## [Unreleased]
 ### Added
 ### Fixed
-
-- `apply_defaults` no properly works with nested items
-
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
 
+## [0.5.1]
+### Fixed
+- `apply_defaults` no properly works with nested items
 
 ## [0.5.0]
 ### Added
