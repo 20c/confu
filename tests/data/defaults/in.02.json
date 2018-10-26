@@ -1,0 +1,9 @@
+{
+  "list_attr" : [
+    [
+      {
+        "test" : { "str_attr_nd": "test456" }
+      }
+    ]
+  ]
+}

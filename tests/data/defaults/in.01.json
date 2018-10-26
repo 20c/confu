@@ -1,0 +1,17 @@
+{
+  "list_of_dicts":[{"test":{"str_attr_nd":"test456"}}],
+  "list_of_dicts2":[{"test":{"str_attr_nd":"test456"}}],
+  "list_of_schemas":[{"str_attr_nd":"test456"}],
+  "deep_list":[
+    {
+      "list_attr_schema" : [
+        {"str_attr_nd":"test456"}
+      ],
+      "list_attr_dict" : [
+        {
+          "test": { "str_attr_nd" : "test789" }
+        }
+      ]
+    }
+  ]
+}

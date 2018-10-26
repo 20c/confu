@@ -1,5 +1,7 @@
+import os
 import pytest
-from .schemas import (Schema_01, Schema_04)
+import json
+from .schemas import (Schema_01, Schema_04, Schema_10, Schema_11)
 from confu.schema import (apply_default, apply_defaults)
 
 def test_schema_attributes():
@@ -40,8 +42,18 @@ def test_schema_walk():
          "list_attr_w_default":[4,5,6],
          "nested":{"int_attr_choices":1}}),
 
-
+    (Schema_10, "in.01.json", "expected.01.json"),
+    (Schema_11, "in.02.json", "expected.02.json"),
+    (Schema_10, "in.03.json", "expected.03.json"),
 ])
 def test_apply_defaults(SchemaClass, config, expected):
+    if not isinstance(config, dict):
+        with open(os.path.join(os.path.dirname(__file__),"data","defaults",config)) as fh:
+            config = json.load(fh)
+    if not isinstance(expected, dict):
+        with open(os.path.join(os.path.dirname(__file__),"data","defaults",expected)) as fh:
+            expected = json.load(fh)
     apply_defaults(SchemaClass(), config)
+    print(json.dumps(config, indent=2))
+    print(json.dumps(expected, indent=2))
     assert expected == config

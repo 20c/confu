@@ -58,3 +58,29 @@ class ProxySchema_01(ProxySchema):
 
 class Schema_06(Schema):
     proxies = List("proxies", ProxySchema_01())
+
+
+class Schema_07(Schema):
+    str_attr = Str("str_attr", default="test123")
+    int_attr = Int("int_attr", default=123)
+    str_attr_nd = Str("str_attr_nd")
+
+class Schema_08(Schema):
+    dict_attr = Schema("dict_attr", item=Schema_07())
+    str_attr_nd = Str("str_attr_nd")
+
+class Schema_09(Schema):
+    list_attr_schema = List("list_attr", item=Schema_07())
+    list_attr_dict = List("list_attr_dict", item=Schema(item=Schema_07()))
+
+class Schema_10(Schema):
+    dict_attr = Schema("dict_attr", item=Schema_08())
+    list_of_dicts = List("list_of_dicts", item=Schema(item=Schema_07()))
+    list_of_dicts2 = List("list_of_dicts2", item=Schema(item=Schema_08()))
+    list_of_schemas = List("list_of_schemas", item=Schema_07())
+    deep_list = List("deep_list", item=Schema_09())
+    schema_attr = Schema_07()
+
+
+class Schema_11(Schema):
+    list_attr = List("list_attr", item=List("", item=Schema(item=Schema_07())))

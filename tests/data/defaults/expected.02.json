@@ -1,0 +1,13 @@
+{
+  "list_attr": [
+    [
+      {
+        "test" : {
+          "str_attr" : "test123",
+          "int_attr" : 123,
+          "str_attr_nd" : "test456"
+        }
+      }
+    ]
+  ]
+}

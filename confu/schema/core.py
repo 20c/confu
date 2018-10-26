@@ -503,11 +503,53 @@ def apply_default(config, attribute, path):
         prev = _config
         _config = _config.get(section)
 
-    if _config is None and attribute.default_handler is not None:
+    if isinstance(attribute, List):
+
+        # attribute is a List, need to handle items
+        # accordingly
+        if _config and isinstance(attribute.item, Schema):
+
+            # list is holding schemas, apply defaults
+            # to each item in the list
+            for item in _config:
+                apply_defaults(attribute.item, item, debug=True)
+
+        if _config and isinstance(attribute.item, List):
+
+            # list is holding lists, apply defaults
+            # to each item in the list
+            for item in _config:
+                apply_default(item, attribute.item, [])
+
+        elif _config is None and attribute.default_handler is not None:
+
+            # list is holding normal attribute, set default
+            # value
+            prev[section] = attribute.default
+
+    elif isinstance(attribute, Schema):
+
+        # attribute is a Schema
+
+        if _config and isinstance(attribute.item, List) and isinstance(attribute.item.item, Schema):
+            # schema with arbitrary keys
+            # holding lists holding schemas
+            # TODO: find a cleaner way to handle this case
+
+            for k, item in _config.items():
+                apply_default(_config, attribute.item, [k])
+
+        if _config is None:
+            prev[section] = attribute.default
+
+        if isinstance(attribute.item, Schema):
+            apply_defaults(attribute.item, prev[section])
+
+    elif _config is None and attribute.default_handler is not None:
         prev[section] = attribute.default
 
 
-def apply_defaults(schema, config):
+def apply_defaults(schema, config, debug=False):
     """
     Take a config object and apply a schema's default values to keys that
     are missing.
@@ -517,6 +559,19 @@ def apply_defaults(schema, config):
         - config <dict>: the config dictonary
     """
 
+
+    if isinstance(schema.item, Schema):
+        # schema has arbitrary keys holding another schema
+        for k,v in config.items():
+            apply_defaults(schema.item, v, debug=debug)
+        return
+    elif isinstance(schema.item, List):
+        # schema has arbitrary keys holding a list
+        for k,v in config.items():
+            apply_default(config, schema.item, [k])
+        return
+
+    # normal schema, walk it's attributes and apply defaults
     def callback(attribute, path):
         apply_default(config, attribute, path)
     schema.walk(callback)

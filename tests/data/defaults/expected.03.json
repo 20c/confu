@@ -1,0 +1,59 @@
+{
+  "dict_attr" : {
+    "dict_attr" : {
+      "str_attr" : "test333",
+      "int_attr" : 333
+    }
+  },
+  "list_of_dicts" : [
+    {
+      "test" : {
+        "str_attr" : "test333",
+        "int_attr" : 333,
+        "str_attr_nd" : "test777"
+      }
+    }
+  ],
+  "list_of_dicts2" : [
+    {
+      "test" : {
+        "dict_attr": {
+          "str_attr" : "test333",
+          "int_attr" : 333
+        },
+        "str_attr_nd" : "test777"
+      }
+    }
+  ],
+  "list_of_schemas" : [
+    {
+      "str_attr" : "test333",
+      "int_attr" : 333,
+      "str_attr_nd" : "test777"
+    }
+  ],
+  "schema_attr" : {
+    "str_attr" : "test333",
+    "int_attr" : 333
+  },
+  "deep_list" : [
+    {
+      "list_attr_schema" : [
+        {
+          "str_attr" : "test333",
+          "int_attr" : 333,
+          "str_attr_nd": "test777"
+        }
+      ],
+      "list_attr_dict": [
+        {
+          "test": {
+            "str_attr": "test333",
+            "int_attr": 333,
+            "str_attr_nd" : "test696"
+          }
+        }
+      ]
+    }
+  ]
+}
