@@ -10,7 +10,7 @@
 
 ## [0.5.1]
 ### Fixed
-- `apply_defaults` no properly works with nested items
+- `apply_defaults` now properly works with nested items
 
 ## [0.5.0]
 ### Added
