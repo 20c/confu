@@ -3,12 +3,14 @@
 ## [Unreleased]
 ### Added
 ### Fixed
-- recursive directory creation for Directory Attribute if `create` is specified
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
 
+## [0.5.2]
+### Fixed
+- recursive directory creation for Directory Attribute if `create` is specified
 
 ## [0.5.1]
 ### Fixed
