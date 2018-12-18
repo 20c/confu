@@ -156,7 +156,7 @@ class Directory(Str):
 
     def makedir(self, value, config_path):
         try:
-            os.mkdir(value, self.create)
+            os.makedirs(value, self.create)
         except Exception as err:
             raise ValidationError(self, config_path, value,
                                   "tried to create directory  but failed with error" \
