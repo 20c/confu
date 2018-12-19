@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+- proxy schema needs to be able to apply defaults (#10)
 ### Changed
 ### Deprecated
 ### Removed
