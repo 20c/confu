@@ -1,7 +1,7 @@
 import os
 import pytest
 import json
-from .schemas import (Schema_01, Schema_04, Schema_10, Schema_11)
+from .schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11)
 from confu.schema import (apply_default, apply_defaults)
 
 def test_schema_attributes():
@@ -45,6 +45,7 @@ def test_schema_walk():
     (Schema_10, "in.01.json", "expected.01.json"),
     (Schema_11, "in.02.json", "expected.02.json"),
     (Schema_10, "in.03.json", "expected.03.json"),
+    (Schema_12, "in.04.json", "expected.04.json"),
 ])
 def test_apply_defaults(SchemaClass, config, expected):
     if not isinstance(config, dict):
@@ -55,5 +56,4 @@ def test_apply_defaults(SchemaClass, config, expected):
             expected = json.load(fh)
     apply_defaults(SchemaClass(), config)
     print(json.dumps(config, indent=2))
-    print(json.dumps(expected, indent=2))
     assert expected == config

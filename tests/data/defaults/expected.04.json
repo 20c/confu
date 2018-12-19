@@ -1,0 +1,31 @@
+{
+  "proxy" : { 
+    "str_attr_nd" : "single proxy",
+    "int_attr" : 123,
+    "str_attr" : "test123"
+  },
+  "proxies" : [
+    {
+      "str_attr" : "test123",
+      "int_attr" : 123,
+      "str_attr_nd" : "item 1"
+    },
+    {
+      "str_attr" : "test123",
+      "int_attr" : 456,
+      "str_attr_nd" : "item 2"
+    }
+  ],
+  "proxies_dict" : {
+    "item 1" : {
+      "str_attr_nd" : "item 1",
+      "int_attr" : 123,
+      "str_attr" : "test123"
+    },
+    "item 2" : {
+      "str_attr_nd" : "item 2",
+      "int_attr" : 456,
+      "str_attr" :  "test123"
+    }
+  }
+}

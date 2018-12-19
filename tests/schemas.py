@@ -50,11 +50,17 @@ class Schema_04(Schema):
 class Schema_05(Schema):
     name = Str("name")
 
+
 class ProxySchema_01(ProxySchema):
     def schema(self, config):
         if "name" in config:
             return Schema_05()
         return Schema_01()
+
+class ProxySchema_02(ProxySchema):
+    def schema(self, config):
+        return Schema_07()
+
 
 class Schema_06(Schema):
     proxies = List("proxies", ProxySchema_01())
@@ -81,6 +87,12 @@ class Schema_10(Schema):
     deep_list = List("deep_list", item=Schema_09())
     schema_attr = Schema_07()
 
-
 class Schema_11(Schema):
     list_attr = List("list_attr", item=List("", item=Schema(item=Schema_07())))
+
+class Schema_12(Schema):
+    proxies = List("proxies", ProxySchema_02())
+    proxies_dict = Schema("proxies_dict", item=Schema(item=ProxySchema_02()))
+    proxy = ProxySchema_02()
+
+

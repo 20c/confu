@@ -1,0 +1,18 @@
+{
+  "proxy" : {
+    "str_attr_nd" : "single proxy"
+  },
+  "proxies": [
+    { "str_attr_nd" : "item 1" },
+    { "str_attr_nd" : "item 2", "int_attr" : 456}
+  ],
+  "proxies_dict" : {
+    "item 1": {
+      "str_attr_nd" : "item 1"
+    },
+    "item 2": {
+      "str_attr_nd" : "item 2",
+      "int_attr" : 456
+    }
+  }
+}

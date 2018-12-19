@@ -531,6 +531,9 @@ def apply_default(config, attribute, path):
 
         # attribute is a Schema
 
+        if isinstance(attribute, ProxySchema):
+            attribute  = attribute.schema(_config)
+
         if _config and isinstance(attribute.item, List) and isinstance(attribute.item.item, Schema):
             # schema with arbitrary keys
             # holding lists holding schemas
@@ -542,6 +545,8 @@ def apply_default(config, attribute, path):
         if _config is None:
             prev[section] = attribute.default
 
+        if attribute.item is None:
+            apply_defaults(attribute, prev[section])
         if isinstance(attribute.item, Schema):
             apply_defaults(attribute.item, prev[section])
 
@@ -559,6 +564,10 @@ def apply_defaults(schema, config, debug=False):
         - config <dict>: the config dictonary
     """
 
+    if isinstance(schema, ProxySchema):
+        # schema is proxy schema, retrieve actual schema
+        # before proceeding
+        schema = schema.schema(config)
 
     if isinstance(schema.item, Schema):
         # schema has arbitrary keys holding another schema
