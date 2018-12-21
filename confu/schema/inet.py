@@ -25,7 +25,7 @@ class Email(Str):
         value = super(Email, self).validate(value, path, **kwargs)
 
         # TODO: any reason to get more sophisticated than this?
-        if not re.match("[^@\s]+@[^@\s]+", value):
+        if not re.match(r"[^@\s]+@[^@\s]+", value):
             raise ValidationError(self, path, value, "email address expected")
 
         return value
