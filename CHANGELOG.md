@@ -4,6 +4,7 @@
 ### Added
 ### Fixed
 - proxy schema needs to be able to apply defaults (#10)
+- issue where list validation would sometimes lead to duplicate items added to the list
 ### Changed
 ### Deprecated
 ### Removed

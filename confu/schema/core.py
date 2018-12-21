@@ -278,16 +278,17 @@ class List(Attribute):
         if not isinstance(value, list):
             raise ValidationError(self, path, value, "list expected")
 
+        validated = []
         idx = 0
         for item in value:
             try:
-                value[idx] = self.item.validate(item, path+[idx])
+                validated.append(self.item.validate(item, path+[idx]))
                 idx += 1
             except ValidationError as error:
                 kwargs.get("errors", ValidationErrorProcessor()).error(error)
             except ValidationWarning as warning:
                 kwargs.get("warnings", ValidationErrorProcessor()).warning(warning)
-        return super(List, self).validate(value, path, **kwargs)
+        return super(List, self).validate(validated, path, **kwargs)
 
 class ValidationErrorProcessor(object):
     """
