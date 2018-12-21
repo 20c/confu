@@ -2,15 +2,22 @@
 
 ## [Unreleased]
 ### Added
-- `blank` argument for `Str` attribute - specifies whether value can be blank or not, defaults to `False`
 ### Fixed
-- proxy schema needs to be able to apply defaults (#10)
-- issue where list validation would sometimes lead to duplicate items added to the list
 ### Changed
-- `Directory` attribute will forfeit validation if `blank` is `True` and value is `""`
 ### Deprecated
 ### Removed
 ### Security
+
+## [0.6.0]
+### Added
+- `blank` argument for `Str` attribute - specifies whether value can be blank or not, defaults to `False`
+
+### Fixed
+- proxy schema needs to be able to apply defaults (#10)
+- issue where list validation would sometimes lead to duplicate items added to the list
+
+### Changed
+- `Directory` attribute will forfeit validation if `blank` is `True` and value is `""`
 
 ## [0.5.2]
 ### Fixed
