@@ -110,11 +110,23 @@ class Str(Attribute):
 
     """
     Attribute that requires a string value
+
+    Keyword Attributes:
+        - blank <bool=False>: if True allow "" as a value
     """
+
+    def __init__(self, name="", **kwargs):
+        super(Str, self).__init__(name=name, **kwargs)
+        self.blank = kwargs.get("blank", False)
+
 
     def validate(self, value, path, **kwargs):
         if not isinstance(value, six.string_types):
             raise ValidationError(self, path, value, "string expected")
+
+        if value == "" and not self.blank:
+            raise ValidationError(self, path, value, "cannot be blank")
+
         return super(Str, self).validate(value, path, **kwargs)
 
 
@@ -169,12 +181,18 @@ class Directory(Str):
         # make sure env vars get expanded
         value = os.path.expandvars(value)
 
+        # if value is blank, and validation was not caught by `blank` validation
+        # of Str we forfeit validation and it is assume that the application
+        # will validate manually once the path is set.
+        if value == "":
+            return value
+
         if self.create is not None and not os.path.exists(value):
             self.makedir(value, path)
 
         valid = (os.path.exists(value) and os.path.isdir(value))
         if not valid:
-            raise ValidationError(self, path, value, "valid path to directory expected")
+            raise ValidationError(self, path, value, "valid path to directory expected: {}".format(value))
 
         return value
 

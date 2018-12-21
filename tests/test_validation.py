@@ -40,6 +40,8 @@ ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
 
 @pytest.mark.parametrize("Class,value_pass,validated,value_fail,init", [
     (Str, "test", "test", 123,{}),
+    (Str, "test", "test", "", {}),
+    (Str, "", "", 123, {"blank":True}),
     (Int, 123, 123, "test",{}),
     (Float, 1.23, 1.23, "test",{}),
     (Bool, True, True, "test",{}),

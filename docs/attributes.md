@@ -55,6 +55,10 @@ if the schema describes a dict with arbitrary keys.
 ### Str
 validates a string value
 
+**Special properties**
+
+*blank* - `bool` - default: `False`: allow blank values
+
 ### Int
 validates an integer value
 
