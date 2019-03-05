@@ -24,6 +24,7 @@ class Config(collections.Mapping):
 
         self.errors = []
         self.warnings = []
+        self.valid = None
 
         # use property setter to apply
         self.data = data if data else {}
@@ -40,7 +41,7 @@ class Config(collections.Mapping):
 
         data = copy.deepcopy(self._base_data)
         confu.schema.apply_defaults(self._schema, data)
-        valid, self.errors, self.warnings = confu.schema.validate(self.schema, data)
+        self.valid, self.errors, self.warnings = confu.schema.validate(self.schema, data)
         self._data = data
         return self._data
 
