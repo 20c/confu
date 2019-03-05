@@ -32,5 +32,3 @@ class ValidationWarning(ValidationErrorBase):
 
 class ValidationError(ValidationErrorBase):
     pass
-
-

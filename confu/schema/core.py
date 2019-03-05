@@ -437,7 +437,7 @@ class Dict(Schema):
     Wrapper for schema with arbitrary keys
     """
     def __init__(self, name, item, *args, **kwargs):
-        return super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
+        super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
 
 
 class ProxySchema(Schema):
@@ -483,15 +483,18 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
         - any additional kwargs will be passed on to Schema.validate
     """
 
+    warnings = CollectValidationExceptions()
     if raise_errors:
-        schema.validate(config, **kwargs)
-
+        schema.validate(config, warnings=warnings, **kwargs)
+        return (True, [], warnings)
     else:
         errors = CollectValidationExceptions()
-        warnings = CollectValidationExceptions()
         schema.validate(config, errors=errors, warnings=warnings, **kwargs)
 
-        success = len(errors) == 0
+        num_errors = len(errors)
+        num_warnings = len(warnings)
+
+        success = (num_errors == 0)
 
         if log and callable(log):
             for error in errors:
@@ -499,7 +502,7 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
             for warning in warnings:
                 log("[Config Warning] {}".format(warning.pretty))
             if not success:
-                log("{} errors, {} warnings in config".format(len(errors), len(warnings)))
+                log("{} errors, {} warnings in config".format(num_errors, num_warnings))
 
         return (success, errors, warnings)
 

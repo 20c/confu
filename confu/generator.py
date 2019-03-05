@@ -1,4 +1,3 @@
-from inspect import isclass
 from confu.schema import (
     Schema,
     Attribute

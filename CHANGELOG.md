@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Added
+
+- added `valid` property to Config that will be true if config was validated without
+  any errors
+
 ### Fixed
 ### Changed
 ### Deprecated

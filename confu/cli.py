@@ -1,6 +1,3 @@
-import argparse
-from confu.schema import validate, Schema
-
 try:
     import click
 except ImportError:
@@ -45,6 +42,7 @@ class click_options(object):
 
     def __call__(self, fn):
         container = {"fn":fn}
+
         def optionize(attribute, path):
             if not attribute.cli:
                 return
@@ -68,4 +66,3 @@ class click_options(object):
             container["fn"] = click.option(name, destination_name(path), **kwargs).__call__(fn)
         self.schema.walk(optionize)
         return container["fn"]
-
