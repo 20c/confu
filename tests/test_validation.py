@@ -21,7 +21,7 @@ from confu.schema import (
     CollectValidationExceptions
 )
 
-from schemas import (
+from tests.schemas import (
     Schema_01,
     Schema_05,
     Schema_06

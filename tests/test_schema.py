@@ -4,7 +4,7 @@ import json
 
 from confu.schema import (apply_default, apply_defaults)
 
-from schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11)
+from tests.schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11)
 
 def test_schema_attributes():
     schema = Schema_01()

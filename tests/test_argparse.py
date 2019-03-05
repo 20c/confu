@@ -3,7 +3,7 @@ import argparse
 import json
 
 
-from schemas import Schema_03
+from tests.schemas import Schema_03
 
 from confu.cli import argparse_options
 

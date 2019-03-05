@@ -4,7 +4,7 @@ import json
 
 from click.testing import CliRunner
 
-from schemas import Schema_03
+from tests.schemas import Schema_03
 from confu.cli import click_options
 
 
