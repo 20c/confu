@@ -35,3 +35,10 @@ def test_config_mapping():
 
     for key in cfg:
         assert cp[key] == cfg[key]
+
+def test_get_nested():
+    cfg = Config(Schema_04())
+    data = cfg.data
+    assert cfg.get_nested("nested") == {'int_attr_choices': 1}
+    assert cfg.get_nested("nested.nonexistant") == None
+
