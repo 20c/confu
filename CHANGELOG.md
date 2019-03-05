@@ -2,15 +2,20 @@
 
 ## [Unreleased]
 ### Added
-
-- added `valid` property to Config that will be true if config was validated without
-  any errors
-
 ### Fixed
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
+
+## [1.0.0]
+## Added
+- added `valid` property to Config that will be true if config was validated without
+  any errors
+
+## Fixed
+- code cleanup
+- test coverage to 91%
 
 ## [0.7.0]
 ## Changed
