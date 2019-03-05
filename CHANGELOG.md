@@ -8,6 +8,10 @@
 ### Removed
 ### Security
 
+## [0.7.0]
+## Changed
+- updated outdated requirements to prepare for 1.0.0 release
+
 ## [0.6.0]
 ### Added
 - `blank` argument for `Str` attribute - specifies whether value can be blank or not, defaults to `False`
