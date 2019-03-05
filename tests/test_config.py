@@ -1,7 +1,7 @@
 
 import confu
 from confu.config import Config
-from .schemas import Schema_04
+from schemas import Schema_04
 
 
 def test_config_init():

@@ -1,7 +1,7 @@
 import pytest
 import json
 from confu.generator import ConfigGenerator, generate
-from .schemas import Schema_02
+from schemas import Schema_02
 
 def test_generate_config():
     generator = ConfigGenerator()
