@@ -17,4 +17,6 @@ Configuration validation and generation
 
 # Documentation 
 
-**latest**: https://confu.readthedocs.io/en/latest/quickstart/
+  - **stable**: https://confu.readthedocs.io/en/stable/quickstart/
+  - **latest**: https://confu.readthedocs.io/en/latest/quickstart/
+
