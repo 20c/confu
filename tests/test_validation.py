@@ -78,12 +78,14 @@ ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
     (IpAddress, ipv6, ipaddress.IPv6Address(ipv6), "1.2.3", {}),
     (IpAddress, ipv4, ipaddress.IPv4Address(ipv4), ipv6, {"protocol":4}),
     (IpAddress, ipv6, ipaddress.IPv6Address(ipv6), ipv4, {"protocol":6}),
+    (IpAddress, "", "", "1.2.3", {"blank":True}),
 ])
 def test_attribute(Class, value_pass, validated, value_fail, init):
     attribute = Class("test", **init)
     assert attribute.validate(value_pass, []) == validated
     with pytest.raises(ValidationError):
         attribute.validate(value_fail, [])
+
 
 @pytest.mark.parametrize("SchemaClass,config_pass,config_fail,error", [
     (Schema_01, "nesting/success.json", "nesting/failure01.json",
@@ -158,7 +160,5 @@ def test_directory_create(tmpdir):
     path = os.path.join(str(tmpdir), "test3")
     with pytest.raises(ValidationError) as exception_info:
         attr.validate(path, [])
-
-
 
 

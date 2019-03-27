@@ -89,6 +89,10 @@ class IpAddress(Str):
 
     def validate(self, value, path, **kwargs):
         value = super(IpAddress, self).validate(value, path, **kwargs)
+
+        if self.blank and value == "":
+            return value
+
         value = u"{}".format(value)
         value_v4 = self.validate_v4(value, path, **kwargs)
         value_v6 = self.validate_v6(value, path, **kwargs)

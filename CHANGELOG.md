@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+- IPAddress field validation issue with blank=True (#13)
+
 ### Changed
 ### Deprecated
 ### Removed
