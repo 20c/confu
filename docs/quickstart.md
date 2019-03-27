@@ -12,13 +12,13 @@ pip install cfu
 from confu import schema
 
 class MySchema(schema.Schema):
-    some_number = schema.Int("some_number", help="Some integer")
-    some_string = schema.Str("some_string", default="something", help="An arbitrary string")
-    some_list = schema.List("some_list", schema.Int("some_list.item"), help="A list of integers")
-    some_bool = schema.Bool("some_bool", default=False)
+    some_number = schema.Int(help="Some integer")
+    some_string = schema.Str(default="something", help="An arbitrary string")
+    some_list = schema.List(schema.Int(), help="A list of integers")
+    some_bool = schema.Bool(default=False)
 
     class Sub(schema.Schema):
-        nested_string = schema.Str("nested_string", default="something nested", help="A nested string")
+        nested_string = schema.Str(default="something nested", help="A nested string")
     sub = Sub()
 ```
 
