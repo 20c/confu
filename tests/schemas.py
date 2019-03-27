@@ -67,9 +67,9 @@ class Schema_06(Schema):
 
 
 class Schema_07(Schema):
-    str_attr = Str("str_attr", default="test123")
-    int_attr = Int("int_attr", default=123)
-    str_attr_nd = Str("str_attr_nd")
+    str_attr = Str(default="test123")
+    int_attr = Int(default=123)
+    str_attr_nd = Str()
 
 class Schema_08(Schema):
     dict_attr = Schema("dict_attr", item=Schema_07())
@@ -95,4 +95,6 @@ class Schema_12(Schema):
     proxies_dict = Schema("proxies_dict", item=Schema(item=ProxySchema_02()))
     proxy = ProxySchema_02()
 
-
+class Schema_13(Schema):
+    int_attr = Int()
+    str_attr = Str()

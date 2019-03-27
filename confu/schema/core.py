@@ -346,6 +346,8 @@ class Schema(Attribute):
             attr = getattr(self, name)
             if isinstance(attr, Attribute):
                 self._attr[name] = attr
+                if not attr.name:
+                    attr.name = name
 
         if "default" not in kwargs:
             kwargs["default"] = {}

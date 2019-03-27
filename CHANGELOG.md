@@ -6,6 +6,8 @@
 - IPAddress field validation issue with blank=True (#13)
 
 ### Changed
+- Auto set attribute name if not specified (#12)
+
 ### Deprecated
 ### Removed
 ### Security

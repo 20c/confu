@@ -4,7 +4,9 @@ import json
 
 from confu.schema import (apply_default, apply_defaults)
 
-from tests.schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11)
+from tests.schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11,
+                           Schema_13,
+                           )
 
 def test_schema_attributes():
     schema = Schema_01()
@@ -18,6 +20,11 @@ def test_schema_walk():
         paths.append(".".join(path))
     Schema_01().walk(callback)
     assert sorted(paths) == sorted(['int_attr', 'list_attr', 'nested', 'nested.int_attr', 'str_attr'])
+
+def test_schema_auto_name():
+    schema = Schema_13()
+    assert schema.str_attr.name == "str_attr"
+    assert schema.int_attr.name == "int_attr"
 
 
 @pytest.mark.parametrize("SchemaClass,config,expected", [
