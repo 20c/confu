@@ -29,26 +29,28 @@ def test_schema_auto_name():
 
 @pytest.mark.parametrize("SchemaClass,config,expected", [
     (Schema_04, {},
-        {"int_attr":123, "str_attr":"test", "list_attr":[],
-        "list_attr_w_default":[1,2,3], "nested":{"int_attr_choices":1}}),
+        {"int_attr":123, "str_attr":"test", "str_attr_null":None,
+         "list_attr":[],"list_attr_w_default":[1,2,3],
+         "nested":{"int_attr_choices":1}}),
 
-    (Schema_04, {"int_attr":999},
-        {"int_attr":999, "str_attr":"test", "list_attr":[],
-         "list_attr_w_default":[1,2,3], "nested":{"int_attr_choices":1}}),
+    (Schema_04, {"int_attr":999, "str_attr_null":"something"},
+        {"int_attr":999, "str_attr":"test", "str_attr_null":"something",
+         "list_attr":[],"list_attr_w_default":[1,2,3],
+         "nested":{"int_attr_choices":1}}),
 
     (Schema_04, {"nested":{"int_attr":1}},
-        {"int_attr":123, "str_attr":"test", "list_attr":[],
-         "list_attr_w_default":[1,2,3],
+        {"int_attr":123, "str_attr":"test", "str_attr_null":None,
+         "list_attr":[],"list_attr_w_default":[1,2,3],
          "nested":{"int_attr_choices":1,"int_attr":1}}),
 
     (Schema_04, {"nested":{"int_attr":1, "int_attr_choices":2}},
-        {"int_attr":123, "str_attr":"test", "list_attr":[],
-         "list_attr_w_default":[1,2,3],
+        {"int_attr":123, "str_attr":"test", "str_attr_null":None,
+         "list_attr":[],"list_attr_w_default":[1,2,3],
          "nested":{"int_attr_choices":2,"int_attr":1}}),
 
     (Schema_04, {"list_attr_w_default":[4,5,6]},
-        {"int_attr":123, "str_attr":"test", "list_attr":[],
-         "list_attr_w_default":[4,5,6],
+        {"int_attr":123, "str_attr":"test", "str_attr_null":None,
+         "list_attr":[],"list_attr_w_default":[4,5,6],
          "nested":{"int_attr_choices":1}}),
 
     (Schema_10, "in.01.json", "expected.01.json"),

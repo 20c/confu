@@ -29,7 +29,9 @@ class Attribute(object):
         # will raise a validation error during validation
         #
         # can be a function
-        self.default_handler = kwargs.get("default")
+
+        if "default" in kwargs:
+            self.default_handler = kwargs.get("default")
 
         # deprecated in version
         self.deprecated = kwargs.get("deprecated")
@@ -51,6 +53,9 @@ class Attribute(object):
 
         self.container = None
 
+    @property
+    def has_default(self):
+        return hasattr(self, "default_handler")
 
     @property
     def default(self):
@@ -428,7 +433,7 @@ class Schema(Attribute):
                 warnings.warning(warning)
 
         for name, attribute in self.attributes():
-            if name not in config and getattr(attribute, "default_handler", None) is None:
+            if name not in config and not attribute.has_default:
                 errors.error(ValidationError(attribute, path+[name], None, "missing"))
 
         return config
@@ -545,7 +550,7 @@ def apply_default(config, attribute, path):
             for item in _config:
                 apply_default(item, attribute.item, [])
 
-        elif _config is None and attribute.default_handler is not None:
+        elif _config is None and attribute.has_default:
 
             # list is holding normal attribute, set default
             # value
@@ -574,7 +579,7 @@ def apply_default(config, attribute, path):
         if isinstance(attribute.item, Schema):
             apply_defaults(attribute.item, prev[section])
 
-    elif _config is None and attribute.default_handler is not None:
+    elif _config is None and attribute.has_default:
         prev[section] = attribute.default
 
 

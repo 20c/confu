@@ -2,6 +2,7 @@
   "dict_attr" : {
     "dict_attr" : {
       "str_attr" : "test333",
+      "str_attr_null": "something",
       "int_attr" : 333
     }
   },
@@ -9,6 +10,7 @@
     {
       "test" : {
         "str_attr" : "test333",
+        "str_attr_null": "something",
         "int_attr" : 333,
         "str_attr_nd" : "test777"
       }
@@ -19,6 +21,7 @@
       "test" : {
         "dict_attr": {
           "str_attr" : "test333",
+          "str_attr_null": "something",
           "int_attr" : 333
         },
         "str_attr_nd" : "test777"
@@ -28,12 +31,14 @@
   "list_of_schemas" : [
     {
       "str_attr" : "test333",
+      "str_attr_null": "something",
       "int_attr" : 333,
       "str_attr_nd" : "test777"
     }
   ],
   "schema_attr" : {
     "str_attr" : "test333",
+    "str_attr_null": "something",
     "int_attr" : 333
   },
   "deep_list" : [
@@ -41,6 +46,7 @@
       "list_attr_schema" : [
         {
           "str_attr" : "test333",
+          "str_attr_null": "something",
           "int_attr" : 333,
           "str_attr_nd": "test777"
         }
@@ -49,6 +55,7 @@
         {
           "test": {
             "str_attr": "test333",
+            "str_attr_null": "something",
             "int_attr": 333,
             "str_attr_nd" : "test696"
           }

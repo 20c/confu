@@ -4,6 +4,7 @@
 ### Added
 ### Fixed
 - IPAddress field validation issue with blank=True (#13)
+- Allow None as a default value (#14)
 
 ### Changed
 - Auto set attribute name if not specified (#12)

@@ -25,6 +25,7 @@ class Schema_02(Schema):
     int_attr = Int("int_attr", default=123)
     str_attr = Str("str_attr", default="test")
     list_attr = List("list_attr", NestedSchema_01())
+    str_attr_null = Str(default=None)
     nested = NestedSchema_01("nested")
 
 class Schema_03(Schema):
@@ -43,6 +44,7 @@ class Schema_03(Schema):
 class Schema_04(Schema):
     int_attr = Int("int_attr", default=123)
     str_attr = Str("str_attr", default="test")
+    str_attr_null = Str(default=None)
     list_attr = List("list_attr", NestedSchema_01())
     list_attr_w_default = List("list_attr_w_default", Int(), default=[1,2,3])
     nested = NestedSchema_02("nested")
@@ -68,6 +70,7 @@ class Schema_06(Schema):
 
 class Schema_07(Schema):
     str_attr = Str(default="test123")
+    str_attr_null = Str(default=None)
     int_attr = Int(default=123)
     str_attr_nd = Str()
 

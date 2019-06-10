@@ -49,6 +49,7 @@ def test_choices(Class, choices_in, choices_out):
 @pytest.mark.parametrize("Class,default_in,default_out", [
     (Str, "test", "test"),
     (Str, lambda x: "test", "test"),
+    (Str, None, None),
     (Int, 123, 123),
     (Int, lambda x: 123, 123),
     (Float, 1.23, 1.23),
@@ -82,3 +83,15 @@ def test_list():
     assert attribute.item == item
 
     attribute = List("test", Int())
+
+@pytest.mark.parametrize("Class", [
+    Str,
+    Int,
+    Bool,
+    Float,
+])
+def test_none_default(Class):
+    attribute = Class("test", default=None)
+    assert attribute.has_default == True
+    assert attribute.default == None
+

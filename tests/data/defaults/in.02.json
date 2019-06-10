@@ -2,7 +2,7 @@
   "list_attr" : [
     [
       {
-        "test" : { "str_attr_nd": "test456" }
+        "test" : { "str_attr_nd": "test456", "str_attr_null":"something" }
       }
     ]
   ]

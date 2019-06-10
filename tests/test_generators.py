@@ -6,7 +6,8 @@ from tests.schemas import Schema_02
 def test_generate_config():
     generator = ConfigGenerator()
     config = generator.generate(Schema_02())
-    assert config == json.loads('{"int_attr": 123, "nested": {"int_attr": null}, "list_attr": [], "str_attr": "test"}')
+    print(json.dumps(config, indent=2))
+    assert config == json.loads('{"int_attr": 123, "nested": {"int_attr": null}, "list_attr": [], "str_attr": "test", "str_attr_null": null}')
 
 
 @pytest.mark.parametrize("generator", [
@@ -15,5 +16,5 @@ def test_generate_config():
     ])
 def test_generate_config_shortcut(generator):
     config = generate(Schema_02(), generator)
-    assert config == json.loads('{"int_attr": 123, "nested": {"int_attr": null}, "list_attr": [], "str_attr": "test"}')
+    assert config == json.loads('{"int_attr": 123, "nested": {"int_attr": null}, "list_attr": [], "str_attr": "test", "str_attr_null": null}')
 
