@@ -21,6 +21,10 @@ from confu.exceptions import SoftDependencyError
 
 class Email(Str):
 
+    """
+    Describes an email address
+    """
+
     def validate(self, value, path, **kwargs):
         value = super(Email, self).validate(value, path, **kwargs)
 
@@ -32,6 +36,10 @@ class Email(Str):
 
 
 class Url(Str):
+
+    """
+    Describes a URL
+    """
 
     def __init__(self, name="", **kwargs):
         super(Url, self).__init__(name=name, **kwargs)
@@ -67,7 +75,37 @@ class Url(Str):
 
 class IpAddress(Str):
 
+    """
+    Describes a IPv4 or IPv6 address
+    """
+
     def __init__(self, name="", protocol=None, **kwargs):
+
+        """
+        Initialize attribute
+
+        **Keyword Arguments**
+
+        - `name` (str): describes the attribute name, if not specified
+          explicitly will be set through the schema that instantiates
+          the attribute.
+        - `protocol` (int): ip version, can be 4, 6 or None - if it is none
+          the attribute can hold either a v4 or a v6 IP address.
+        - `default` (mixed): the default value of this attribute. Once a default
+          value is set, schema validation will no longer raise a
+          validation error if the attribute is missing from the
+          configuration.
+        - `choices` (list): if specified on values in this list may be set
+          for this attribute
+        - `help` (str): help description
+        - `cli` (bool=True): enable CLI support for this attribute
+        - `deprecated` (str): version id of when this attribute will be deprecated
+        - `added` (str): version id of when this attribute was added to the schema
+        - `removed` (str): version id of when this attribute will be removed
+        """
+
+
+
         super(IpAddress, self).__init__(name=name, **kwargs)
         if not ipaddress:
             raise SoftDependencyError("ipaddress")

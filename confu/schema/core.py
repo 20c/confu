@@ -17,10 +17,32 @@ class Attribute(object):
     """
     Base confu schema attribute. All other schema attributes
     should extend this
+
     """
 
-
     def __init__(self, name="", **kwargs):
+
+        """
+        Initialize attribute
+
+        **Keyword Arguments**
+
+        - `name` (str): describes the attribute name, if not specified
+          explicitly will be set through the schema that instantiates
+          the attribute.
+        - `default` (mixed): the default value of this attribute. Once a default
+          value is set, schema validation will no longer raise a
+          validation error if the attribute is missing from the
+          configuration.
+        - `choices` (list): if specified on values in this list may be set
+          for this attribute
+        - `help` (str): help description
+        - `cli` (bool=True): enable CLI support for this attribute
+        - `deprecated` (str): version id of when this attribute will be deprecated
+        - `added` (str): version id of when this attribute was added to the schema
+        - `removed` (str): version id of when this attribute will be removed
+        """
+
         # attribute name in the schema
         self.name = name
 
@@ -72,7 +94,7 @@ class Attribute(object):
         """
         Return a list of possible value choices for this attribute
 
-        Will return an empty list if the attribute is NOT limited by
+        Will return an empty list if the attribute is **NOT** limited by
         choices
         """
 
@@ -90,15 +112,16 @@ class Attribute(object):
         """
         Validate a value for this attribute
 
-        Will raise a ValidationError or ValidationWarning exception on
+        Will raise a `ValidationError` or `ValidationWarning` exception on
         validation failure
 
-        Arguments:
-            - value <mixed>: the value to validate
-            - path <list>: current path in the config schema, this is mostly
-                used to identify where an error occured when validating
-                against config data, you can pass an empty list to it when
-                calling this manually
+        **Arguments**
+
+        - `value` (mixed): the value to validate
+        - `path` (list): current path in the config schema, this is mostly
+          used to identify where an error occured when validating
+          against config data, you can pass an empty list to it when
+          calling this manually
         """
 
         if not self.container and not self.name:
@@ -269,6 +292,31 @@ class List(Attribute):
     """
 
     def __init__(self, name, item, **kwargs):
+        """
+        Initialize List attribute
+
+        **Arguments**
+
+        - `item` (Attribute): allows you to specify an arbitrary attribute
+          to use for all values in the list.
+
+        **Keyword Arguments**
+
+        - `name` (str): describes the attribute name, if not specified
+          explicitly will be set through the schema that instantiates
+          the attribute.
+        - `default` (mixed): the default value of this attribute. Once a default
+          value is set, schema validation will no longer raise a
+          validation error if the attribute is missing from the
+          configuration.
+        - `help` (str): help description
+        - `cli` (bool=True): enable CLI support for this attribute
+        - `deprecated` (str): version id of when this attribute will be deprecated
+        - `added` (str): version id of when this attribute was added to the schema
+        - `removed` (str): version id of when this attribute will be removed
+        """
+
+
         if "default" not in kwargs:
             kwargs["default"] = []
 
@@ -344,7 +392,45 @@ class CollectValidationExceptions(ValidationErrorProcessor):
 
 class Schema(Attribute):
 
+    """
+    Describes a confu schema.
+
+    Instantiate confu attributes as properties of the schema.
+
+    As the schema itself is a confu attribute, you may nest schemas
+    within schemas
+
+    **Example**
+
+    ```
+    class MySchema(Schema):
+        str_attr = Str()
+    ```
+    """
+
     def __init__(self, *args, **kwargs):
+        """
+        Initialize schema
+
+        **Keyword Arguments**
+
+        - `item` (Attribute): allows you to specify an arbitrary attribute
+          to use for all values in the schema. This is only allowed if your
+          schema does **NOT** explicitly set any attributes in it's definition
+        - `name` (str): describes the attribute name, if not specified
+          explicitly will be set through the schema that instantiates
+          the attribute.
+        - `default` (mixed): the default value of this attribute. Once a default
+          value is set, schema validation will no longer raise a
+          validation error if the attribute is missing from the
+          configuration.
+        - `help` (str): help description
+        - `cli` (bool=True): enable CLI support for this attribute
+        - `deprecated` (str): version id of when this attribute will be deprecated
+        - `added` (str): version id of when this attribute was added to the schema
+        - `removed` (str): version id of when this attribute will be removed
+        """
+
         # collect attributes
         self._attr = {}
         for name in dir(self):
@@ -392,15 +478,17 @@ class Schema(Attribute):
         """
         Validate config data against this schema
 
-        Attributes:
-            - config <dict>
+        **Attributes**
 
-        Keyword Attributes:
-            - path <list>: current path in the config data, this can be
-                ignored on the initial call and will be set automatically
-                on any subsequent calls (sub schemas)
-            - errors <ValidationErrorProcessor>
-            - warnigns <ValidationErrorProcessor>
+        - `config` (dict): config to validate
+
+        **Keyword Attributes**
+
+        - `path` (list): current path in the config data, this can be
+          ignored on the initial call and will be set automatically
+          on any subsequent calls (nested schemas)
+        - `errors` (ValidationErrorProcessor)
+        - `warnigns` (ValidationErrorProcessor)
         """
 
         if path is None:
@@ -442,6 +530,8 @@ class Schema(Attribute):
 class Dict(Schema):
     """
     Wrapper for schema with arbitrary keys
+
+    For this the `item` property needs to be set.
     """
     def __init__(self, name, item, *args, **kwargs):
         super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
@@ -473,21 +563,25 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
     """
     Helper function that allows schema validation to either collect or raise errors
 
-    Arguments:
-        - schema <Schema>: schema instance
-        - config <dict|munge.Config>
+    **Arguments**
 
-    Keyword Arguments:
-        - raise_errors <bool=False>: if True will raise a ValidationError exception
-            if it encounters validation errors
+    - `schema` (Schema): schema instance
+    - `config` (dict|munge.Config)
 
-            If False it will instead collect errors and warnings and return a tuple:
+    **Keyword Arguments**
 
-            success<bool>, errors<CollectValidationExceptions>, warnings<CollectValidationException>
-        - log <callable>: function to use to log errors, will be passed
-            a str message
+    - `raise_errors` (bool=False): if `True` will raise a ValidationError exception
+      if it encounters validation errors
 
-        - any additional kwargs will be passed on to Schema.validate
+      If `False` it will instead collect errors and warnings and return a tuple:
+
+      ```
+      success(bool), errors(CollectValidationExceptions), warnings(CollectValidationException)
+      ```
+
+    - `log` (callable): function to use to log errors, will be passed
+      a str message
+    - any additional kwargs will be passed on to `Schema.validate`
     """
 
     warnings = CollectValidationExceptions()
@@ -519,10 +613,11 @@ def apply_default(config, attribute, path):
     """
     Apply attribute default to config dict at the specified path
 
-    Arguments:
-        - config <dict>: the config dictonary
-        - attribute <Attribute>: attribute instance
-        - path <list<str>>: full path of the attribute in the schema
+    **Arguments**
+
+    - `config` (dict): the config dictonary
+    - `attribute` (Attribute): attribute instance
+    - `path` (list(str)): full path of the attribute in the schema
     """
 
     _config = config
@@ -588,9 +683,10 @@ def apply_defaults(schema, config, debug=False):
     Take a config object and apply a schema's default values to keys that
     are missing.
 
-    Arguments:
-        - schema <Schema>: schema instance
-        - config <dict>: the config dictonary
+    **Arguments**
+
+    - `schema` (Schema): schema instance
+    - `config` (dict): the config dictonary
     """
 
     if isinstance(schema, ProxySchema):
