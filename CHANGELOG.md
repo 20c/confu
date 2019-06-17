@@ -3,15 +3,21 @@
 ## [Unreleased]
 ### Added
 ### Fixed
-- IPAddress field validation issue with blank=True (#13)
-- Allow None as a default value (#14)
-
 ### Changed
-- Auto set attribute name if not specified (#12)
 
 ### Deprecated
 ### Removed
 ### Security
+
+## [1.1.0]
+
+### Fixed
+- IPAddress field validation issue with blank=True (#13)
+- Allow None as a default value (#14)
+
+## Changed
+- Auto set attribute name if not specified (#12)
+
 
 ## [1.0.0]
 ## Added
