@@ -80,6 +80,10 @@ class Attribute(object):
         return hasattr(self, "default_handler")
 
     @property
+    def default_is_none(self):
+        return (self.has_default and self.default is None)
+
+    @property
     def default(self):
         """
         Return the default value for this attribute
@@ -147,9 +151,13 @@ class Str(Attribute):
         super(Str, self).__init__(name=name, **kwargs)
         self.blank = kwargs.get("blank", False)
 
+    @property
+    def default_is_blank(self):
+        return (self.default == "")
+
 
     def validate(self, value, path, **kwargs):
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, six.string_types) and not self.default_is_none:
             raise ValidationError(self, path, value, "string expected")
 
         if value == "" and not self.blank:
@@ -165,6 +173,12 @@ class File(Str):
 
     def validate(self, value, path, **kwargs):
         value = super(File, self).validate(value, path, **kwargs)
+
+        if value is None and self.default_is_none:
+            return value
+
+#        if value == "" and self.default_is_blank:
+#            return value
 
         # make sure env vars get expanded
         value = os.path.expandvars(value)
@@ -203,8 +217,10 @@ class Directory(Str):
                                   ": {}".format(err))
 
     def validate(self, value, path, **kwargs):
-        value = super(Directory, self).validate(value,
-                                                         path, **kwargs)
+        value = super(Directory, self).validate(value, path, **kwargs)
+
+        if value is None and self.default_is_none:
+            return value
 
         # make sure env vars get expanded
         value = os.path.expandvars(value)
@@ -264,6 +280,8 @@ class Int(Attribute):
     """
 
     def validate(self, value, path, **kwargs):
+        if value is None and self.default_is_none:
+            return value
         try:
             value = int(value)
         except (TypeError, ValueError):
@@ -278,6 +296,8 @@ class Float(Attribute):
     """
 
     def validate(self, value, path, **kwargs):
+        if value is None and self.default_is_none:
+            return value
         try:
             value = float(value)
         except (TypeError, ValueError):

@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+- some attribute validators still have issues with a None default (#16)
 ### Changed
 
 ### Deprecated

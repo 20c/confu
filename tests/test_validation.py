@@ -145,6 +145,17 @@ def test_attr_name_validation():
 def test_attr_name_same_as_property_name():
     Schema_05().validate({"name":"test"})
 
+@pytest.mark.parametrize("AttributeClass", [
+    Str,
+    Int,
+    Float,
+    Directory,
+    File,
+    ])
+def test_default_none(AttributeClass):
+    attr = AttributeClass("test", default=None)
+    assert attr.validate(None,[]) == None
+
 
 def test_directory_create(tmpdir):
     attr = Directory(name="test", create=0o777)
