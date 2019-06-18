@@ -28,6 +28,9 @@ class Email(Str):
     def validate(self, value, path, **kwargs):
         value = super(Email, self).validate(value, path, **kwargs)
 
+        if value is None and self.default_is_none:
+            return value
+
         # TODO: any reason to get more sophisticated than this?
         if not re.match(r"[^@\s]+@[^@\s]+", value):
             raise ValidationError(self, path, value, "email address expected")
@@ -55,6 +58,10 @@ class Url(Str):
         at django's url validator
         """
         value = super(Url, self).validate(value, path, **kwargs)
+
+        if value is None and self.default_is_none:
+            return value
+
 
         try:
             result = urlparse(value)
@@ -127,6 +134,9 @@ class IpAddress(Str):
 
     def validate(self, value, path, **kwargs):
         value = super(IpAddress, self).validate(value, path, **kwargs)
+
+        if value is None and self.default_is_none:
+            return value
 
         if self.blank and value == "":
             return value

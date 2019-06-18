@@ -151,10 +151,21 @@ def test_attr_name_same_as_property_name():
     Float,
     Directory,
     File,
+    Email,
+    IpAddress,
+    Url,
     ])
 def test_default_none(AttributeClass):
     attr = AttributeClass("test", default=None)
     assert attr.validate(None,[]) == None
+
+@pytest.mark.parametrize("AttributeClass", [
+    Str,
+    Directory,
+    File,
+    ])
+def test_infer_blank(AttributeClass):
+    pass
 
 
 def test_directory_create(tmpdir):
