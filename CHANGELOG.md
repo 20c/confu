@@ -4,6 +4,7 @@
 ### Added
 ### Fixed
 - some attribute validators still have issues with a None default (#16)
+- For string attributes a blank default value should infer blank=True (#15)
 ### Changed
 
 ### Deprecated

@@ -159,13 +159,18 @@ def test_default_none(AttributeClass):
     attr = AttributeClass("test", default=None)
     assert attr.validate(None,[]) == None
 
+
 @pytest.mark.parametrize("AttributeClass", [
     Str,
     Directory,
     File,
+    Email,
+    IpAddress,
+    Url
     ])
 def test_infer_blank(AttributeClass):
-    pass
+    attr = AttributeClass("test", default="")
+    assert attr.validate("", []) == ""
 
 
 def test_directory_create(tmpdir):

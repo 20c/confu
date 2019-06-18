@@ -150,6 +150,8 @@ class Str(Attribute):
     def __init__(self, name="", **kwargs):
         super(Str, self).__init__(name=name, **kwargs)
         self.blank = kwargs.get("blank", False)
+        if not self.blank and self.default_is_blank:
+            self.blank = True
 
     @property
     def default_is_blank(self):
@@ -177,8 +179,8 @@ class File(Str):
         if value is None and self.default_is_none:
             return value
 
-#        if value == "" and self.default_is_blank:
-#            return value
+        if value == "" and self.blank:
+            return value
 
         # make sure env vars get expanded
         value = os.path.expandvars(value)

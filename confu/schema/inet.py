@@ -28,6 +28,9 @@ class Email(Str):
     def validate(self, value, path, **kwargs):
         value = super(Email, self).validate(value, path, **kwargs)
 
+        if value == "" and self.blank:
+            return value
+
         if value is None and self.default_is_none:
             return value
 
@@ -58,6 +61,9 @@ class Url(Str):
         at django's url validator
         """
         value = super(Url, self).validate(value, path, **kwargs)
+
+        if value == "" and self.blank:
+            return value
 
         if value is None and self.default_is_none:
             return value
