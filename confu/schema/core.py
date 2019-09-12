@@ -371,16 +371,25 @@ class List(Attribute):
         if not isinstance(value, list):
             raise ValidationError(self, path, value, "list expected")
 
+        errors = kwargs.get("errors", ValidationErrorProcessor())
+        warnings = kwargs.get("warnings", ValidationErrorProcessor())
+
         validated = []
         idx = 0
         for item in value:
             try:
-                validated.append(self.item.validate(item, path+[idx]))
+                if isinstance(self.item, Schema):
+                    validated.append(self.item.validate(item,
+                                                        path+[idx],
+                                                        errors=errors,
+                                                        warnings=warnings))
+                else:
+                    validated.append(self.item.validate(item, path+[idx]))
                 idx += 1
             except ValidationError as error:
-                kwargs.get("errors", ValidationErrorProcessor()).error(error)
+                errors.error(error)
             except ValidationWarning as warning:
-                kwargs.get("warnings", ValidationErrorProcessor()).warning(warning)
+                warnings.warning(warning)
         return super(List, self).validate(validated, path, **kwargs)
 
 class ValidationErrorProcessor(object):
