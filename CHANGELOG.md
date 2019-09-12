@@ -3,13 +3,15 @@
 ## [Unreleased]
 ### Added
 ### Fixed
-
-- Fixed issue where `List` holding `Schema` type items would lose items to validation warnings (#18)
-
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
+
+## [1.1.3]
+
+### Fixed
+- Fixed issue where `List` holding `Schema` type items would lose items to validation warnings (#18)
 
 ## [1.1.2]
 
