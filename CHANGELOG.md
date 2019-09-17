@@ -2,17 +2,19 @@
 
 ## [Unreleased]
 ### Added
-
-- `defaults` parameter for argparse_options and click_options (#20)
-
 ### Fixed
-
-- `List` still requires name attribute on init (#17)
-
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
+
+## [1.2.0]
+
+### Added
+- `defaults` parameter for argparse_options and click_options (#20)
+
+### Fixed
+- `List` still requires name attribute on init (#17)
 
 ## [1.1.3]
 
