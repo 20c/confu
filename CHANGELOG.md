@@ -6,6 +6,9 @@
 - `defaults` parameter for argparse_options and click_options (#20)
 
 ### Fixed
+
+- `List` still requires name attribute on init (#17)
+
 ### Changed
 ### Deprecated
 ### Removed

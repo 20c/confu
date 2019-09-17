@@ -83,6 +83,8 @@ def test_list():
     assert attribute.item == item
 
     attribute = List("test", Int())
+    attribute = List(item=Int())
+    attribute = List(name="test", item=Int())
 
 @pytest.mark.parametrize("Class", [
     Str,

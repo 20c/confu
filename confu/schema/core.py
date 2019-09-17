@@ -323,20 +323,21 @@ class List(Attribute):
     Attribute that requires a list value
     """
 
-    def __init__(self, name, item, **kwargs):
+    #TODO: item should be a required positional argument, but
+    #doing so means flipping the order with name, which breaks
+    #peoples schemas (major version fix?)
+
+    def __init__(self, name=None, item=None, **kwargs):
         """
         Initialize List attribute
-
-        **Arguments**
-
-        - `item` (Attribute): allows you to specify an arbitrary attribute
-          to use for all values in the list.
 
         **Keyword Arguments**
 
         - `name` (str): describes the attribute name, if not specified
           explicitly will be set through the schema that instantiates
           the attribute.
+        - `item` (Attribute): allows you to specify an arbitrary attribute
+          to use for all values in the list.
         - `default` (mixed): the default value of this attribute. Once a default
           value is set, schema validation will no longer raise a
           validation error if the attribute is missing from the
@@ -348,6 +349,8 @@ class List(Attribute):
         - `removed` (str): version id of when this attribute will be removed
         """
 
+        if not isinstance(item, Attribute):
+            raise TypeError("item needs to be a confu attribute")
 
         if "default" not in kwargs:
             kwargs["default"] = []
@@ -359,9 +362,6 @@ class List(Attribute):
             item.container = self
 
         super(List, self).__init__(name, **kwargs)
-
-        if not isinstance(item, Attribute):
-            raise TypeError("item needs to be a confu attribute")
 
         self.item = item
 
@@ -574,7 +574,7 @@ class Dict(Schema):
 
     For this the `item` property needs to be set.
     """
-    def __init__(self, name, item, *args, **kwargs):
+    def __init__(self, name=None, item=None, *args, **kwargs):
         super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
 
 
