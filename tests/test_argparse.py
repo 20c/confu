@@ -8,7 +8,7 @@ from tests.schemas import Schema_03
 from confu.cli import argparse_options
 
 
-def test_click():
+def test_argparse():
 
     parser = argparse.ArgumentParser()
     argparse_options(parser, Schema_03())
@@ -58,4 +58,34 @@ def test_click():
 
     with pytest.raises(SystemExit) as exc:
         parsed = parser.parse_args(["--nested.int-attr-choices", "4"])
+
+
+def test_argparse_dynamic_defaults():
+
+    defaults = {
+        "str_attr": "test dynamic",
+        "nested" : {
+            "int_attr_choices" : 2,
+            "int_attr" : 3,
+        }
+    }
+
+    parser = argparse.ArgumentParser()
+    argparse_options(parser, Schema_03(), defaults)
+
+    parsed = parser.parse_args([])
+
+    assert parsed.nested__int_attr_choices == 2
+    assert parsed.nested__int_attr == 3
+    assert parsed.list_attr_str == []
+    assert parsed.list_attr_int == []
+    assert parsed.str_attr == "test dynamic"
+    assert parsed.int_attr == 123
+    assert parsed.float_attr == 1.23
+    assert parsed.bool_attr == None
+    assert parsed.bool_attr_w_dflt == False
+    assert parsed.bool_attr_w_dflt_yes == True
+    assert getattr(parsed, "list_attr_schema", None) == None
+    assert getattr(parsed, "int_attr_disabled", None) == None
+
 

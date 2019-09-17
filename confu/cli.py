@@ -14,7 +14,19 @@ def destination_name(path, delimiter="__"):
     return "{}".format(delimiter.join(path))
 
 
-def argparse_options(parser, schema):
+def default(value, path, defaults):
+    if not defaults or not path:
+        return value
+    container = defaults
+    for key in path:
+        if key not in container:
+            return value
+        container = container[key]
+    return container
+
+
+def argparse_options(parser, schema, defaults=None):
+    print(defaults)
     def optionize(attribute, path):
         if not attribute.cli:
             return
@@ -23,7 +35,7 @@ def argparse_options(parser, schema):
             "type" : lambda x: attribute.validate(x, path),
             "help" : attribute.help,
             "dest" : destination_name(path),
-            "default" : attribute.default
+            "default" : default(attribute.default, path, defaults),
         }
 
         name = option_name(path, delimiter=".")
@@ -31,17 +43,23 @@ def argparse_options(parser, schema):
         finalize = getattr(attribute, "finalize_argparse", None)
         if finalize:
             name = finalize(kwargs, name)
+
+        if kwargs["default"] is not None and attribute.cli_show_default:
+            kwargs["help"] = "{} ({})".format(kwargs["help"], kwargs["default"])
+
         parser.add_argument(name, **kwargs)
 
     schema.walk(optionize)
 
 
 class click_options(object):
-    def __init__(self, schema):
+    def __init__(self, schema, defaults=None):
         self.schema = schema
+        self.defaults = defaults
 
     def __call__(self, fn):
         container = {"fn":fn}
+        defaults = self.defaults
 
         def optionize(attribute, path):
             if not attribute.cli:
@@ -54,7 +72,7 @@ class click_options(object):
             kwargs = {
                 "type" : click.types.FuncParamType(validate_and_convert),
                 "help" : attribute.help,
-                "default" : attribute.default
+                "default" : default(attribute.default, path, defaults),
             }
 
             name = option_name(path)
@@ -62,6 +80,9 @@ class click_options(object):
             finalize = getattr(attribute, "finalize_click", None)
             if finalize:
                 name = finalize(kwargs, name)
+
+            if kwargs["default"] is not None and attribute.cli_show_default:
+                kwargs["help"] = "{} ({})".format(kwargs["help"], kwargs["default"])
 
             container["fn"] = click.option(name, destination_name(path), **kwargs).__call__(fn)
         self.schema.walk(optionize)

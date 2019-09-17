@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+- `defaults` parameter for argparse_options and click_options (#20)
+
 ### Fixed
 ### Changed
 ### Deprecated

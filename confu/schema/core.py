@@ -71,7 +71,11 @@ class Attribute(object):
         # help text describing the attribute
         self.help =  kwargs.get("help","")
 
+        # include this attribute when generating cli attributes
         self.cli_toggle = kwargs.get("cli", True)
+
+        # show default value in cli help text
+        self.cli_show_default = kwargs.get("cli_show_default", True)
 
         self.container = None
 
@@ -251,6 +255,10 @@ class Bool(Attribute):
     true_values = ["true","yes","1"]
     false_values = ["false","no","0"]
 
+    def __init__(self, name="", **kwargs):
+        super(Bool, self).__init__(name=name, **kwargs)
+        self.cli_show_default = False
+
     def validate(self, value, path, **kwargs):
         if isinstance(value, str):
             if value.lower() in self.true_values:
@@ -268,10 +276,12 @@ class Bool(Attribute):
 
     def finalize_argparse(self, param, name):
         del param["type"]
-        if not self.default:
+        if not param["default"]:
             param.update(action="store_true")
         else:
             param.update(action="store_false")
+            if param.get("help"):
+                param["help"] = "DISABLE {}".format(param["help"])
             name = "--no-{}".format(name.strip("-"))
         return name
 

@@ -63,3 +63,39 @@ def test_click():
     result = runner.invoke(command, ["--nested-int-attr-choices", 4])
     assert result.exception
 
+
+def test_click_dynamic_defaults():
+    defaults = {
+        "str_attr": "test dynamic",
+        "nested" : {
+            "int_attr_choices" : 2,
+            "int_attr" : 3,
+        }
+    }
+
+
+    @click.command()
+    @click_options(Schema_03(), defaults=defaults)
+    def command(**kwargs):
+        print(json.dumps(kwargs))
+
+    runner = CliRunner()
+    output = runner.invoke(command, []).output
+    print(output)
+    result = json.loads(output)
+
+    print(result)
+    assert result["nested__int_attr_choices"] == 2
+    assert result["nested__int_attr"] == 3
+    assert result["list_attr_str"] == []
+    assert result["list_attr_int"] == []
+    assert result["str_attr"] == "test dynamic"
+    assert result["int_attr"] == 123
+    assert result["float_attr"] == 1.23
+    assert result["bool_attr"] == None
+    assert result["bool_attr_w_dflt"] == False
+    assert result["bool_attr_w_dflt_yes"] == True
+    assert "list_attr_schema" not in result
+    assert "int_attr_disabled" not in result
+
+
