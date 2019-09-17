@@ -26,7 +26,6 @@ def default(value, path, defaults):
 
 
 def argparse_options(parser, schema, defaults=None):
-    print(defaults)
     def optionize(attribute, path):
         if not attribute.cli:
             return
