@@ -38,7 +38,7 @@ class Attribute(object):
         - `choices` (list): if specified on values in this list may be set
           for this attribute
         - `help` (str): help description
-        - `cli` (bool=True): enable CLI support for this attribute
+        - `cli` (bool=True|function): enable CLI support for this attribute
         - `deprecated` (str): version id of when this attribute will be deprecated
         - `added` (str): version id of when this attribute was added to the schema
         - `removed` (str): version id of when this attribute will be removed
@@ -115,7 +115,16 @@ class Attribute(object):
 
     @property
     def cli(self):
-        return getattr(self, "cli_toggle", True)
+        """
+        Returns whether or not the attribute is available
+        in as a cli argument  when confu is used to generated
+        argparse or click arguments
+        """
+
+        toggle = getattr(self, "cli_toggle", True)
+        if callable(toggle):
+            return toggle(self)
+        return toggle
 
     def validate(self, value, path, **kwargs):
         """

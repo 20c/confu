@@ -40,6 +40,9 @@ class Schema_03(Schema):
     list_attr_schema = List(name="list_attr_schema", item=NestedSchema_01())
     nested = NestedSchema_02("nested")
     int_attr_disabled = Int("int_attr_disabled", cli=False)
+    int_attr_fntgl_on = Int(cli=lambda x: True, default=1)
+    int_attr_fntgl_off = Int(cli=lambda x: False, default=1)
+
 
 class Schema_04(Schema):
     int_attr = Int("int_attr", default=123)

@@ -25,8 +25,14 @@ def test_argparse():
     assert parsed.bool_attr == None
     assert parsed.bool_attr_w_dflt == False
     assert parsed.bool_attr_w_dflt_yes == True
+    assert parsed.int_attr_fntgl_on == 1
     assert getattr(parsed, "list_attr_schema", None) == None
-    assert getattr(parsed, "int_attr_disabled", None) == None
+
+    with pytest.raises(AttributeError):
+        assert parsed.int_attr_disabled == 1
+
+    with pytest.raises(AttributeError):
+        assert parsed.int_attr_fntgl_off == 1
 
 
     parsed = parser.parse_args(["--nested.int-attr-choices","2"])

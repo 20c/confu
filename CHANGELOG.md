@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+- `Attribute`: `cli` argument can now be a function (#21)
+
 ### Fixed
 ### Changed
 ### Deprecated

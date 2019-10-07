@@ -30,8 +30,10 @@ def test_click():
     assert result["bool_attr"] == None
     assert result["bool_attr_w_dflt"] == False
     assert result["bool_attr_w_dflt_yes"] == True
+    assert result["int_attr_fntgl_on"] == 1
     assert "list_attr_schema" not in result
     assert "int_attr_disabled" not in result
+    assert "int_attr_fntgl_off" not in result
 
     result = json.loads(runner.invoke(command, ["--nested--int-attr-choices","2"]).output)
     assert result["nested__int_attr_choices"] == 2
