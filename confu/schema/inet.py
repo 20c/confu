@@ -1,10 +1,10 @@
 import re
 
 try:
-    #py2
+    # py2
     from urlparse import urlparse
 except ImportError:
-    #py3
+    # py3
     from urllib.parse import urlparse
 
 try:
@@ -68,7 +68,6 @@ class Url(Str):
         if value is None and self.default_is_none:
             return value
 
-
         try:
             result = urlparse(value)
         except:
@@ -81,7 +80,9 @@ class Url(Str):
             raise ValidationError(self, path, value, "no url netloc specified")
 
         if self.schemes and result.scheme not in self.schemes:
-            raise ValidationError(self, path, value, "invalid url scheme: {}".format(result.scheme))
+            raise ValidationError(
+                self, path, value, "invalid url scheme: {}".format(result.scheme)
+            )
 
         return value
 
@@ -116,8 +117,6 @@ class IpAddress(Str):
         - `added` (str): version id of when this attribute was added to the schema
         - `removed` (str): version id of when this attribute will be removed
         """
-
-
 
         super(IpAddress, self).__init__(name=name, **kwargs)
         if not ipaddress:
@@ -156,4 +155,4 @@ class IpAddress(Str):
             raise ValidationError(self, path, value, "invalid ip (v6)")
         elif self.protocol is None and not value_v4 and not value_v6:
             raise ValidationError(self, path, value, "invalid ip (v4 or v6)")
-        return (value_v4 or value_v6)
+        return value_v4 or value_v6

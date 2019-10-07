@@ -1,4 +1,4 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 import collections
 import copy
@@ -41,7 +41,9 @@ class Config(collections.Mapping):
 
         data = copy.deepcopy(self._base_data)
         confu.schema.apply_defaults(self._schema, data)
-        self.valid, self.errors, self.warnings = confu.schema.validate(self.schema, data)
+        self.valid, self.errors, self.warnings = confu.schema.validate(
+            self.schema, data
+        )
         self._data = data
         return self._data
 

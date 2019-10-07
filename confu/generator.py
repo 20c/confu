@@ -1,7 +1,4 @@
-from confu.schema import (
-    Schema,
-    Attribute
-)
+from confu.schema import Schema, Attribute
 
 
 class ConfigGenerator(object):

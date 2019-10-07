@@ -12,6 +12,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
+
 class Attribute(object):
 
     """
@@ -66,10 +67,10 @@ class Attribute(object):
 
         # list of choices for value, if not empty values will
         # be validated against the choices in this list.
-        self.choices_handler = kwargs.get("choices",[])
+        self.choices_handler = kwargs.get("choices", [])
 
         # help text describing the attribute
-        self.help =  kwargs.get("help","")
+        self.help = kwargs.get("help", "")
 
         # include this attribute when generating cli attributes
         self.cli_toggle = kwargs.get("cli", True)
@@ -85,7 +86,7 @@ class Attribute(object):
 
     @property
     def default_is_none(self):
-        return (self.has_default and self.default is None)
+        return self.has_default and self.default is None
 
     @property
     def default(self):
@@ -133,13 +134,14 @@ class Attribute(object):
         """
 
         if not self.container and not self.name:
-            raise ValidationError(self, path, value, "attribute at top level defined without a name")
+            raise ValidationError(
+                self, path, value, "attribute at top level defined without a name"
+            )
 
         if self.choices_handler:
             if value not in self.choices:
                 raise ValidationError(self, path, value, "invalid choice")
         return value
-
 
 
 class Str(Attribute):
@@ -159,8 +161,7 @@ class Str(Attribute):
 
     @property
     def default_is_blank(self):
-        return (self.default == "")
-
+        return self.default == ""
 
     def validate(self, value, path, **kwargs):
         if not isinstance(value, six.string_types) and not self.default_is_none:
@@ -189,7 +190,7 @@ class File(Str):
         # make sure env vars get expanded
         value = os.path.expandvars(value)
 
-        valid = (os.path.exists(value) and not os.path.isdir(value))
+        valid = os.path.exists(value) and not os.path.isdir(value)
         if not valid:
             raise ValidationError(self, path, value, "file does not exist")
 
@@ -218,9 +219,12 @@ class Directory(Str):
         try:
             os.makedirs(value, self.create)
         except Exception as err:
-            raise ValidationError(self, config_path, value,
-                                  "tried to create directory  but failed with error" \
-                                  ": {}".format(err))
+            raise ValidationError(
+                self,
+                config_path,
+                value,
+                "tried to create directory  but failed with error" ": {}".format(err),
+            )
 
     def validate(self, value, path, **kwargs):
         value = super(Directory, self).validate(value, path, **kwargs)
@@ -240,9 +244,11 @@ class Directory(Str):
         if self.create is not None and not os.path.exists(value):
             self.makedir(value, path)
 
-        valid = (os.path.exists(value) and os.path.isdir(value))
+        valid = os.path.exists(value) and os.path.isdir(value)
         if not valid:
-            raise ValidationError(self, path, value, "valid path to directory expected: {}".format(value))
+            raise ValidationError(
+                self, path, value, "valid path to directory expected: {}".format(value)
+            )
 
         return value
 
@@ -252,8 +258,8 @@ class Bool(Attribute):
     Attribute that requires a boolean value
     """
 
-    true_values = ["true","yes","1"]
-    false_values = ["false","no","0"]
+    true_values = ["true", "yes", "1"]
+    false_values = ["false", "no", "0"]
 
     def __init__(self, name="", **kwargs):
         super(Bool, self).__init__(name=name, **kwargs)
@@ -267,12 +273,11 @@ class Bool(Attribute):
                 value = False
             else:
                 raise ValidationError(self, path, value, "boolean expected")
-        return super(Bool,self).validate(bool(value), path, **kwargs)
+        return super(Bool, self).validate(bool(value), path, **kwargs)
 
     def finalize_click(self, param, name):
         del param["type"]
         return "{}/--no-{}".format(name, name.strip("-"))
-
 
     def finalize_argparse(self, param, name):
         del param["type"]
@@ -284,6 +289,7 @@ class Bool(Attribute):
                 param["help"] = "DISABLE {}".format(param["help"])
             name = "--no-{}".format(name.strip("-"))
         return name
+
 
 class Int(Attribute):
 
@@ -323,9 +329,9 @@ class List(Attribute):
     Attribute that requires a list value
     """
 
-    #TODO: item should be a required positional argument, but
-    #doing so means flipping the order with name, which breaks
-    #peoples schemas (major version fix?)
+    # TODO: item should be a required positional argument, but
+    # doing so means flipping the order with name, which breaks
+    # peoples schemas (major version fix?)
 
     def __init__(self, name=None, item=None, **kwargs):
         """
@@ -365,13 +371,11 @@ class List(Attribute):
 
         self.item = item
 
-
     @property
     def cli(self):
         if isinstance(self.item, Schema):
             return False
         return super(List, self).cli
-
 
     def validate(self, value, path, **kwargs):
 
@@ -389,12 +393,13 @@ class List(Attribute):
         for item in value:
             try:
                 if isinstance(self.item, Schema):
-                    validated.append(self.item.validate(item,
-                                                        path+[idx],
-                                                        errors=errors,
-                                                        warnings=warnings))
+                    validated.append(
+                        self.item.validate(
+                            item, path + [idx], errors=errors, warnings=warnings
+                        )
+                    )
                 else:
-                    validated.append(self.item.validate(item, path+[idx]))
+                    validated.append(self.item.validate(item, path + [idx]))
                 idx += 1
             except ValidationError as error:
                 errors.error(error)
@@ -402,34 +407,45 @@ class List(Attribute):
                 warnings.warning(warning)
         return super(List, self).validate(validated, path, **kwargs)
 
+
 class ValidationErrorProcessor(object):
     """
     This the default validation error processor, it will raise an exception
     when a warning or error is encountered
     """
+
     def error(self, error):
         raise error
+
     def warning(self, warning):
         raise warning
+
 
 class CollectValidationExceptions(ValidationErrorProcessor):
     """
     This validation error processor will store all errors and warnings it encounters
     and NOT raise any exceptions
     """
+
     def __init__(self):
         self.exceptions = []
+
     def __iter__(self):
         for exc in self.exceptions:
             yield exc
+
     def __len__(self):
         return len(self.exceptions)
+
     def __getitem__(self, key):
         return self.exceptions[key]
+
     def error(self, error):
         self.exceptions.append(error)
+
     def warning(self, warning):
         self.exceptions.append(warning)
+
 
 class Schema(Attribute):
 
@@ -488,31 +504,29 @@ class Schema(Attribute):
 
         self.item = kwargs.get("item")
         if self.item and self._attr:
-            raise ValueError("You cannot specify an `item` attribute on a " \
-                             "Schema instance that has attributes defined within")
+            raise ValueError(
+                "You cannot specify an `item` attribute on a "
+                "Schema instance that has attributes defined within"
+            )
         elif self.item:
             self.item.container = self
 
         super(Schema, self).__init__(*args, **kwargs)
-
-
 
     def attributes(self):
         # redundant?
         for name, attr in self._attr.items():
             yield (name, attr)
 
-
     def walk(self, callback, path=None):
         if not path:
             path = []
         for name, attribute in self.attributes():
             if isinstance(attribute, Schema):
-                callback(attribute, path+[name])
-                attribute.walk(callback, path=path+[name])
+                callback(attribute, path + [name])
+                attribute.walk(callback, path=path + [name])
             else:
-                callback(attribute, path+[name])
-
+                callback(attribute, path + [name])
 
     def validate(self, config, path=None, errors=None, warnings=None):
 
@@ -546,16 +560,22 @@ class Schema(Attribute):
             config = config_parser_dict(config)
 
         if not isinstance(config, dict):
-            return errors.error(ValidationError(path[-1], path, config, "dictionary expected"))
+            return errors.error(
+                ValidationError(path[-1], path, config, "dictionary expected")
+            )
 
         for key, value in config.items():
             try:
                 attribute = self._attr.get(key, self.item)
 
                 if attribute is None:
-                    raise ValidationWarning(key, path, value, "unknown attribute '{}'".format(key))
+                    raise ValidationWarning(
+                        key, path, value, "unknown attribute '{}'".format(key)
+                    )
                 else:
-                    config[key] = attribute.validate(value, path+[key], errors=errors, warnings=warnings)
+                    config[key] = attribute.validate(
+                        value, path + [key], errors=errors, warnings=warnings
+                    )
             except ValidationError as error:
                 errors.error(error)
             except ValidationWarning as warning:
@@ -563,7 +583,7 @@ class Schema(Attribute):
 
         for name, attribute in self.attributes():
             if name not in config and not attribute.has_default:
-                errors.error(ValidationError(attribute, path+[name], None, "missing"))
+                errors.error(ValidationError(attribute, path + [name], None, "missing"))
 
         return config
 
@@ -574,6 +594,7 @@ class Dict(Schema):
 
     For this the `item` property needs to be set.
     """
+
     def __init__(self, name=None, item=None, *args, **kwargs):
         super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
 
@@ -596,8 +617,9 @@ class ProxySchema(Schema):
         """
         call validate on the schema returned by self.schema
         """
-        return self.schema(config).validate(config, path=path, errors=errors, warnings=warnings)
-
+        return self.schema(config).validate(
+            config, path=path, errors=errors, warnings=warnings
+        )
 
 
 def validate(schema, config, raise_errors=False, log=None, **kwargs):
@@ -636,7 +658,7 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
         num_errors = len(errors)
         num_warnings = len(warnings)
 
-        success = (num_errors == 0)
+        success = num_errors == 0
 
         if log and callable(log):
             for error in errors:
@@ -647,7 +669,6 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
                 log("{} errors, {} warnings in config".format(num_errors, num_warnings))
 
         return (success, errors, warnings)
-
 
 
 def apply_default(config, attribute, path):
@@ -697,9 +718,13 @@ def apply_default(config, attribute, path):
         # attribute is a Schema
 
         if isinstance(attribute, ProxySchema):
-            attribute  = attribute.schema(_config)
+            attribute = attribute.schema(_config)
 
-        if _config and isinstance(attribute.item, List) and isinstance(attribute.item.item, Schema):
+        if (
+            _config
+            and isinstance(attribute.item, List)
+            and isinstance(attribute.item.item, Schema)
+        ):
             # schema with arbitrary keys
             # holding lists holding schemas
             # TODO: find a cleaner way to handle this case
@@ -737,16 +762,17 @@ def apply_defaults(schema, config, debug=False):
 
     if isinstance(schema.item, Schema):
         # schema has arbitrary keys holding another schema
-        for k,v in config.items():
+        for k, v in config.items():
             apply_defaults(schema.item, v, debug=debug)
         return
     elif isinstance(schema.item, List):
         # schema has arbitrary keys holding a list
-        for k,v in config.items():
+        for k, v in config.items():
             apply_default(config, schema.item, [k])
         return
 
     # normal schema, walk it's attributes and apply defaults
     def callback(attribute, path):
         apply_default(config, attribute, path)
+
     schema.walk(callback)
