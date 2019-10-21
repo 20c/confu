@@ -12,4 +12,4 @@ def test_config_parser_dict():
     config = configparser.ConfigParser()
     config.read(path)
 
-    assert config_parser_dict(config) == {"test":{"a":"test"}}
+    assert config_parser_dict(config) == {"test": {"a": "test"}}

@@ -34,23 +34,22 @@ def test_argparse():
     with pytest.raises(AttributeError):
         assert parsed.int_attr_fntgl_off == 1
 
-
-    parsed = parser.parse_args(["--nested.int-attr-choices","2"])
+    parsed = parser.parse_args(["--nested.int-attr-choices", "2"])
     assert parsed.nested__int_attr_choices == 2
 
-    parsed = parser.parse_args(["--nested.int-attr","3"])
+    parsed = parser.parse_args(["--nested.int-attr", "3"])
     assert parsed.nested__int_attr == 3
 
-    parsed = parser.parse_args(["--str-attr","donkey"])
+    parsed = parser.parse_args(["--str-attr", "donkey"])
     assert parsed.str_attr == "donkey"
 
-    parsed = parser.parse_args(["--list-attr-int","1,2,3"])
-    assert parsed.list_attr_int == [1,2,3]
+    parsed = parser.parse_args(["--list-attr-int", "1,2,3"])
+    assert parsed.list_attr_int == [1, 2, 3]
 
-    parsed = parser.parse_args(["--list-attr-str","1,2,3"])
-    assert parsed.list_attr_str == ["1","2","3"]
+    parsed = parser.parse_args(["--list-attr-str", "1,2,3"])
+    assert parsed.list_attr_str == ["1", "2", "3"]
 
-    parsed = parser.parse_args(["--int-attr","999"])
+    parsed = parser.parse_args(["--int-attr", "999"])
     assert parsed.int_attr == 999
 
     parsed = parser.parse_args(["--bool-attr"])
@@ -70,10 +69,7 @@ def test_argparse_dynamic_defaults():
 
     defaults = {
         "str_attr": "test dynamic",
-        "nested" : {
-            "int_attr_choices" : 2,
-            "int_attr" : 3,
-        }
+        "nested": {"int_attr_choices": 2, "int_attr": 3},
     }
 
     parser = argparse.ArgumentParser()
@@ -93,5 +89,3 @@ def test_argparse_dynamic_defaults():
     assert parsed.bool_attr_w_dflt_yes == True
     assert getattr(parsed, "list_attr_schema", None) == None
     assert getattr(parsed, "int_attr_disabled", None) == None
-
-

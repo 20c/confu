@@ -35,22 +35,24 @@ def test_click():
     assert "int_attr_disabled" not in result
     assert "int_attr_fntgl_off" not in result
 
-    result = json.loads(runner.invoke(command, ["--nested--int-attr-choices","2"]).output)
+    result = json.loads(
+        runner.invoke(command, ["--nested--int-attr-choices", "2"]).output
+    )
     assert result["nested__int_attr_choices"] == 2
 
-    result = json.loads(runner.invoke(command, ["--nested--int-attr","3"]).output)
+    result = json.loads(runner.invoke(command, ["--nested--int-attr", "3"]).output)
     assert result["nested__int_attr"] == 3
 
-    result = json.loads(runner.invoke(command, ["--str-attr","donkey"]).output)
+    result = json.loads(runner.invoke(command, ["--str-attr", "donkey"]).output)
     assert result["str_attr"] == "donkey"
 
-    result = json.loads(runner.invoke(command, ["--list-attr-int","1,2,3"]).output)
-    assert result["list_attr_int"] == [1,2,3]
+    result = json.loads(runner.invoke(command, ["--list-attr-int", "1,2,3"]).output)
+    assert result["list_attr_int"] == [1, 2, 3]
 
-    result = json.loads(runner.invoke(command, ["--list-attr-str","1,2,3"]).output)
-    assert result["list_attr_str"] == ["1","2","3"]
+    result = json.loads(runner.invoke(command, ["--list-attr-str", "1,2,3"]).output)
+    assert result["list_attr_str"] == ["1", "2", "3"]
 
-    result = json.loads(runner.invoke(command, ["--int-attr","999"]).output)
+    result = json.loads(runner.invoke(command, ["--int-attr", "999"]).output)
     assert result["int_attr"] == 999
 
     result = json.loads(runner.invoke(command, ["--bool-attr"]).output)
@@ -69,12 +71,8 @@ def test_click():
 def test_click_dynamic_defaults():
     defaults = {
         "str_attr": "test dynamic",
-        "nested" : {
-            "int_attr_choices" : 2,
-            "int_attr" : 3,
-        }
+        "nested": {"int_attr_choices": 2, "int_attr": 3},
     }
-
 
     @click.command()
     @click_options(Schema_03(), defaults=defaults)
@@ -99,5 +97,3 @@ def test_click_dynamic_defaults():
     assert result["bool_attr_w_dflt_yes"] == True
     assert "list_attr_schema" not in result
     assert "int_attr_disabled" not in result
-
-
