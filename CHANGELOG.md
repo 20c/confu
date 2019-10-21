@@ -2,17 +2,21 @@
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+## [1.3.0]
+
+### Added
 
 - `Attribute`: `cli` argument can now be a function (#21)
 
 ### Fixed
 
 - fix #23: better error handling in apply_defaults
-
-### Changed
-### Deprecated
-### Removed
-### Security
 
 ## [1.2.0]
 
