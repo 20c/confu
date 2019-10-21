@@ -4,7 +4,7 @@ import collections
 
 from inspect import isclass
 
-from confu.exceptions import ValidationError, ValidationWarning
+from confu.exceptions import ValidationError, ValidationWarning, ApplyDefaultError
 from confu.util import config_parser_dict
 
 try:
@@ -782,6 +782,9 @@ def apply_defaults(schema, config, debug=False):
 
     # normal schema, walk it's attributes and apply defaults
     def callback(attribute, path):
-        apply_default(config, attribute, path)
+        try:
+            apply_default(config, attribute, path)
+        except Exception as exc:
+            raise ApplyDefaultError(attribute, path, None, exc)
 
     schema.walk(callback)

@@ -6,6 +6,9 @@
 - `Attribute`: `cli` argument can now be a function (#21)
 
 ### Fixed
+
+- fix #23: better error handling in apply_defaults
+
 ### Changed
 ### Deprecated
 ### Removed

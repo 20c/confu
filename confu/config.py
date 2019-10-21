@@ -40,10 +40,19 @@ class Config(collections.Mapping):
             return self._data
 
         data = copy.deepcopy(self._base_data)
-        confu.schema.apply_defaults(self._schema, data)
+
+        try:
+            confu.schema.apply_defaults(self._schema, data)
+        except confu.exceptions.ApplyDefaultError as exc:
+            self.apply_default_error = exc
+
         self.valid, self.errors, self.warnings = confu.schema.validate(
             self.schema, data
         )
+
+        if hasattr(self, "apply_default_error"):
+            self.errors.exceptions.insert(0, self.apply_default_error)
+
         self._data = data
         return self._data
 

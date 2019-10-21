@@ -39,3 +39,8 @@ class ValidationWarning(ValidationErrorBase):
 
 class ValidationError(ValidationErrorBase):
     pass
+
+
+class ApplyDefaultError(ValidationErrorBase):
+    def __str__(self):
+        return self.pretty

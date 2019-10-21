@@ -2,11 +2,12 @@ import os
 import pytest
 import json
 
-from confu.schema import (apply_default, apply_defaults)
+from confu.schema import (apply_default, apply_defaults, ApplyDefaultError)
 
 from tests.schemas import (Schema_01, Schema_04, Schema_12, Schema_10, Schema_11,
                            Schema_13,
                            )
+
 
 def test_schema_attributes():
     schema = Schema_01()
@@ -68,3 +69,9 @@ def test_apply_defaults(SchemaClass, config, expected):
     apply_defaults(SchemaClass(), config)
     print(json.dumps(config, indent=2))
     assert expected == config
+
+
+def test_apply_defaults_error():
+    with pytest.raises(ApplyDefaultError):
+        apply_defaults(Schema_04(), {"nested":123})
+
