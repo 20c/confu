@@ -2,18 +2,22 @@
 
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+## [1.4.0]
+
+### Added
 
 - `argparse_options`: `attributes` keyword argument added (#24)
 - `click_options`: `attributes` keyword argument added (#24)
 
-### Fixed
 ### Changed
 
 - use pymdgen for automatic api docs (#22)
-
-### Deprecated
-### Removed
-### Security
 
 ## [1.3.0]
 
