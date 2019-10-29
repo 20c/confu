@@ -3,12 +3,22 @@ site_url: https://github.com/20c/confu
 
 theme: readthedocs
 
-pages:
+nav:
   - Home: index.md
   - Quickstart: quickstart.md
   - Attributes: attributes.md
   - Examples: examples.md
   - CLI: cli.md
+  - API:
+    - confu.config: api/confu.config.md
+    - confu.cli: api/confu.cli.md
+    - confu.exceptions: api/confu.exceptions.md
+    - confu.generator: api/confu.generator.md
+    - confu.schema.core: api/confu.schema.core.md
+    - confu.schema.inet: api/confu.schema.inet.md
+    - confu.util: api/confu.util.md
 
 markdown_extensions:
   - markdown_include.include
+  - admonition
+  - pymdgen

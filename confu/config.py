@@ -1,3 +1,6 @@
+"""
+config management
+"""
 from __future__ import absolute_import, division, print_function
 
 import collections
@@ -13,9 +16,14 @@ class Config(collections.Mapping):
 
     def __init__(self, schema, data=None, meta=None):
         """
-        `schema` confu.schema object
-        `data` dict to set initial data
-        `meta` any addition metadata to pass along with config
+        **Arguments**
+
+        - schema (`confu.schema`): schema object
+
+        **Keyword Arguments**
+
+        - data (`dict`): dict to set initial data
+        - meta (`dict`): any additional metadata to pass along with config
         """
         self._base_data = None
         self._data = None

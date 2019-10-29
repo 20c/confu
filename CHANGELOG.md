@@ -8,6 +8,9 @@
 
 ### Fixed
 ### Changed
+
+- use pymdgen for automatic api docs (#22)
+
 ### Deprecated
 ### Removed
 ### Security

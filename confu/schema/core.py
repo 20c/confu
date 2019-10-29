@@ -1,3 +1,9 @@
+"""
+Fundamental schema attributes
+
+These can be imported directly from `confu.schema`
+"""
+
 import os
 import six
 import collections
@@ -28,20 +34,20 @@ class Attribute(object):
 
         **Keyword Arguments**
 
-        - `name` (str): describes the attribute name, if not specified
+        - name (`str`): describes the attribute name, if not specified
           explicitly will be set through the schema that instantiates
           the attribute.
-        - `default` (mixed): the default value of this attribute. Once a default
+        - default (`mixed`): the default value of this attribute. Once a default
           value is set, schema validation will no longer raise a
           validation error if the attribute is missing from the
           configuration.
-        - `choices` (list): if specified on values in this list may be set
+        - choices (`list`): if specified on values in this list may be set
           for this attribute
-        - `help` (str): help description
-        - `cli` (bool=True|function): enable CLI support for this attribute
-        - `deprecated` (str): version id of when this attribute will be deprecated
-        - `added` (str): version id of when this attribute was added to the schema
-        - `removed` (str): version id of when this attribute will be removed
+        - help (`str`): help description
+        - cli (`bool=True|function`): enable CLI support for this attribute
+        - deprecated (`str`): version id of when this attribute will be deprecated
+        - added (`str`): version id of when this attribute was added to the schema
+        - removed (`str`): version id of when this attribute will be removed
         """
 
         # attribute name in the schema
@@ -135,8 +141,8 @@ class Attribute(object):
 
         **Arguments**
 
-        - `value` (mixed): the value to validate
-        - `path` (list): current path in the config schema, this is mostly
+        - value (`mixed`): the value to validate
+        - path (`list`): current path in the config schema, this is mostly
           used to identify where an error occured when validating
           against config data, you can pass an empty list to it when
           calling this manually
@@ -348,20 +354,20 @@ class List(Attribute):
 
         **Keyword Arguments**
 
-        - `name` (str): describes the attribute name, if not specified
+        - name (`str`): describes the attribute name, if not specified
           explicitly will be set through the schema that instantiates
           the attribute.
-        - `item` (Attribute): allows you to specify an arbitrary attribute
+        - item (`Attribute`): allows you to specify an arbitrary attribute
           to use for all values in the list.
-        - `default` (mixed): the default value of this attribute. Once a default
+        - default (`mixed`): the default value of this attribute. Once a default
           value is set, schema validation will no longer raise a
           validation error if the attribute is missing from the
           configuration.
-        - `help` (str): help description
-        - `cli` (bool=True): enable CLI support for this attribute
-        - `deprecated` (str): version id of when this attribute will be deprecated
-        - `added` (str): version id of when this attribute was added to the schema
-        - `removed` (str): version id of when this attribute will be removed
+        - help (`str`): help description
+        - cli (`bool=True`): enable CLI support for this attribute
+        - deprecated (`str`): version id of when this attribute will be deprecated
+        - added (`str`): version id of when this attribute was added to the schema
+        - removed (`str`): version id of when this attribute will be removed
         """
 
         if not isinstance(item, Attribute):
@@ -480,21 +486,21 @@ class Schema(Attribute):
 
         **Keyword Arguments**
 
-        - `item` (Attribute): allows you to specify an arbitrary attribute
+        - item (`Attribute`): allows you to specify an arbitrary attribute
           to use for all values in the schema. This is only allowed if your
           schema does **NOT** explicitly set any attributes in it's definition
-        - `name` (str): describes the attribute name, if not specified
+        - name (`str`): describes the attribute name, if not specified
           explicitly will be set through the schema that instantiates
           the attribute.
-        - `default` (mixed): the default value of this attribute. Once a default
+        - default (`mixed`): the default value of this attribute. Once a default
           value is set, schema validation will no longer raise a
           validation error if the attribute is missing from the
           configuration.
-        - `help` (str): help description
-        - `cli` (bool=True): enable CLI support for this attribute
-        - `deprecated` (str): version id of when this attribute will be deprecated
-        - `added` (str): version id of when this attribute was added to the schema
-        - `removed` (str): version id of when this attribute will be removed
+        - help (`str`): help description
+        - cli (`bool=True`): enable CLI support for this attribute
+        - deprecated (`str`): version id of when this attribute will be deprecated
+        - added (`str`): version id of when this attribute was added to the schema
+        - removed (`str`): version id of when this attribute will be removed
         """
 
         # collect attributes
@@ -544,15 +550,15 @@ class Schema(Attribute):
 
         **Attributes**
 
-        - `config` (dict): config to validate
+        - config (`dict`): config to validate
 
         **Keyword Attributes**
 
-        - `path` (list): current path in the config data, this can be
+        - path (`list`): current path in the config data, this can be
           ignored on the initial call and will be set automatically
           on any subsequent calls (nested schemas)
-        - `errors` (ValidationErrorProcessor)
-        - `warnigns` (ValidationErrorProcessor)
+        - errors (`ValidationErrorProcessor`)
+        - warnigns (`ValidationErrorProcessor`)
         """
 
         if path is None:
@@ -637,12 +643,12 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
 
     **Arguments**
 
-    - `schema` (Schema): schema instance
-    - `config` (dict|munge.Config)
+    - schema (`Schema`): schema instance
+    - config (`dict|munge.Config`)
 
     **Keyword Arguments**
 
-    - `raise_errors` (bool=False): if `True` will raise a ValidationError exception
+    - raise_errors (`bool=False`): if `True` will raise a ValidationError exception
       if it encounters validation errors
 
       If `False` it will instead collect errors and warnings and return a tuple:
@@ -651,7 +657,7 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
       success(bool), errors(CollectValidationExceptions), warnings(CollectValidationException)
       ```
 
-    - `log` (callable): function to use to log errors, will be passed
+    - log (`callable`): function to use to log errors, will be passed
       a str message
     - any additional kwargs will be passed on to `Schema.validate`
     """
@@ -686,9 +692,9 @@ def apply_default(config, attribute, path):
 
     **Arguments**
 
-    - `config` (dict): the config dictonary
-    - `attribute` (Attribute): attribute instance
-    - `path` (list(str)): full path of the attribute in the schema
+    - config (`dict`): the config dictonary
+    - attribute (`Attribute`): attribute instance
+    - path (`list(str)`): full path of the attribute in the schema
     """
 
     _config = config
@@ -760,8 +766,8 @@ def apply_defaults(schema, config, debug=False):
 
     **Arguments**
 
-    - `schema` (Schema): schema instance
-    - `config` (dict): the config dictonary
+    - schema (`Schema`): schema instance
+    - config (`dict`): the config dictonary
     """
 
     if isinstance(schema, ProxySchema):

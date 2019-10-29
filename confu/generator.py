@@ -1,11 +1,31 @@
+"""
+Schema to data generators
+"""
 from confu.schema import Schema, Attribute
 
 
 class ConfigGenerator(object):
+    """
+    Generate config from schema using default values
+    """
+
     def __init__(self):
         pass
 
     def generate(self, schema):
+
+        """
+        Generate confug from schema using default values
+
+        **Arguments**
+
+        - schema (`Schema|Attribute`): confu schema object
+
+        **Returns**
+
+        generated config `dict`
+        """
+
         if isinstance(schema, Schema):
             config = {}
             for name, attribute in schema.attributes():
@@ -21,6 +41,19 @@ class ConfigGenerator(object):
 def generate(schema, generator=None):
     """
     generate config shortcut function
+
+    **Arguments**
+
+    - schema (`Schema`): confu schema object
+
+    **Keyword Arguments**
+
+    - generator (`ConfigGenerator`): generator object, if non is supplied
+    will instantiate a ConfigGenerator instance itself
+
+    **Returns**
+
+    generated config (`dict`)
     """
     if not generator:
         generator = ConfigGenerator()

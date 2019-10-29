@@ -1,3 +1,8 @@
+"""
+functions that allow you to generate CLI parameters from a confu schema for
+argparse or click
+"""
+
 try:
     import click
 except ImportError:
@@ -5,12 +10,35 @@ except ImportError:
 
 
 def option_name(path, delimiter="--"):
-    """returns a cli option name from attribute path"""
+    """
+    Returns a cli option name from attribute path
+
+    **Arguments**
+
+    - path (`list`): attribute path
+    - delimiter (`str`): delimiter for nested attributes
+
+    **Returns**
+
+    cli option name (`str`)
+    """
+
     return "--{}".format(delimiter.join(path).replace("_", "-"))
 
 
 def destination_name(path, delimiter="__"):
-    """returns a cli option destination name from attribute path"""
+    """
+    Returns a cli option destination name from attribute path
+
+    **Arguments**
+
+    - path (`list`): attribute path
+    - delimiter (`str`): delimiter for nested attributes
+
+    **Returns**
+
+    cli destination name (`str`)
+    """
     return "{}".format(delimiter.join(path))
 
 
@@ -26,6 +54,22 @@ def default(value, path, defaults):
 
 
 def argparse_options(parser, schema, defaults=None, attributes=None):
+
+    """
+    Add cli options to an argparse ArgumentParser instance
+
+    **Arguments**
+
+    - parser (`argparse.ArgumentParser`)
+    - schema (`Schema`)
+
+    **Keyword Arguments**
+
+    - defaults (`dict`): if specified will override defaults from here
+    - attributes (`list<str>`): can hold a list of attribute names.
+    if specified only matching attributes will be aded
+    """
+
     def optionize(attribute, path):
         if not attribute.cli:
             return
@@ -55,6 +99,23 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
 
 
 class click_options(object):
+
+    """
+    Add cli options to a click decorated function
+
+    Use like a decorator
+
+    **Arguments**
+
+    - schema (`Schema`)
+
+    **Keyword Arguments**
+
+    - defaults (`dict`): if specified will override defaults from here
+    - attributes (`list<str>`): can hold a list of attribute names.
+    if specified only matching attributes will be aded
+    """
+
     def __init__(self, schema, defaults=None, attributes=None):
         self.schema = schema
         self.defaults = defaults

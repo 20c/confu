@@ -7,8 +7,8 @@ from confu.schema import (IpAddress, Int, Schema, validate)
 
 # this schema describes the [server] section
 class ServerSchema(Schema):
-    host = IpAddress("host")
-    port = Int("port", default=80)
+    host = IpAddress()
+    port = Int(default=80)
 
 
 # this schema describes the entire config
