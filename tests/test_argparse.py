@@ -89,3 +89,20 @@ def test_argparse_dynamic_defaults():
     assert parsed.bool_attr_w_dflt_yes == True
     assert getattr(parsed, "list_attr_schema", None) == None
     assert getattr(parsed, "int_attr_disabled", None) == None
+
+def test_argparse_filter_attributes():
+
+    parser = argparse.ArgumentParser()
+    argparse_options(parser, Schema_03(), attributes=["str_attr","nested__int_attr"])
+
+    parsed = parser.parse_args([])
+
+    assert parsed.str_attr == "test"
+    assert parsed.nested__int_attr == None
+    assert getattr(parsed, "float_attr", None) == None
+    assert getattr(parsed, "bool_attr", None) == None
+    assert getattr(parsed, "list_attr_str", None) == None
+    assert getattr(parsed, "list_attr_int", None) == None
+    assert getattr(parsed, "int_attr", None) == None
+    assert getattr(parsed, "nested__int_attr_choices", None) == None
+

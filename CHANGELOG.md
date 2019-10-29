@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Added
+
+- `argparse_options`: `attributes` keyword argument added (#24)
+- `click_options`: `attributes` keyword argument added (#24)
+
 ### Fixed
 ### Changed
 ### Deprecated

@@ -25,9 +25,12 @@ def default(value, path, defaults):
     return container
 
 
-def argparse_options(parser, schema, defaults=None):
+def argparse_options(parser, schema, defaults=None, attributes=None):
     def optionize(attribute, path):
         if not attribute.cli:
+            return
+
+        if attributes and destination_name(path) not in attributes:
             return
 
         kwargs = {
@@ -52,16 +55,21 @@ def argparse_options(parser, schema, defaults=None):
 
 
 class click_options(object):
-    def __init__(self, schema, defaults=None):
+    def __init__(self, schema, defaults=None, attributes=None):
         self.schema = schema
         self.defaults = defaults
+        self.attributes = attributes
 
     def __call__(self, fn):
         container = {"fn": fn}
         defaults = self.defaults
+        attributes = self.attributes
 
         def optionize(attribute, path):
             if not attribute.cli:
+                return
+
+            if attributes and destination_name(path) not in attributes:
                 return
 
             def validate_and_convert(value):

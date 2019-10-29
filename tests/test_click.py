@@ -97,3 +97,32 @@ def test_click_dynamic_defaults():
     assert result["bool_attr_w_dflt_yes"] == True
     assert "list_attr_schema" not in result
     assert "int_attr_disabled" not in result
+
+def test_click_filter_attributes():
+    @click.command()
+    @click_options(Schema_03(), attributes=["str_attr", "nested__int_attr"])
+    def command(**kwargs):
+        print(json.dumps(kwargs))
+
+    runner = CliRunner()
+    output = runner.invoke(command, []).output
+    print(output)
+    result = json.loads(output)
+
+    print(result)
+    assert result["nested__int_attr"] == None
+    assert result["str_attr"] == "test"
+    assert "nested__int_attr_choices" not in result
+    assert "list_attr_str" not in result
+    assert "list_attr_int" not in result
+    assert "int_attr" not in result
+    assert "float_attr" not in result
+    assert "bool_attr" not in result
+    assert "bool_attr_w_dflt" not in result
+    assert "bool_attr_w_dflt_yes" not in result
+    assert "int_attr_fntgl_on" not in result
+    assert "list_attr_schema" not in result
+    assert "int_attr_disabled" not in result
+    assert "int_attr_fntgl_off" not in result
+
+
