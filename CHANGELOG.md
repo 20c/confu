@@ -8,6 +8,12 @@
 ### Removed
 ### Security
 
+## [1.4.1]
+
+### Fixed
+
+- added missing docs files
+
 ## [1.4.0]
 
 ### Added
