@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Python 3.7 support (#29)
 - `Directory Attribute`: `require_exist` argument (#28)
 - `File Attribute`: `require_exist` argument (#25)
 ### Fixed
