@@ -2,8 +2,12 @@
 
 ## [Unreleased]
 ### Added
+- `Directory Attribute`: `require_exist` argument (#28)
+- `File Attribute`: `require_exist` argument (#25)
 ### Fixed
 ### Changed
+- `Directory Attribute`: expand user and make path absolute during validation (#27)
+- `File Attribute`: expand user and make path absolute during validation (#26)
 ### Deprecated
 ### Removed
 ### Security

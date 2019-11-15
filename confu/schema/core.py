@@ -191,7 +191,15 @@ class Str(Attribute):
 class File(Str):
     """
     Attribute that requires a file to exist at path
+
+    **Keyword Attributes**
+
+    - require_exist ('bool=True'): if `True` file needs to exist
     """
+
+    def __init__(self, name="", **kwargs):
+        super(File, self).__init__(name=name, **kwargs)
+        self.require_exist = kwargs.get("require_exist", True)
 
     def validate(self, value, path, **kwargs):
         value = super(File, self).validate(value, path, **kwargs)
@@ -205,7 +213,15 @@ class File(Str):
         # make sure env vars get expanded
         value = os.path.expandvars(value)
 
-        valid = os.path.exists(value) and not os.path.isdir(value)
+        # make sure user vars get expanded
+        value = os.path.expanduser(value)
+
+        # expand to absolute path
+        value = os.path.abspath(value)
+
+        valid = (os.path.exists(value) or not self.require_exist) and not os.path.isdir(
+            value
+        )
         if not valid:
             raise ValidationError(self, path, value, "file does not exist")
 
@@ -217,18 +233,19 @@ class Directory(Str):
     """
     Attribute that requires an existing directory path
 
-    Keyword Arguments:
-        - create <octal>: if set, instead of raising a ValidationError
-            on a non-existing directory, attempt to create directory first
-            using the value passed as mode (chmod)
+    **Keyword Arguments**
 
-            e.g., create=0o777
+    - require_exist ('bool=True'): if `True` directory needs to exist
+    - create (`octal`): if set, instead of raising a ValidationError
+    on a non-existing directory, attempt to create directory first
+    using the value passed as mode (chmod) e.g., create=0o777
     """
 
     def __init__(self, name="", **kwargs):
         super(Directory, self).__init__(name=name, **kwargs)
 
         self.create = kwargs.get("create")
+        self.require_exist = kwargs.get("require_exist", True)
 
     def makedir(self, value, config_path):
         try:
@@ -256,10 +273,20 @@ class Directory(Str):
         if value == "":
             return value
 
+        # make sure user vars get expanded
+        value = os.path.expanduser(value)
+
+        # expand to absolute path
+        value = os.path.abspath(value)
+
         if self.create is not None and not os.path.exists(value):
             self.makedir(value, path)
 
-        valid = os.path.exists(value) and os.path.isdir(value)
+        if self.require_exist:
+            valid = os.path.exists(value) and os.path.isdir(value)
+        else:
+            valid = True
+
         if not valid:
             raise ValidationError(
                 self, path, value, "valid path to directory expected: {}".format(value)

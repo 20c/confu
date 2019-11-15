@@ -27,8 +27,16 @@ from tests.schemas import Schema_01, Schema_05, Schema_06
 basedir = os.path.join(os.path.dirname(__file__))
 valid_dir = os.path.join(basedir, "data")
 invalid_dir = os.path.join(basedir, "does", "not", "exist")
+home_dir = "~"
+home_dir_expanded = os.path.expanduser(home_dir)
+relative_dir = "."
+absolute_dir = os.path.abspath(relative_dir)
 valid_file = os.path.join(basedir, "__init__.py")
 invalid_file = os.path.join(basedir, "__invalid__.py")
+home_file = "~/test-expanduser"
+home_file_expanded = os.path.expanduser(home_file)
+relative_file = "__init__.py"
+absolute_file = os.path.abspath(relative_file)
 ipv4 = u"127.0.0.1"
 ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
 
@@ -52,7 +60,13 @@ ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
         (Bool, "0", False, "test", {}),
         (Bool, 0, False, "test", {}),
         (Directory, valid_dir, valid_dir, invalid_dir, {}),
+        (Directory, invalid_dir, invalid_dir, None, {"require_exist":False}),
+        (Directory, relative_dir, absolute_dir, invalid_dir, {}),
+        (Directory, home_dir, home_dir_expanded, invalid_dir, {}),
         (File, valid_file, valid_file, invalid_file, {}),
+        (File, invalid_file, invalid_file, None, {"require_exist":False}),
+        (File, home_file, home_file_expanded, None, {"require_exist":False}),
+        (File, relative_file, absolute_file, None, {"require_exist":False}),
         (List, [1, 2, 3], [1, 2, 3], "test", {"item": Int("test")}),
         (List, [1, 2, 3], [1, 2, 3], ["test"], {"item": Int("test")}),
         (Dict, {"a": 123}, {"a": 123}, {"a": "b"}, {"item": Int()}),
@@ -99,8 +113,9 @@ ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
 def test_attribute(Class, value_pass, validated, value_fail, init):
     attribute = Class("test", **init)
     assert attribute.validate(value_pass, []) == validated
-    with pytest.raises(ValidationError):
-        attribute.validate(value_fail, [])
+    if value_fail is not None:
+        with pytest.raises(ValidationError):
+            attribute.validate(value_fail, [])
 
 
 @pytest.mark.parametrize(
