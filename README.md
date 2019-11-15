@@ -8,13 +8,6 @@
 
 Configuration validation and generation
 
-# Supports
-
-  - python 2.7
-  - python 3.4
-  - python 3.5
-  - python 3.6
-
 # Documentation 
 
   - **stable**: https://confu.readthedocs.io/en/stable/quickstart/
