@@ -8,7 +8,7 @@ test_requirements = open('Ctl/requirements-test.txt').read().split("\n")
 
 
 setup(
-    name='cfu',
+    name='confu',
     version=version,
     author='20C',
     author_email='code@20c.com',

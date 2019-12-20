@@ -3,7 +3,7 @@
 Install using pip
 
 ```
-pip install cfu
+pip install confu
 ```
 
 # Defining a schema
