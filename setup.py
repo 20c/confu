@@ -16,7 +16,7 @@ setup(
     long_description='',
     license='LICENSE.txt',
     classifiers=[
-		'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
