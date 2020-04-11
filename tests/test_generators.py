@@ -7,7 +7,7 @@ from tests.schemas import Schema_02
 def test_generate_config():
     generator = ConfigGenerator()
     config = generator.generate(Schema_02())
-    print((json.dumps(config, indent=2)))
+    print(json.dumps(config, indent=2))
     assert config == json.loads(
         '{"int_attr": 123, "nested": {"int_attr": null}, "list_attr": [], "str_attr": "test", "str_attr_null": null}'
     )

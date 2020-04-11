@@ -120,7 +120,7 @@ def test_apply_defaults(SchemaClass, config, expected):
         ) as fh:
             expected = json.load(fh)
     apply_defaults(SchemaClass(), config)
-    print((json.dumps(config, indent=2)))
+    print(json.dumps(config, indent=2))
     assert expected == config
 
 
