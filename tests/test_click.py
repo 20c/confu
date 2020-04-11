@@ -12,7 +12,7 @@ def test_click():
     @click.command()
     @click_options(Schema_03())
     def command(**kwargs):
-        print(json.dumps(kwargs))
+        print((json.dumps(kwargs)))
 
     runner = CliRunner()
     output = runner.invoke(command, []).output
@@ -77,7 +77,7 @@ def test_click_dynamic_defaults():
     @click.command()
     @click_options(Schema_03(), defaults=defaults)
     def command(**kwargs):
-        print(json.dumps(kwargs))
+        print((json.dumps(kwargs)))
 
     runner = CliRunner()
     output = runner.invoke(command, []).output
@@ -102,7 +102,7 @@ def test_click_filter_attributes():
     @click.command()
     @click_options(Schema_03(), attributes=["str_attr", "nested__int_attr"])
     def command(**kwargs):
-        print(json.dumps(kwargs))
+        print((json.dumps(kwargs)))
 
     runner = CliRunner()
     output = runner.invoke(command, []).output

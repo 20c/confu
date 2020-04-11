@@ -12,7 +12,7 @@ import re
 
 try:
     # py2
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 except ImportError:
     # py3
     from urllib.parse import urlparse
@@ -156,7 +156,7 @@ class IpAddress(Str):
         if self.blank and value == "":
             return value
 
-        value = u"{}".format(value)
+        value = "{}".format(value)
         value_v4 = self.validate_v4(value, path, **kwargs)
         value_v6 = self.validate_v6(value, path, **kwargs)
         if self.protocol == 4 and not value_v4:

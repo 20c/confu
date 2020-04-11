@@ -5,7 +5,6 @@ These can be imported directly from `confu.schema`
 """
 
 import os
-import six
 import collections
 
 from inspect import isclass
@@ -16,7 +15,7 @@ from confu.util import config_parser_dict
 try:
     import configparser
 except ImportError:
-    import ConfigParser as configparser
+    import configparser as configparser
 
 
 class Attribute(object):
@@ -179,7 +178,7 @@ class Str(Attribute):
         return self.default == ""
 
     def validate(self, value, path, **kwargs):
-        if not isinstance(value, six.string_types) and not self.default_is_none:
+        if not isinstance(value, str) and not self.default_is_none:
             raise ValidationError(self, path, value, "string expected")
 
         if value == "" and not self.blank:
@@ -557,7 +556,7 @@ class Schema(Attribute):
 
     def attributes(self):
         # redundant?
-        for name, attr in self._attr.items():
+        for name, attr in list(self._attr.items()):
             yield (name, attr)
 
     def walk(self, callback, path=None):
@@ -606,7 +605,7 @@ class Schema(Attribute):
                 ValidationError(path[-1], path, config, "dictionary expected")
             )
 
-        for key, value in config.items():
+        for key, value in list(config.items()):
             try:
                 attribute = self._attr.get(key, self.item)
 
@@ -771,7 +770,7 @@ def apply_default(config, attribute, path):
             # holding lists holding schemas
             # TODO: find a cleaner way to handle this case
 
-            for k, item in _config.items():
+            for k, item in list(_config.items()):
                 apply_default(_config, attribute.item, [k])
 
         if _config is None:
@@ -804,12 +803,12 @@ def apply_defaults(schema, config, debug=False):
 
     if isinstance(schema.item, Schema):
         # schema has arbitrary keys holding another schema
-        for k, v in config.items():
+        for k, v in list(config.items()):
             apply_defaults(schema.item, v, debug=debug)
         return
     elif isinstance(schema.item, List):
         # schema has arbitrary keys holding a list
-        for k, v in config.items():
+        for k, v in list(config.items()):
             apply_default(config, schema.item, [k])
         return
 

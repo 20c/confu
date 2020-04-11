@@ -6,6 +6,7 @@
 ### Changed
 ### Deprecated
 ### Removed
+- remove python 2.7 and 3.4 support
 ### Security
 
 

@@ -4,7 +4,7 @@ import os
 try:
     import configparser
 except ImportError:
-    import ConfigParser as configparser
+    import configparser as configparser
 
 
 def test_config_parser_dict():
