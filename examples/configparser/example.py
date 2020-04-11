@@ -1,9 +1,7 @@
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 
 from confu.schema import (IpAddress, Int, Schema, validate)
+
 
 # this schema describes the [server] section
 class ServerSchema(Schema):

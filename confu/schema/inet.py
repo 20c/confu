@@ -8,22 +8,9 @@ These can be imported directly from `confu.schema`
 - `ipaddress` for ip address validation
 """
 
+import ipaddress
 import re
-
-try:
-    # py2
-    from urllib.parse import urlparse
-except ImportError:
-    # py3
-    from urllib.parse import urlparse
-
-try:
-    # we try to import the `ipaddress` module, which will be used
-    # to validate ipaddress and prefix fields. However this should
-    # be a soft requirement.
-    import ipaddress
-except ImportError:
-    ipaddress = None
+from urllib.parse import urlparse
 
 from confu.schema.core import Str, ValidationError
 from confu.exceptions import SoftDependencyError

@@ -6,16 +6,11 @@ These can be imported directly from `confu.schema`
 
 import os
 import collections
-
+import configparser
 from inspect import isclass
 
 from confu.exceptions import ValidationError, ValidationWarning, ApplyDefaultError
 from confu.util import config_parser_dict
-
-try:
-    import configparser
-except ImportError:
-    import configparser as configparser
 
 
 class Attribute(object):
