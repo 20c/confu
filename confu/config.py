@@ -5,8 +5,11 @@ config management
 
 import collections
 import copy
+import json
 
 import confu.schema
+import confu.encoders
+
 
 
 class Config(collections.Mapping):
@@ -14,7 +17,7 @@ class Config(collections.Mapping):
     class for storing and manipulating config data
     """
 
-    def __init__(self, schema, data=None, meta=None):
+    def __init__(self, schema, data=None, meta=None, **kwargs):
         """
         **Arguments**
 
@@ -24,6 +27,8 @@ class Config(collections.Mapping):
 
         - data (`dict`): dict to set initial data
         - meta (`dict`): any additional metadata to pass along with config
+        - json_encoder (`JSONEncoder'): specify a json encoder to use for
+          serializing when calling self.json
         """
         self._base_data = None
         self._data = None
@@ -33,6 +38,11 @@ class Config(collections.Mapping):
         self.errors = []
         self.warnings = []
         self.valid = None
+
+        self.json_encoder = kwargs.get(
+            "json_encoder",
+            confu.encoders.JSONEncoder
+        )
 
         # use property setter to apply
         self.data = data if data else {}
@@ -68,6 +78,17 @@ class Config(collections.Mapping):
     def data(self, value):
         self._base_data = value
         self._data = None
+
+    @property
+    def json(self):
+        """
+        Return json serialized string of config data
+
+        TODO: use munge?
+        """
+        return json.dumps(
+            self.data, cls=self.json_encoder
+        )
 
     @property
     def schema(self):
