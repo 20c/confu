@@ -37,8 +37,8 @@ home_file = "~/test-expanduser"
 home_file_expanded = os.path.expanduser(home_file)
 relative_file = "__init__.py"
 absolute_file = os.path.abspath(relative_file)
-ipv4 = u"127.0.0.1"
-ipv6 = u"2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+ipv4 = "127.0.0.1"
+ipv6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
 
 
 @pytest.mark.parametrize(

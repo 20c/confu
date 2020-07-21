@@ -1,10 +1,7 @@
-from confu.util import config_parser_dict
+import configparser
 import os
 
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+from confu.util import config_parser_dict
 
 
 def test_config_parser_dict():
