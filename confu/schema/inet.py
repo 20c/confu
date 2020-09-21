@@ -23,7 +23,7 @@ class Email(Str):
     """
 
     def validate(self, value, path, **kwargs):
-        value = super(Email, self).validate(value, path, **kwargs)
+        value = super().validate(value, path, **kwargs)
 
         if value == "" and self.blank:
             return value
@@ -45,7 +45,7 @@ class Url(Str):
     """
 
     def __init__(self, name="", **kwargs):
-        super(Url, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
         self.schemes = kwargs.get("schemes", [])
 
     def validate(self, value, path, **kwargs):
@@ -57,7 +57,7 @@ class Url(Str):
         TODO: may want something more sophisticated than that - could look
         at django's url validator
         """
-        value = super(Url, self).validate(value, path, **kwargs)
+        value = super().validate(value, path, **kwargs)
 
         if value == "" and self.blank:
             return value
@@ -78,7 +78,7 @@ class Url(Str):
 
         if self.schemes and result.scheme not in self.schemes:
             raise ValidationError(
-                self, path, value, "invalid url scheme: {}".format(result.scheme)
+                self, path, value, f"invalid url scheme: {result.scheme}"
             )
 
         return value
@@ -115,7 +115,7 @@ class IpAddress(Str):
         - removed (`str`): version id of when this attribute will be removed
         """
 
-        super(IpAddress, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
         if not ipaddress:
             raise SoftDependencyError("ipaddress")
         if protocol not in [None, 4, 6]:
@@ -135,7 +135,7 @@ class IpAddress(Str):
             return False
 
     def validate(self, value, path, **kwargs):
-        value = super(IpAddress, self).validate(value, path, **kwargs)
+        value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
             return value
@@ -143,7 +143,7 @@ class IpAddress(Str):
         if self.blank and value == "":
             return value
 
-        value = "{}".format(value)
+        value = f"{value}"
         value_v4 = self.validate_v4(value, path, **kwargs)
         value_v6 = self.validate_v6(value, path, **kwargs)
         if self.protocol == 4 and not value_v4:
