@@ -1,0 +1,115 @@
+0.3.0:
+  added:
+  - py2.7 support
+  - DirectoryAttribute
+  - generator.generate shortcut
+  changed:
+  - renamed `UnicodeAttribute` to `StringAttribute` that is now looking for either
+    string or unicode types during validation
+  fixed:
+  - 'validation: schema validation returning None value'
+  - 'validation: warnings raised with the wrong exception type'
+  - 'exceptions: can now have integers in config path (from list index for example)'
+0.4.0:
+  added:
+  - '`ProxySchema`'
+  - '`apply_defaults` to apply schema defaults to a config dict'
+  - '`Config` object'
+  changed:
+  - Schema now extends Attribute and is now working on instances rather than classmethod
+    based
+  - Attribute name is now optional when attribute is member of list
+  - renamed `ListAttribute` to `List`
+  - renamed `StringAttribute` to `Str`
+  - renamed `IntAttribute` to `Int`
+  - renamed `FloatAttribute` to `Float`
+  - renamed `BooleanAttribute` to `Bool`
+  - renamed `DirectoryAttribute` to `Directory`
+  fixed:
+  - '`Schema.walk` now triggers the callback before entering subschemas'
+0.5.0:
+  added:
+  - '`File` attribute'
+  - '`Email` attribute'
+  - '`Url` attribute'
+  - '`IpAddress` attribute'
+  - '`Schema` attribute now has an optional `item` argument that if set allows for
+    validation of dicts with arbitrary keys.'
+  - Support for ConfigParser instances in validate
+  changed:
+  - schema moved to directory so it's easier to group and add new attributes going
+    forward, imports remain unaffected.
+  - '`validate` will now pass **kwargs on to `Schema.validate`'
+  - Facsimile to Ctl
+0.5.1:
+  fixed:
+  - '`apply_defaults` now properly works with nested items'
+0.5.2:
+  fixed:
+  - recursive directory creation for Directory Attribute if `create` is specified
+0.6.0:
+  added:
+  - '`blank` argument for `Str` attribute - specifies whether value can be blank or
+    not, defaults to `False`'
+  changed:
+  - '`Directory` attribute will forfeit validation if `blank` is `True` and value
+    is `""`'
+  fixed:
+  - proxy schema needs to be able to apply defaults (#10)
+  - issue where list validation would sometimes lead to duplicate items added to the
+    list
+0.7.0: {}
+1.0.0: {}
+1.1.0:
+  fixed:
+  - IPAddress field validation issue with blank=True (#13)
+  - Allow None as a default value (#14)
+  - Auto set attribute name if not specified (#12)
+  - added `valid` property to Config that will be true if config was validated without
+  - code cleanup
+  - test coverage to 91%
+  - updated outdated requirements to prepare for 1.0.0 release
+1.1.2:
+  fixed:
+  - some attribute validators still have issues with a None default (#16)
+  - For string attributes a blank default value should infer blank=True (#15)
+1.1.3:
+  fixed:
+  - Fixed issue where `List` holding `Schema` type items would lose items to validation
+    warnings (#18)
+1.2.0:
+  added:
+  - '`defaults` parameter for argparse_options and click_options (#20)'
+  fixed:
+  - '`List` still requires name attribute on init (#17)'
+1.3.0:
+  added:
+  - '`Attribute`: `cli` argument can now be a function (#21)'
+  fixed:
+  - 'fix #23: better error handling in apply_defaults'
+1.4.0:
+  added:
+  - '`argparse_options`: `attributes` keyword argument added (#24)'
+  - '`click_options`: `attributes` keyword argument added (#24)'
+  changed:
+  - use pymdgen for automatic api docs (#22)
+1.4.1:
+  fixed:
+  - added missing docs files
+1.5.0:
+  added:
+  - Python 3.7 support (#29)
+  - '`Directory Attribute`: `require_exist` argument (#28)'
+  - '`File Attribute`: `require_exist` argument (#25)'
+  changed:
+  - PyPI package renamed to `confu`
+  - '`Directory Attribute`: expand user and make path absolute during validation (#27)'
+  - '`File Attribute`: expand user and make path absolute during validation (#26)'
+Unreleased:
+  added: []
+  changed: []
+  deprecated: []
+  fixed: []
+  removed:
+  - remove python 2.7 and 3.4 support
+  security: []
