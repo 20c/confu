@@ -3,10 +3,11 @@ import argparse
 import json
 
 
-from tests.schemas import Schema_03
+from tests.schemas import Schema_02, Schema_03
 
 from confu.cli import argparse_options
-
+from confu.config import Config
+from confu.schema import validate
 
 def test_argparse():
 
@@ -90,6 +91,34 @@ def test_argparse_dynamic_defaults():
     assert getattr(parsed, "list_attr_schema", None) == None
     assert getattr(parsed, "int_attr_disabled", None) == None
 
+
+def test_argparse_default_config():
+    import os
+    path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "data/argparse/config.json"
+    )
+    with open(path, "r") as file:
+        data = json.load(file)
+    print(data)
+
+    # Add validation check
+    validate(Schema_02(), data)
+    parser = argparse.ArgumentParser()
+    argparse_options(parser, Schema_02(), data)
+
+    parsed = parser.parse_args([])
+
+    assert parsed.str_attr == "hello world"
+    assert parsed.int_attr == 234
+    assert parsed.str_attr_null == None
+
+    parsed = parser.parse_args(
+        ["--str-attr", "donkey", "--int-attr", "345", "--str-attr-null", "yoyo"]
+    )
+    assert parsed.str_attr == "donkey"
+    assert parsed.int_attr == 345
+    assert parsed.str_attr_null == "yoyo"
 
 def test_argparse_filter_attributes():
 
