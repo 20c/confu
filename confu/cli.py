@@ -98,6 +98,26 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
     schema.walk(optionize)
 
 
+def apply_argparse(args, config):
+    for k in args.__dict__:
+        apply_arg(k, args, config)
+    return config
+
+
+def apply_arg(original_key, args, config):
+    path = original_key.split("__")
+
+    if len(path) > 1:
+        dic = config.data
+        for key in path[:-1]:
+            dic = dic.setdefault(key, {})
+        dic[path[-1]] = getattr(args, original_key)
+
+    else:
+        config.data[original_key] = getattr(args, original_key)
+
+
+
 class click_options:
 
     """
