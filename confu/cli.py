@@ -53,7 +53,9 @@ def default(value, path, defaults):
     return container
 
 
-def argparse_options(parser, schema, defaults=None, attributes=None):
+def argparse_options(
+    parser, schema, defaults=None, attributes=None, default_from_schema=True
+):
 
     """
     Add cli options to an argparse ArgumentParser instance
@@ -81,8 +83,12 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
             "type": lambda x: attribute.validate(x, path),
             "help": attribute.help,
             "dest": destination_name(path),
-            "default": default(attribute.default, path, defaults),
         }
+
+        if default_from_schema:
+            kwargs["default"] = default(attribute.default, path, defaults)
+        else:
+            kwargs["default"] = default(None, path, defaults)
 
         name = option_name(path, delimiter=".")
 
@@ -115,7 +121,6 @@ def apply_arg(original_key, args, config):
 
     else:
         config.data[original_key] = getattr(args, original_key)
-
 
 
 class click_options:
