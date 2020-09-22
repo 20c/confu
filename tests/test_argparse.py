@@ -109,6 +109,29 @@ def test_argparse_filter_attributes():
     assert getattr(parsed, "int_attr", None) == None
     assert getattr(parsed, "nested__int_attr_choices", None) == None
 
+def test_argparse_no_default_from_schema():
+
+    parser = argparse.ArgumentParser()
+    defaults = {
+        "str_attr": "test dynamic",
+        "nested": {"int_attr_choices": 2, "int_attr": 3},
+    }
+
+    argparse_options(parser, Schema_03(), defaults, default_from_schema=False)
+
+    parsed = parser.parse_args([])
+
+    assert parsed.nested__int_attr_choices == 2
+    assert parsed.nested__int_attr == 3
+    assert parsed.list_attr_str == None
+    assert parsed.list_attr_int == None
+    assert parsed.str_attr == "test dynamic"
+    assert parsed.int_attr == None
+    assert parsed.float_attr == None
+    assert parsed.bool_attr == None
+    assert parsed.bool_attr_w_dflt == None
+    assert parsed.bool_attr_w_dflt_yes == None
+
 
 def test_argparse_default_config():
     import os
@@ -169,6 +192,7 @@ def test_apply_argparse_03():
     assert config["nested"]["int_attr"] == 3
 
 def test_apply_argparse_10():
+    schema_10 = Schema_10()
     with open(
             os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
         ) as fh:
@@ -178,13 +202,10 @@ def test_apply_argparse_10():
         ) as fh:
             expected = json.load(fh)
     
-    config = Config(Schema_10(), config_data)
+    config = Config(schema_10, config_data)
 
-    from pprint import pprint
-    pprint(config.data)
-    
     parser = argparse.ArgumentParser("new-parser")
-    argparse_options(parser, Schema_10())
+    argparse_options(parser, schema_10)
 
     args = parser.parse_args([
         "--schema-attr.int-attr", "999",
@@ -196,9 +217,9 @@ def test_apply_argparse_10():
 
     # Overwritten by arguments
     config["schema_attr"]["int_attr"] == 999
-    config["schema_attr"]["str_attr"] = "hello world"
-    config["schema_attr"]["str_attr_nd"] = "defaults empty string"
-    config["schema_attr"]["str_attr_null"] = "not null"
+    config["schema_attr"]["str_attr"] == "hello world"
+    config["schema_attr"]["str_attr_nd"] == "defaults empty string"
+    config["schema_attr"]["str_attr_null"] == "not null"
 
     print(parser.parse_args(["-h"]))
     assert 0
