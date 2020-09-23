@@ -106,10 +106,11 @@
   - '`Directory Attribute`: expand user and make path absolute during validation (#27)'
   - '`File Attribute`: expand user and make path absolute during validation (#26)'
 Unreleased:
-  added: []
+  added:
+  - Python 3.8 support (#33)
   changed: []
   deprecated: []
   fixed: []
   removed:
-  - remove python 2.7 and 3.4 support
+  - Python 3.5 support (#32)
   security: []

@@ -13,7 +13,7 @@ from confu.exceptions import ValidationError, ValidationWarning, ApplyDefaultErr
 from confu.util import config_parser_dict
 
 
-class Attribute(object):
+class Attribute:
 
     """
     Base confu schema attribute. All other schema attributes
@@ -163,7 +163,7 @@ class Str(Attribute):
     """
 
     def __init__(self, name="", **kwargs):
-        super(Str, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
         self.blank = kwargs.get("blank", False)
         if not self.blank and self.default_is_blank:
             self.blank = True
@@ -179,7 +179,7 @@ class Str(Attribute):
         if value == "" and not self.blank:
             raise ValidationError(self, path, value, "cannot be blank")
 
-        return super(Str, self).validate(value, path, **kwargs)
+        return super().validate(value, path, **kwargs)
 
 
 class File(Str):
@@ -192,11 +192,11 @@ class File(Str):
     """
 
     def __init__(self, name="", **kwargs):
-        super(File, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
         self.require_exist = kwargs.get("require_exist", True)
 
     def validate(self, value, path, **kwargs):
-        value = super(File, self).validate(value, path, **kwargs)
+        value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
             return value
@@ -236,7 +236,7 @@ class Directory(Str):
     """
 
     def __init__(self, name="", **kwargs):
-        super(Directory, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
 
         self.create = kwargs.get("create")
         self.require_exist = kwargs.get("require_exist", True)
@@ -253,7 +253,7 @@ class Directory(Str):
             )
 
     def validate(self, value, path, **kwargs):
-        value = super(Directory, self).validate(value, path, **kwargs)
+        value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
             return value
@@ -283,7 +283,7 @@ class Directory(Str):
 
         if not valid:
             raise ValidationError(
-                self, path, value, "valid path to directory expected: {}".format(value)
+                self, path, value, f"valid path to directory expected: {value}"
             )
 
         return value
@@ -298,7 +298,7 @@ class Bool(Attribute):
     false_values = ["false", "no", "0"]
 
     def __init__(self, name="", **kwargs):
-        super(Bool, self).__init__(name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
         self.cli_show_default = False
 
     def validate(self, value, path, **kwargs):
@@ -309,7 +309,7 @@ class Bool(Attribute):
                 value = False
             else:
                 raise ValidationError(self, path, value, "boolean expected")
-        return super(Bool, self).validate(bool(value), path, **kwargs)
+        return super().validate(bool(value), path, **kwargs)
 
     def finalize_click(self, param, name):
         del param["type"]
@@ -340,7 +340,7 @@ class Int(Attribute):
             value = int(value)
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "integer expected")
-        return super(Int, self).validate(value, path, **kwargs)
+        return super().validate(value, path, **kwargs)
 
 
 class Float(Attribute):
@@ -356,7 +356,7 @@ class Float(Attribute):
             value = float(value)
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "float expected")
-        return super(Float, self).validate(value, path, **kwargs)
+        return super().validate(value, path, **kwargs)
 
 
 class List(Attribute):
@@ -403,7 +403,7 @@ class List(Attribute):
         if isinstance(item, Attribute):
             item.container = self
 
-        super(List, self).__init__(name, **kwargs)
+        super().__init__(name, **kwargs)
 
         self.item = item
 
@@ -411,7 +411,7 @@ class List(Attribute):
     def cli(self):
         if isinstance(self.item, Schema):
             return False
-        return super(List, self).cli
+        return super().cli
 
     def validate(self, value, path, **kwargs):
 
@@ -441,10 +441,10 @@ class List(Attribute):
                 errors.error(error)
             except ValidationWarning as warning:
                 warnings.warning(warning)
-        return super(List, self).validate(validated, path, **kwargs)
+        return super().validate(validated, path, **kwargs)
 
 
-class ValidationErrorProcessor(object):
+class ValidationErrorProcessor:
     """
     This the default validation error processor, it will raise an exception
     when a warning or error is encountered
@@ -467,8 +467,7 @@ class CollectValidationExceptions(ValidationErrorProcessor):
         self.exceptions = []
 
     def __iter__(self):
-        for exc in self.exceptions:
-            yield exc
+        yield from self.exceptions
 
     def __len__(self):
         return len(self.exceptions)
@@ -547,12 +546,11 @@ class Schema(Attribute):
         elif self.item:
             self.item.container = self
 
-        super(Schema, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def attributes(self):
         # redundant?
-        for name, attr in list(self._attr.items()):
-            yield (name, attr)
+        yield from list(self._attr.items())
 
     def walk(self, callback, path=None):
         if not path:
@@ -606,7 +604,7 @@ class Schema(Attribute):
 
                 if attribute is None:
                     raise ValidationWarning(
-                        key, path, value, "unknown attribute '{}'".format(key)
+                        key, path, value, f"unknown attribute '{key}'"
                     )
                 else:
                     config[key] = attribute.validate(
@@ -632,7 +630,7 @@ class Dict(Schema):
     """
 
     def __init__(self, name=None, item=None, *args, **kwargs):
-        super(Dict, self).__init__(name=name, item=item, *args, **kwargs)
+        super().__init__(name=name, item=item, *args, **kwargs)
 
 
 class ProxySchema(Schema):
@@ -698,11 +696,11 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
 
         if log and callable(log):
             for error in errors:
-                log("[Config Error] {}".format(error.pretty))
+                log(f"[Config Error] {error.pretty}")
             for warning in warnings:
-                log("[Config Warning] {}".format(warning.pretty))
+                log(f"[Config Warning] {warning.pretty}")
             if not success:
-                log("{} errors, {} warnings in config".format(num_errors, num_warnings))
+                log(f"{num_errors} errors, {num_warnings} warnings in config")
 
         return (success, errors, warnings)
 

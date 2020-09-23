@@ -4,7 +4,7 @@ Schema to data generators
 from confu.schema import Schema, Attribute
 
 
-class ConfigGenerator(object):
+class ConfigGenerator:
     """
     Generate config from schema using default values
     """

@@ -98,7 +98,7 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
     schema.walk(optionize)
 
 
-class click_options(object):
+class click_options:
 
     """
     Add cli options to a click decorated function

@@ -4,9 +4,7 @@ class SoftDependencyError(ImportError):
     """
 
     def __init__(self, dep_name):
-        super(SoftDependencyError, self).__init__(
-            "To use this feature this dependency is required: {}".format(dep_name)
-        )
+        super().__init__(f"To use this feature this dependency is required: {dep_name}")
 
 
 class ValidationErrorBase(ValueError):
@@ -24,14 +22,14 @@ class ValidationErrorBase(ValueError):
         - reason (`str`): human readable reason message for validation error
         """
 
-        msg = "{}: {}".format(path, reason)
+        msg = f"{path}: {reason}"
         self.details = {
             "path": path,
             "attribute": attribute,
             "value": value,
             "reason": reason,
         }
-        super(ValidationErrorBase, self).__init__(msg)
+        super().__init__(msg)
 
     @property
     def pretty(self):
