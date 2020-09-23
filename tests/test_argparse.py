@@ -240,8 +240,12 @@ def test_apply_argparse_10():
             "not null",
         ]
     )
-    apply_argparse(args, config)
 
+
+    print(schema_10.schema_attr.default)
+    apply_argparse(args, config)
+    print(schema_10.schema_attr.default)
+    assert 0
     # Config should be overwritten by arguments
     assert config["schema_attr"]["int_attr"] == 2222
     assert config["schema_attr"]["str_attr"] == "hello world"
