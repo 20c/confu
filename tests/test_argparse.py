@@ -3,7 +3,7 @@ import argparse
 import json
 import os
 
-from tests.schemas import Schema_02, Schema_03, Schema_10
+from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
 
 
 from confu.cli import argparse_options, apply_argparse
@@ -197,29 +197,43 @@ def test_apply_argparse_10():
             os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
         ) as fh:
             config_data = json.load(fh)
-    with open(
-            os.path.join(os.path.dirname(__file__), "data", "defaults", "expected.01.json")
-        ) as fh:
-            expected = json.load(fh)
     
     config = Config(schema_10, config_data)
 
     parser = argparse.ArgumentParser("new-parser")
     argparse_options(parser, schema_10)
 
+
     args = parser.parse_args([
-        "--schema-attr.int-attr", "999",
+        "--schema-attr.int-attr", "2222",
         "--schema-attr.str-attr", "hello world",
         "--schema-attr.str-attr-nd", "defaults empty string",
         "--schema-attr.str-attr-null", "not null",
-    ])
-    config = apply_argparse(args, config) 
-
-    # Overwritten by arguments
-    config["schema_attr"]["int_attr"] == 999
-    config["schema_attr"]["str_attr"] == "hello world"
-    config["schema_attr"]["str_attr_nd"] == "defaults empty string"
-    config["schema_attr"]["str_attr_null"] == "not null"
-
-    print(parser.parse_args(["-h"]))
+    ])    
+    apply_argparse(args, config) 
     assert 0
+    # Overwritten by arguments
+    assert config["schema_attr"]["int_attr"] == 2222
+    assert config["schema_attr"]["str_attr"] == "hello world"
+    assert config["schema_attr"]["str_attr_nd"] == "defaults empty string"
+    assert config["schema_attr"]["str_attr_null"] == "not null"
+
+
+def test_apply_argparse_15():
+    schema_15 = Schema_15()
+    
+    config = Config(schema_15)
+
+    parser = argparse.ArgumentParser("new-parser")
+    argparse_options(parser, schema_15)
+
+    args = parser.parse_args([
+        "--nested-schema.float-attr", "9.87",
+        "--nested-schema.schema-attr.int-attr", "90210",
+        "--nested-schema.schema-attr.str-attr", "updated",
+    ])    
+    apply_argparse(args, config) 
+    # Overwritten by arguments
+    assert config["nested_schema"]["float_attr"] == 9.87
+    assert config["nested_schema"]["schema_attr"]["int_attr"] == 90210
+    assert config["nested_schema"]["schema_attr"]["str_attr"] == "updated"
