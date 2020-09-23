@@ -112,13 +112,13 @@ def apply_argparse(args, config):
 
 def apply_arg(original_key, args, config):
     path = original_key.split("__")
-
     if len(path) > 1:
-        dic = config.data
+        data = config.data
         for key in path[:-1]:
-            dic = dic.setdefault(key, {})
-        dic[path[-1]] = getattr(args, original_key)
-
+            if key not in data:
+                data[key] = {}
+            data = data[key]
+        data[path[-1]] = getattr(args, original_key)
     else:
         config.data[original_key] = getattr(args, original_key)
 
