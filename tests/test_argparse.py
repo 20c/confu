@@ -111,14 +111,11 @@ def test_argparse_filter_attributes():
     assert getattr(parsed, "nested__int_attr_choices", None) == None
 
 
-"""
-Instead of taking defaults from schema, we default 
-to False. Default overrides are still valid.
-"""
-
-
 def test_argparse_no_default_from_schema():
-
+    """
+    Instead of taking defaults from schema, we default 
+    to False. Default overrides are still valid.
+    """
     parser = argparse.ArgumentParser()
     defaults = {
         "str_attr": "test dynamic",
@@ -141,13 +138,10 @@ def test_argparse_no_default_from_schema():
     assert parsed.bool_attr_w_dflt_yes == None
 
 
-"""
-Here we override defaults from a config file.
-"""
-
-
 def test_argparse_default_config():
-
+    """
+    Here we override defaults from a config file.
+    """
     path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "data/argparse/config.json"
     )
@@ -171,13 +165,11 @@ def test_argparse_default_config():
     assert parsed.str_attr_null == "yoyo"
 
 
-"""
-Test of the apply_argparse function for Schema 03. 
-Two nested schema options are passed to the config.
-"""
-
-
 def test_apply_argparse_03():
+    """
+    Test of the apply_argparse function for Schema 03. 
+    Two nested schema options are passed to the config.
+    """
     config = Config(Schema_03())
     parser = argparse.ArgumentParser("new-parser")
     argparse_options(parser, Schema_03())
@@ -218,13 +210,13 @@ def test_apply_argparse_03():
     assert config["nested"]["int_attr"] == 3
 
 
-"""
-Test of the apply_argparse function for Schema 10. 
-Four nested schema options are passed to the config.
-"""
 
 
 def test_apply_argparse_10():
+    """
+    Test of the apply_argparse function for Schema 10. 
+    Four nested schema options are passed to the config.
+    """
     schema_10 = Schema_10()
     with open(
         os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
@@ -257,13 +249,11 @@ def test_apply_argparse_10():
     assert config["schema_attr"]["str_attr_null"] == "not null"
 
 
-"""
-Test of the apply_argparse function for Schema 15. 
-Here we have a doubly nested override.
-"""
-
-
 def test_apply_argparse_15():
+    """
+    Test of the apply_argparse function for Schema 15. 
+    Here we have a doubly nested override.
+    """
     schema_15 = Schema_15()
 
     config = Config(schema_15)
