@@ -105,12 +105,38 @@ def argparse_options(
 
 
 def apply_argparse(args, config):
+
+    """
+    Takes the output of a parser and applies it to a Config object.
+
+    **Arguments**
+
+    - args (`argparse.Namespace`, ie. the result of parser.parse_args() )
+    - config (`Config`)
+
+    **Returns**
+
+    config Object `Config`
+    """
     for k in args.__dict__:
         apply_arg(k, args, config)
     return config
 
 
 def apply_arg(original_key, args, config):
+
+    """
+    Function for applying arguments to a config. Applies to nested
+    configs as well.
+
+    **Arguments**
+
+    - original_key (`str`, the name of the argument in the argparse Namespace)
+    - args (`argparse.Namespace`, the entire Namespace, ie the result of the parser)
+    - config (`Config`)
+
+    """
+
     path = original_key.split("__")
     if len(path) > 1:
         data = config.data
