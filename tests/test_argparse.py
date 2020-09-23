@@ -10,6 +10,7 @@ from confu.cli import argparse_options, apply_argparse
 from confu.config import Config
 from confu.schema import apply_default, apply_defaults, ApplyDefaultError
 
+
 def test_argparse():
 
     parser = argparse.ArgumentParser()
@@ -109,6 +110,13 @@ def test_argparse_filter_attributes():
     assert getattr(parsed, "int_attr", None) == None
     assert getattr(parsed, "nested__int_attr_choices", None) == None
 
+
+"""
+Instead of taking defaults from schema, we default 
+to False. Default overrides are still valid.
+"""
+
+
 def test_argparse_no_default_from_schema():
 
     parser = argparse.ArgumentParser()
@@ -133,16 +141,19 @@ def test_argparse_no_default_from_schema():
     assert parsed.bool_attr_w_dflt_yes == None
 
 
+"""
+Here we override defaults from a config file.
+"""
+
+
 def test_argparse_default_config():
-    import os
+
     path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "data/argparse/config.json"
+        os.path.dirname(os.path.abspath(__file__)), "data/argparse/config.json"
     )
     with open(path, "r") as file:
         config = json.load(file)
 
-    # Create argparser WITH config
     parser = argparse.ArgumentParser()
     argparse_options(parser, Schema_02(), config)
 
@@ -160,27 +171,42 @@ def test_argparse_default_config():
     assert parsed.str_attr_null == "yoyo"
 
 
+"""
+Test of the apply_argparse function for Schema 03. 
+Two nested schema options are passed to the config.
+"""
+
+
 def test_apply_argparse_03():
     config = Config(Schema_03())
     parser = argparse.ArgumentParser("new-parser")
     argparse_options(parser, Schema_03())
 
-    args = parser.parse_args([
-        "--str-attr", "donkey",
-        "--list-attr-int", "1,2,3",
-        "--list-attr-str", "1,2,3",
-        "--int-attr", "999",
-        "--float-attr", "365.2",
-        "--bool-attr",
-        "--bool-attr-w-dflt",
-        "--no-bool-attr-w-dflt-yes",
-        "--nested.int-attr-choices", "2",
-        "--nested.int-attr", "3",
-    ])
+    args = parser.parse_args(
+        [
+            "--str-attr",
+            "donkey",
+            "--list-attr-int",
+            "1,2,3",
+            "--list-attr-str",
+            "1,2,3",
+            "--int-attr",
+            "999",
+            "--float-attr",
+            "365.2",
+            "--bool-attr",
+            "--bool-attr-w-dflt",
+            "--no-bool-attr-w-dflt-yes",
+            "--nested.int-attr-choices",
+            "2",
+            "--nested.int-attr",
+            "3",
+        ]
+    )
 
-    config = apply_argparse(args, config) 
+    config = apply_argparse(args, config)
 
-    # Overwritten by arguments
+    # Config should be overwritten by arguments
     assert config["str_attr"] == "donkey"
     assert config["list_attr_int"] == [1, 2, 3]
     assert config["list_attr_str"] == ["1", "2", "3"]
@@ -191,49 +217,73 @@ def test_apply_argparse_03():
     assert config["nested"]["int_attr_choices"] == 2
     assert config["nested"]["int_attr"] == 3
 
+
+"""
+Test of the apply_argparse function for Schema 10. 
+Four nested schema options are passed to the config.
+"""
+
+
 def test_apply_argparse_10():
     schema_10 = Schema_10()
     with open(
-            os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
-        ) as fh:
-            config_data = json.load(fh)
-    
+        os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
+    ) as fh:
+        config_data = json.load(fh)
+
     config = Config(schema_10, config_data)
 
     parser = argparse.ArgumentParser("new-parser")
     argparse_options(parser, schema_10)
 
+    args = parser.parse_args(
+        [
+            "--schema-attr.int-attr",
+            "2222",
+            "--schema-attr.str-attr",
+            "hello world",
+            "--schema-attr.str-attr-nd",
+            "defaults empty string",
+            "--schema-attr.str-attr-null",
+            "not null",
+        ]
+    )
+    apply_argparse(args, config)
 
-    args = parser.parse_args([
-        "--schema-attr.int-attr", "2222",
-        "--schema-attr.str-attr", "hello world",
-        "--schema-attr.str-attr-nd", "defaults empty string",
-        "--schema-attr.str-attr-null", "not null",
-    ])    
-    apply_argparse(args, config) 
-    assert 0
-    # Overwritten by arguments
+    # Config should be overwritten by arguments
     assert config["schema_attr"]["int_attr"] == 2222
     assert config["schema_attr"]["str_attr"] == "hello world"
     assert config["schema_attr"]["str_attr_nd"] == "defaults empty string"
     assert config["schema_attr"]["str_attr_null"] == "not null"
 
 
+"""
+Test of the apply_argparse function for Schema 15. 
+Here we have a doubly nested override.
+"""
+
+
 def test_apply_argparse_15():
     schema_15 = Schema_15()
-    
+
     config = Config(schema_15)
 
     parser = argparse.ArgumentParser("new-parser")
     argparse_options(parser, schema_15)
 
-    args = parser.parse_args([
-        "--nested-schema.float-attr", "9.87",
-        "--nested-schema.schema-attr.int-attr", "90210",
-        "--nested-schema.schema-attr.str-attr", "updated",
-    ])    
-    apply_argparse(args, config) 
-    # Overwritten by arguments
+    args = parser.parse_args(
+        [
+            "--nested-schema.float-attr",
+            "9.87",
+            "--nested-schema.schema-attr.int-attr",
+            "90210",
+            "--nested-schema.schema-attr.str-attr",
+            "updated",
+        ]
+    )
+    apply_argparse(args, config)
+
+    # Config should be overwritten by arguments
     assert config["nested_schema"]["float_attr"] == 9.87
     assert config["nested_schema"]["schema_attr"]["int_attr"] == 90210
     assert config["nested_schema"]["schema_attr"]["str_attr"] == "updated"
