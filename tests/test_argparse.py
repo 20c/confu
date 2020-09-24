@@ -113,7 +113,7 @@ def test_argparse_filter_attributes():
 
 def test_argparse_no_default_from_schema():
     """
-    Instead of taking defaults from schema, we default 
+    Instead of taking defaults from schema, we default
     to False. Default overrides are still valid.
     """
     parser = argparse.ArgumentParser()
@@ -167,7 +167,7 @@ def test_argparse_default_config():
 
 def test_apply_argparse_03():
     """
-    Test of the apply_argparse function for Schema 03. 
+    Test of the apply_argparse function for Schema 03.
     Two nested schema options are passed to the config.
     """
     config = Config(Schema_03())
@@ -214,7 +214,7 @@ def test_apply_argparse_03():
 
 def test_apply_argparse_10():
     """
-    Test of the apply_argparse function for Schema 10. 
+    Test of the apply_argparse function for Schema 10.
     Four nested schema options are passed to the config.
     """
     schema_10 = Schema_10()
@@ -242,10 +242,8 @@ def test_apply_argparse_10():
     )
 
 
-    print(schema_10.schema_attr.default)
     apply_argparse(args, config)
-    print(schema_10.schema_attr.default)
-    assert 0
+
     # Config should be overwritten by arguments
     assert config["schema_attr"]["int_attr"] == 2222
     assert config["schema_attr"]["str_attr"] == "hello world"
@@ -255,7 +253,7 @@ def test_apply_argparse_10():
 
 def test_apply_argparse_15():
     """
-    Test of the apply_argparse function for Schema 15. 
+    Test of the apply_argparse function for Schema 15.
     Here we have a doubly nested override.
     """
     schema_15 = Schema_15()

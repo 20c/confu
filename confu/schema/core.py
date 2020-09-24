@@ -7,6 +7,7 @@ These can be imported directly from `confu.schema`
 import os
 import collections
 import configparser
+import copy
 from inspect import isclass
 
 from confu.exceptions import ValidationError, ValidationWarning, ApplyDefaultError
@@ -767,7 +768,7 @@ def apply_default(config, attribute, path):
                 apply_default(_config, attribute.item, [k])
 
         if _config is None:
-            prev[section] = attribute.default
+            prev[section] = copy.deepcopy(attribute.default or {})
 
         if attribute.item is None:
             apply_defaults(attribute, prev[section])
