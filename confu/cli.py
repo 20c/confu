@@ -111,12 +111,12 @@ def apply_argparse(args, config):
 
     **Arguments**
 
-    - args (`argparse.Namespace`, ie. the result of parser.parse_args() )
-    - config (`Config`)
+    - args (`argparse.Namespace`):  the result of parser.parse_args()
+    - config (`Config`): the config object
 
     **Returns**
 
-    config Object `Config`
+    - config (`Config`): now updated with args
     """
     for k in args.__dict__:
         apply_arg(k, args, config)
@@ -131,9 +131,9 @@ def apply_arg(original_key, args, config):
 
     **Arguments**
 
-    - original_key (`str`, the name of the argument in the argparse Namespace)
-    - args (`argparse.Namespace`, the entire Namespace, ie the result of the parser)
-    - config (`Config`)
+    - original_key (`str`): the name of the argument in the argparse Namespace
+    - args (`argparse.Namespace`): the entire Namespace, ie the result of the parser
+    - config (`Config`): the config object
 
     """
 
