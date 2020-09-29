@@ -8,7 +8,7 @@ from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
 
 from confu.cli import argparse_options, apply_argparse
 from confu.config import Config
-from confu.schema import apply_default, apply_defaults, ApplyDefaultError
+from confu.schema import apply_default, apply_defaults, ApplyDefaultError, validate
 
 
 def test_argparse():
@@ -210,6 +210,33 @@ def test_apply_argparse_03():
     assert config["nested"]["int_attr"] == 3
 
 
+def test_apply_argparse_03_invalid():
+    """
+    Test of the apply_argparse function for Schema 03.
+    Here we provide additional attributes outside of the schema.
+    These should be marked as invalid.
+    """
+    config = Config(Schema_03())
+    parser = argparse.ArgumentParser("new-parser")
+    argparse_options(parser, Schema_03())
+
+    parser.add_argument("--new-attribute-int", type=int)
+    parser.add_argument("--new-attribute-str", type=str)
+
+    args = parser.parse_args(
+        [
+            "--new-attribute-int",
+            "123",
+            "--new-attribute-str",
+            "not good",
+        ]
+    )
+
+    config = apply_argparse(args, config)
+
+    # New arguments should not get added to config
+    assert not config.get("new_attribute_int", False)
+    assert not config.get("new_attribute_str", False)
 
 
 def test_apply_argparse_10():
@@ -249,6 +276,41 @@ def test_apply_argparse_10():
     assert config["schema_attr"]["str_attr"] == "hello world"
     assert config["schema_attr"]["str_attr_nd"] == "defaults empty string"
     assert config["schema_attr"]["str_attr_null"] == "not null"
+
+
+def test_apply_argparse_10_invalid():
+    """
+    Test of the apply_argparse function for Schema 10.
+    Four nested schema options are passed to the config.
+    """
+    schema_10 = Schema_10()
+    with open(
+        os.path.join(os.path.dirname(__file__), "data", "defaults", "in.01.json")
+    ) as fh:
+        config_data = json.load(fh)
+
+    config = Config(schema_10, config_data)
+
+    parser = argparse.ArgumentParser("new-parser")
+    argparse_options(parser, schema_10)
+
+    parser.add_argument("--schema-attr.new-attr-int", type=int)
+    parser.add_argument("--schema-attr.new-attr-str", type=str)
+
+    args = parser.parse_args(
+        [
+            "--schema-attr.new-attr-int",
+            "2222",
+            "--schema-attr.new-attr-str",
+            "hello world"
+        ]
+    )
+
+    apply_argparse(args, config)
+
+    # New arguments should not get added to config
+    assert not config["schema_attr"].get("new_attribute_int", False)
+    assert not config["schema_attr"].get("new_attribute_str", False)
 
 
 def test_apply_argparse_15():

@@ -8,7 +8,6 @@ try:
 except ImportError:
     pass
 
-
 def option_name(path, delimiter="--"):
     """
     Returns a cli option name from attribute path
@@ -118,6 +117,7 @@ def apply_argparse(args, config):
 
     - config (`Config`): now updated with args
     """
+
     for k in args.__dict__:
         apply_arg(k, args, config)
     return config
@@ -136,18 +136,48 @@ def apply_arg(original_key, args, config):
     - config (`Config`): the config object
 
     """
+    from confu.schema import Schema, Attribute
+    schema = config._schema
 
     path = original_key.split("__")
+
+    arg_data = getattr(args, original_key)
+    
     if len(path) > 1:
         data = config.data
+
+        current_schema = schema._attr
+
+        for key in path:
+            
+            if isinstance(current_schema.get(key), Schema):
+                current_schema = current_schema.get(key)._attr
+                
+            elif isinstance(current_schema.get(key), Attribute):
+                attribute = current_schema.get(key)
+                
+                # If we cannot find the attribute in the schema
+                # we don't add it
+                if attribute is None:
+                    return
+
         for key in path[:-1]:
             if key not in data:
                 data[key] = {}
             data = data[key]
-        data[path[-1]] = getattr(args, original_key)
+        data[path[-1]] = arg_data
+        
     else:
-        config.data[original_key] = getattr(args, original_key)
+        attribute = schema._attr.get(original_key)
+        
+        # If we cannot find the attribute in the schema
+        # we don't add it
+        if attribute is None:
+            return
 
+        config.data[original_key] = arg_data
+        # attribute.validate(arg_data, path)
+    
 
 class click_options:
 
