@@ -119,6 +119,10 @@ def test_apply_defaults(SchemaClass, config, expected):
             os.path.join(os.path.dirname(__file__), "data", "defaults", expected)
         ) as fh:
             expected = json.load(fh)
+
+    if hasattr(SchemaClass(), 'schema_attr'):
+        print(SchemaClass().schema_attr.default)
+
     apply_defaults(SchemaClass(), config)
     print(json.dumps(config, indent=2))
     assert expected == config

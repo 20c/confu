@@ -8,7 +8,6 @@ try:
 except ImportError:
     pass
 
-
 def option_name(path, delimiter="--"):
     """
     Returns a cli option name from attribute path
@@ -53,7 +52,9 @@ def default(value, path, defaults):
     return container
 
 
-def argparse_options(parser, schema, defaults=None, attributes=None):
+def argparse_options(
+    parser, schema, defaults=None, attributes=None, default_from_schema=True
+):
 
     """
     Add cli options to an argparse ArgumentParser instance
@@ -81,8 +82,12 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
             "type": lambda x: attribute.validate(x, path),
             "help": attribute.help,
             "dest": destination_name(path),
-            "default": default(attribute.default, path, defaults),
         }
+
+        if default_from_schema:
+            kwargs["default"] = default(attribute.default, path, defaults)
+        else:
+            kwargs["default"] = default(None, path, defaults)
 
         name = option_name(path, delimiter=".")
 
@@ -97,6 +102,82 @@ def argparse_options(parser, schema, defaults=None, attributes=None):
 
     schema.walk(optionize)
 
+
+def apply_argparse(args, config):
+
+    """
+    Takes the output of a parser and applies it to a Config object.
+
+    **Arguments**
+
+    - args (`argparse.Namespace`):  the result of parser.parse_args()
+    - config (`Config`): the config object
+
+    **Returns**
+
+    - config (`Config`): now updated with args
+    """
+
+    for k in args.__dict__:
+        apply_arg(k, args, config)
+    return config
+
+
+def apply_arg(original_key, args, config):
+
+    """
+    Function for applying arguments to a config. Applies to nested
+    configs as well.
+
+    **Arguments**
+
+    - original_key (`str`): the name of the argument in the argparse Namespace
+    - args (`argparse.Namespace`): the entire Namespace, ie the result of the parser
+    - config (`Config`): the config object
+
+    """
+    from confu.schema import Schema, Attribute
+    schema = config._schema
+
+    path = original_key.split("__")
+
+    arg_data = getattr(args, original_key)
+    
+    if len(path) > 1:
+        data = config.data
+
+        current_schema = schema._attr
+
+        for key in path:
+            
+            if isinstance(current_schema.get(key), Schema):
+                current_schema = current_schema.get(key)._attr
+                
+            elif isinstance(current_schema.get(key), Attribute):
+                attribute = current_schema.get(key)
+                
+                # If we cannot find the attribute in the schema
+                # we don't add it
+                if attribute is None:
+                    return
+
+        for key in path[:-1]:
+            if key not in data:
+                data[key] = {}
+            data = data[key]
+        data[path[-1]] = arg_data
+        
+    else:
+        attribute = schema._attr.get(original_key)
+        
+        # If we cannot find the attribute in the schema
+        # we don't add it
+        if attribute is None:
+            return
+
+        config.data[original_key] = arg_data
+        # attribute.validate(arg_data, path)
+    
 
 class click_options:
 
