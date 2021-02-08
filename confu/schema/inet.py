@@ -12,8 +12,8 @@ import ipaddress
 import re
 from urllib.parse import urlparse
 
-from confu.schema.core import Str, ValidationError
 from confu.exceptions import SoftDependencyError
+from confu.schema.core import Str, ValidationError
 
 
 class Email(Str):

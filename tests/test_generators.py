@@ -1,5 +1,7 @@
-import pytest
 import json
+
+import pytest
+
 from confu.generator import ConfigGenerator, generate
 from tests.schemas import Schema_02
 

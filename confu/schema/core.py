@@ -4,13 +4,13 @@ Fundamental schema attributes
 These can be imported directly from `confu.schema`
 """
 
-import os
 import collections
 import configparser
 import copy
+import os
 from inspect import isclass
 
-from confu.exceptions import ValidationError, ValidationWarning, ApplyDefaultError
+from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
 from confu.util import config_parser_dict
 
 

@@ -1,14 +1,13 @@
-import pytest
 import argparse
 import json
 import os
 
-from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
+import pytest
 
-
-from confu.cli import argparse_options, apply_argparse
+from confu.cli import apply_argparse, argparse_options
 from confu.config import Config
-from confu.schema import apply_default, apply_defaults, ApplyDefaultError, validate
+from confu.schema import ApplyDefaultError, apply_default, apply_defaults, validate
+from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
 
 
 def test_argparse():
@@ -268,7 +267,6 @@ def test_apply_argparse_10():
         ]
     )
 
-
     apply_argparse(args, config)
 
     # Config should be overwritten by arguments
@@ -302,7 +300,7 @@ def test_apply_argparse_10_invalid():
             "--schema-attr.new-attr-int",
             "2222",
             "--schema-attr.new-attr-str",
-            "hello world"
+            "hello world",
         ]
     )
 

@@ -1,6 +1,6 @@
 import pytest
 
-from confu.schema import Schema, Attribute, Str, Int, Float, Bool, List, Directory
+from confu.schema import Attribute, Bool, Directory, Float, Int, List, Schema, Str
 
 
 @pytest.mark.parametrize("Class", [Str, Int, Float, Bool, Directory])

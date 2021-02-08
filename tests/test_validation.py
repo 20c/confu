@@ -1,28 +1,27 @@
-import os
-import json
-import pytest
 import ipaddress
+import json
+import os
+
+import pytest
 
 from confu.exceptions import *
 from confu.schema import (
-    Schema,
-    ProxySchema,
-    List,
-    Dict,
-    Int,
-    Float,
     Bool,
-    Str,
-    File,
+    CollectValidationExceptions,
+    Dict,
     Directory,
     Email,
-    Url,
+    File,
+    Float,
+    Int,
     IpAddress,
-    CollectValidationExceptions,
+    List,
+    ProxySchema,
+    Schema,
+    Str,
+    Url,
 )
-
 from tests.schemas import Schema_01, Schema_05, Schema_06
-
 
 basedir = os.path.join(os.path.dirname(__file__))
 valid_dir = os.path.join(basedir, "data")

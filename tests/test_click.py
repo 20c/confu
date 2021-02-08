@@ -1,11 +1,11 @@
-import pytest
-import click
 import json
 
+import click
+import pytest
 from click.testing import CliRunner
 
-from tests.schemas import Schema_03
 from confu.cli import click_options
+from tests.schemas import Schema_03
 
 
 def test_click():

@@ -1,15 +1,15 @@
-import os
-import pytest
 import json
+import os
 
-from confu.schema import apply_default, apply_defaults, ApplyDefaultError
+import pytest
 
+from confu.schema import ApplyDefaultError, apply_default, apply_defaults
 from tests.schemas import (
     Schema_01,
     Schema_04,
-    Schema_12,
     Schema_10,
     Schema_11,
+    Schema_12,
     Schema_13,
 )
 
@@ -120,7 +120,7 @@ def test_apply_defaults(SchemaClass, config, expected):
         ) as fh:
             expected = json.load(fh)
 
-    if hasattr(SchemaClass(), 'schema_attr'):
+    if hasattr(SchemaClass(), "schema_attr"):
         print(SchemaClass().schema_attr.default)
 
     apply_defaults(SchemaClass(), config)
