@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from confu.schema import ApplyDefaultError, apply_default, apply_defaults
+from confu.schema import ApplyDefaultError, apply_defaults
 from tests.schemas import (
     Schema_01,
     Schema_04,

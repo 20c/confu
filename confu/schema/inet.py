@@ -67,7 +67,7 @@ class Url(Str):
 
         try:
             result = urlparse(value)
-        except:
+        except ValueError:
             raise ValidationError(self, path, value, "url expected")
 
         if not result.scheme:

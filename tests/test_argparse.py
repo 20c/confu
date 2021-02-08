@@ -6,7 +6,6 @@ import pytest
 
 from confu.cli import apply_argparse, argparse_options
 from confu.config import Config
-from confu.schema import ApplyDefaultError, apply_default, apply_defaults, validate
 from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
 
 
@@ -18,17 +17,17 @@ def test_argparse():
     parsed = parser.parse_args([])
 
     assert parsed.nested__int_attr_choices == 1
-    assert parsed.nested__int_attr == None
+    assert parsed.nested__int_attr is None
     assert parsed.list_attr_str == []
     assert parsed.list_attr_int == []
     assert parsed.str_attr == "test"
     assert parsed.int_attr == 123
     assert parsed.float_attr == 1.23
-    assert parsed.bool_attr == None
-    assert parsed.bool_attr_w_dflt == False
-    assert parsed.bool_attr_w_dflt_yes == True
+    assert parsed.bool_attr is None
+    assert parsed.bool_attr_w_dflt is False
+    assert parsed.bool_attr_w_dflt_yes is True
     assert parsed.int_attr_fntgl_on == 1
-    assert getattr(parsed, "list_attr_schema", None) == None
+    assert getattr(parsed, "list_attr_schema", None) is None
 
     with pytest.raises(AttributeError):
         assert parsed.int_attr_disabled == 1
@@ -55,15 +54,15 @@ def test_argparse():
     assert parsed.int_attr == 999
 
     parsed = parser.parse_args(["--bool-attr"])
-    assert parsed.bool_attr == True
+    assert parsed.bool_attr is True
 
     parsed = parser.parse_args(["--bool-attr-w-dflt"])
-    assert parsed.bool_attr_w_dflt == True
+    assert parsed.bool_attr_w_dflt is True
 
     parsed = parser.parse_args(["--no-bool-attr-w-dflt-yes"])
-    assert parsed.bool_attr_w_dflt_yes == False
+    assert parsed.bool_attr_w_dflt_yes is False
 
-    with pytest.raises(SystemExit) as exc:
+    with pytest.raises(SystemExit):
         parsed = parser.parse_args(["--nested.int-attr-choices", "4"])
 
 
@@ -86,11 +85,11 @@ def test_argparse_dynamic_defaults():
     assert parsed.str_attr == "test dynamic"
     assert parsed.int_attr == 123
     assert parsed.float_attr == 1.23
-    assert parsed.bool_attr == None
-    assert parsed.bool_attr_w_dflt == False
-    assert parsed.bool_attr_w_dflt_yes == True
-    assert getattr(parsed, "list_attr_schema", None) == None
-    assert getattr(parsed, "int_attr_disabled", None) == None
+    assert parsed.bool_attr is None
+    assert parsed.bool_attr_w_dflt is False
+    assert parsed.bool_attr_w_dflt_yes is True
+    assert getattr(parsed, "list_attr_schema", None) is None
+    assert getattr(parsed, "int_attr_disabled", None) is None
 
 
 def test_argparse_filter_attributes():
@@ -101,13 +100,13 @@ def test_argparse_filter_attributes():
     parsed = parser.parse_args([])
 
     assert parsed.str_attr == "test"
-    assert parsed.nested__int_attr == None
-    assert getattr(parsed, "float_attr", None) == None
-    assert getattr(parsed, "bool_attr", None) == None
-    assert getattr(parsed, "list_attr_str", None) == None
-    assert getattr(parsed, "list_attr_int", None) == None
-    assert getattr(parsed, "int_attr", None) == None
-    assert getattr(parsed, "nested__int_attr_choices", None) == None
+    assert parsed.nested__int_attr is None
+    assert getattr(parsed, "float_attr", None) is None
+    assert getattr(parsed, "bool_attr", None) is None
+    assert getattr(parsed, "list_attr_str", None) is None
+    assert getattr(parsed, "list_attr_int", None) is None
+    assert getattr(parsed, "int_attr", None) is None
+    assert getattr(parsed, "nested__int_attr_choices", None) is None
 
 
 def test_argparse_no_default_from_schema():
@@ -127,14 +126,14 @@ def test_argparse_no_default_from_schema():
 
     assert parsed.nested__int_attr_choices == 2
     assert parsed.nested__int_attr == 3
-    assert parsed.list_attr_str == None
-    assert parsed.list_attr_int == None
+    assert parsed.list_attr_str is None
+    assert parsed.list_attr_int is None
     assert parsed.str_attr == "test dynamic"
-    assert parsed.int_attr == None
-    assert parsed.float_attr == None
-    assert parsed.bool_attr == None
-    assert parsed.bool_attr_w_dflt == None
-    assert parsed.bool_attr_w_dflt_yes == None
+    assert parsed.int_attr is None
+    assert parsed.float_attr is None
+    assert parsed.bool_attr is None
+    assert parsed.bool_attr_w_dflt is None
+    assert parsed.bool_attr_w_dflt_yes is None
 
 
 def test_argparse_default_config():
@@ -154,7 +153,7 @@ def test_argparse_default_config():
 
     assert parsed.str_attr == "hello world"
     assert parsed.int_attr == 234
-    assert parsed.str_attr_null == None
+    assert parsed.str_attr_null is None
 
     parsed = parser.parse_args(
         ["--str-attr", "donkey", "--int-attr", "345", "--str-attr-null", "yoyo"]
@@ -202,9 +201,9 @@ def test_apply_argparse_03():
     assert config["list_attr_int"] == [1, 2, 3]
     assert config["list_attr_str"] == ["1", "2", "3"]
     assert config["int_attr"] == 999
-    assert config["bool_attr"] == True
-    assert config["bool_attr_w_dflt"] == True
-    assert config["bool_attr_w_dflt_yes"] == False
+    assert config["bool_attr"] is True
+    assert config["bool_attr_w_dflt"] is True
+    assert config["bool_attr_w_dflt_yes"] is False
     assert config["nested"]["int_attr_choices"] == 2
     assert config["nested"]["int_attr"] == 3
 

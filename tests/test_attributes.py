@@ -1,6 +1,6 @@
 import pytest
 
-from confu.schema import Attribute, Bool, Directory, Float, Int, List, Schema, Str
+from confu.schema import Bool, Directory, Float, Int, List, Schema, Str
 
 
 @pytest.mark.parametrize("Class", [Str, Int, Float, Bool, Directory])
@@ -82,5 +82,5 @@ def test_list():
 @pytest.mark.parametrize("Class", [Str, Int, Bool, Float])
 def test_none_default(Class):
     attribute = Class("test", default=None)
-    assert attribute.has_default == True
-    assert attribute.default == None
+    assert attribute.has_default is True
+    assert attribute.default is None

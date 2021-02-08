@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from confu.exceptions import *
+from confu.exceptions import ValidationError
 from confu.schema import (
     Bool,
     CollectValidationExceptions,
@@ -16,7 +16,6 @@ from confu.schema import (
     Int,
     IpAddress,
     List,
-    ProxySchema,
     Schema,
     Str,
     Url,
@@ -199,7 +198,7 @@ def test_schema_collect_exc(SchemaClass, config_fail, error):
 def test_attr_name_validation():
 
     attr = Str()
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate("test", [])
 
     item = Str()
@@ -235,10 +234,10 @@ def test_directory_create(tmpdir):
 
     attr = Directory(name="test")
     path = os.path.join(str(tmpdir), "test2")
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate(path, [])
 
     attr = Directory(name="test", create="invalid mode")
     path = os.path.join(str(tmpdir), "test3")
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate(path, [])
