@@ -216,7 +216,7 @@ def test_attr_name_same_as_property_name():
 )
 def test_default_none(AttributeClass):
     attr = AttributeClass("test", default=None)
-    assert attr.validate(None, []) == None
+    assert attr.validate(None, []) is None
 
 
 @pytest.mark.parametrize(
