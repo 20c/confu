@@ -70,6 +70,8 @@ def argparse_options(
     - defaults (`dict`): if specified will override defaults from here
     - attributes (`list<str>`): can hold a list of attribute names.
     if specified only matching attributes will be aded
+    - default_from_schema (`bool`): determines if defaults for
+    argparser should come from the schema
     """
 
     def optionize(attribute, path):
