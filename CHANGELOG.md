@@ -4,6 +4,10 @@
 ## Unreleased
 ### Added
 - Python 3.8 support (#33)
+- Python 3.9 support (#41)
+- `apply_argparse`: helper function to update Config object with output from parser (#31)
+- `argparse_options`: `default_from_schema` keyword argument added (#31)
+- Poetry added for dependency management (#39)
 ### Removed
 - Python 3.5 support (#32)
 
