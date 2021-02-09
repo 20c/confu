@@ -1,11 +1,10 @@
-import pytest
-import click
 import json
 
+import click
 from click.testing import CliRunner
 
-from tests.schemas import Schema_03
 from confu.cli import click_options
+from tests.schemas import Schema_03
 
 
 def test_click():
@@ -21,15 +20,15 @@ def test_click():
 
     print(result)
     assert result["nested__int_attr_choices"] == 1
-    assert result["nested__int_attr"] == None
+    assert result["nested__int_attr"] is None
     assert result["list_attr_str"] == []
     assert result["list_attr_int"] == []
     assert result["str_attr"] == "test"
     assert result["int_attr"] == 123
     assert result["float_attr"] == 1.23
-    assert result["bool_attr"] == None
-    assert result["bool_attr_w_dflt"] == False
-    assert result["bool_attr_w_dflt_yes"] == True
+    assert result["bool_attr"] is None
+    assert result["bool_attr_w_dflt"] is False
+    assert result["bool_attr_w_dflt_yes"] is True
     assert result["int_attr_fntgl_on"] == 1
     assert "list_attr_schema" not in result
     assert "int_attr_disabled" not in result
@@ -56,13 +55,13 @@ def test_click():
     assert result["int_attr"] == 999
 
     result = json.loads(runner.invoke(command, ["--bool-attr"]).output)
-    assert result["bool_attr"] == True
+    assert result["bool_attr"] is True
 
     result = json.loads(runner.invoke(command, ["--bool-attr-w-dflt"]).output)
-    assert result["bool_attr_w_dflt"] == True
+    assert result["bool_attr_w_dflt"] is True
 
     result = json.loads(runner.invoke(command, ["--no-bool-attr-w-dflt-yes"]).output)
-    assert result["bool_attr_w_dflt_yes"] == False
+    assert result["bool_attr_w_dflt_yes"] is False
 
     result = runner.invoke(command, ["--nested-int-attr-choices", 4])
     assert result.exception
@@ -92,9 +91,9 @@ def test_click_dynamic_defaults():
     assert result["str_attr"] == "test dynamic"
     assert result["int_attr"] == 123
     assert result["float_attr"] == 1.23
-    assert result["bool_attr"] == None
-    assert result["bool_attr_w_dflt"] == False
-    assert result["bool_attr_w_dflt_yes"] == True
+    assert result["bool_attr"] is None
+    assert result["bool_attr_w_dflt"] is False
+    assert result["bool_attr_w_dflt_yes"] is True
     assert "list_attr_schema" not in result
     assert "int_attr_disabled" not in result
 
@@ -111,7 +110,7 @@ def test_click_filter_attributes():
     result = json.loads(output)
 
     print(result)
-    assert result["nested__int_attr"] == None
+    assert result["nested__int_attr"] is None
     assert result["str_attr"] == "test"
     assert "nested__int_attr_choices" not in result
     assert "list_attr_str" not in result

@@ -1,4 +1,4 @@
-from confu.schema import Schema, ProxySchema, List, Int, Float, Bool, Str
+from confu.schema import Bool, Float, Int, List, ProxySchema, Schema, Str
 
 
 class NestedSchema_01(Schema):
@@ -116,10 +116,11 @@ class Schema_13(Schema):
     int_attr = Int(default=1)
     str_attr = Str(default="default")
 
+
 class Schema_14(Schema):
     schema_attr = Schema_13()
     float_attr = Float(default=12.3)
 
+
 class Schema_15(Schema):
     nested_schema = Schema_14()
-    

@@ -1,28 +1,26 @@
-import os
-import json
-import pytest
 import ipaddress
+import json
+import os
 
-from confu.exceptions import *
+import pytest
+
+from confu.exceptions import ValidationError
 from confu.schema import (
-    Schema,
-    ProxySchema,
-    List,
-    Dict,
-    Int,
-    Float,
     Bool,
-    Str,
-    File,
+    CollectValidationExceptions,
+    Dict,
     Directory,
     Email,
-    Url,
+    File,
+    Float,
+    Int,
     IpAddress,
-    CollectValidationExceptions,
+    List,
+    Schema,
+    Str,
+    Url,
 )
-
 from tests.schemas import Schema_01, Schema_05, Schema_06
-
 
 basedir = os.path.join(os.path.dirname(__file__))
 valid_dir = os.path.join(basedir, "data")
@@ -200,7 +198,7 @@ def test_schema_collect_exc(SchemaClass, config_fail, error):
 def test_attr_name_validation():
 
     attr = Str()
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate("test", [])
 
     item = Str()
@@ -218,7 +216,7 @@ def test_attr_name_same_as_property_name():
 )
 def test_default_none(AttributeClass):
     attr = AttributeClass("test", default=None)
-    assert attr.validate(None, []) == None
+    assert attr.validate(None, []) is None
 
 
 @pytest.mark.parametrize(
@@ -236,10 +234,10 @@ def test_directory_create(tmpdir):
 
     attr = Directory(name="test")
     path = os.path.join(str(tmpdir), "test2")
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate(path, [])
 
     attr = Directory(name="test", create="invalid mode")
     path = os.path.join(str(tmpdir), "test3")
-    with pytest.raises(ValidationError) as exception_info:
+    with pytest.raises(ValidationError):
         attr.validate(path, [])

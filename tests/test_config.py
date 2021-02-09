@@ -1,4 +1,3 @@
-import confu
 from confu.config import Config
 from tests.schemas import Schema_04
 
@@ -38,6 +37,6 @@ def test_config_mapping():
 
 def test_get_nested():
     cfg = Config(Schema_04())
-    data = cfg.data
+    cfg.data
     assert cfg.get_nested("nested") == {"int_attr_choices": 1}
-    assert cfg.get_nested("nested.nonexistant") == None
+    assert cfg.get_nested("nested.nonexistant") is None

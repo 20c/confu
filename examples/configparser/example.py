@@ -1,6 +1,6 @@
 import configparser
 
-from confu.schema import IpAddress, Int, Schema, validate
+from confu.schema import Int, IpAddress, Schema, validate
 
 
 # this schema describes the [server] section
