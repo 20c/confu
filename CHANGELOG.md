@@ -2,6 +2,9 @@
 
 
 ## Unreleased
+
+
+## 1.6.0
 ### Added
 - Python 3.8 support (#33)
 - Python 3.9 support (#41)

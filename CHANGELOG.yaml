@@ -105,16 +105,20 @@
   - PyPI package renamed to `confu`
   - '`Directory Attribute`: expand user and make path absolute during validation (#27)'
   - '`File Attribute`: expand user and make path absolute during validation (#26)'
-Unreleased:
+1.6.0:
   added:
   - Python 3.8 support (#33)
   - Python 3.9 support (#41)
-  - '`apply_argparse`: helper function to update Config object with output from parser (#31)'
+  - '`apply_argparse`: helper function to update Config object with output from parser
+    (#31)'
   - '`argparse_options`: `default_from_schema` keyword argument added (#31)'
-  - Poetry added for dependency management (#39) 
+  - Poetry added for dependency management (#39)
+  removed:
+  - Python 3.5 support (#32)
+Unreleased:
+  added: []
   changed: []
   deprecated: []
   fixed: []
-  removed:
-  - Python 3.5 support (#32)
+  removed: []
   security: []
