@@ -115,6 +115,9 @@
   - Poetry added for dependency management (#39)
   removed:
   - Python 3.5 support (#32)
+1.6.1:
+  fixed:
+  - version in pyproject.toml
 Unreleased:
   added: []
   changed: []
