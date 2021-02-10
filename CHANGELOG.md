@@ -18,6 +18,8 @@
 - Poetry added for dependency management (#39)
 ### Removed
 - Python 3.5 support (#32)
+- Python 3.4 support
+- Python 2.7 support
 
 
 ## 1.5.0
