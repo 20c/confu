@@ -2,6 +2,14 @@
 
 
 ## Unreleased
+
+
+## 1.6.1
+### Fixed
+- version in pyproject.toml
+
+
+## 1.6.0
 ### Added
 - Python 3.8 support (#33)
 - Python 3.9 support (#41)
@@ -10,6 +18,8 @@
 - Poetry added for dependency management (#39)
 ### Removed
 - Python 3.5 support (#32)
+- Python 3.4 support
+- Python 2.7 support
 
 
 ## 1.5.0
