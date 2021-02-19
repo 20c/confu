@@ -1,13 +1,9 @@
 import configparser
 import os
+
 import pytest
 
-from confu.util import (
-    config_parser_dict,
-    _set_option,
-    _set_bool,
-
-)
+from confu.util import _set_bool, _set_option, config_parser_dict
 
 
 def test_config_parser_dict():
