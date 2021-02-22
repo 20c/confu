@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from confu.util import _set_bool, _set_option, config_parser_dict
+from confu.util import _set_bool, _set_option, config_parser_dict, set_bool, set_option
 
 
 def test_config_parser_dict():
@@ -12,6 +12,12 @@ def test_config_parser_dict():
     config.read(path)
 
     assert config_parser_dict(config) == {"test": {"a": "test"}}
+
+
+def test_set_option_wrapper():
+    assert "TEST_SETTING" not in globals()
+    set_option("TEST_SETTING", "world")
+    assert globals()["TEST_SETTING"] == "world"
 
 
 def test_set_option():
@@ -74,6 +80,12 @@ def test_set_option_booleans():
     _set_option("TEST_SETTING", True, context)
     # We can set boolean values without env vars as well
     assert context["TEST_SETTING"] is True
+
+
+def test_set_bool_wrapper():
+    assert "TEST_SETTING" not in globals()
+    set_bool("TEST_SETTING", False)
+    assert globals()["TEST_SETTING"] is False
 
 
 def test_set_bool():
