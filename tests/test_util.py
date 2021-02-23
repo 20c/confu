@@ -3,7 +3,26 @@ import os
 
 import pytest
 
-from confu.util import _set_bool, _set_option, config_parser_dict, set_bool, set_option
+from confu.util import SettingsManager, config_parser_dict
+
+
+@pytest.fixture()
+def globals_fixture():
+    # Setup
+    g = globals()
+    yield g
+    # Teardown
+    del g["TEST_SETTING"]
+
+
+@pytest.fixture()
+def envvar_fixture():
+    # Setup
+    os.environ["TEST_SETTING"] = "world"
+    yield
+    # Teardown
+    if os.environ.get("TEST_SETTING"):
+        del os.environ["TEST_SETTING"]
 
 
 def test_config_parser_dict():
@@ -14,122 +33,162 @@ def test_config_parser_dict():
     assert config_parser_dict(config) == {"test": {"a": "test"}}
 
 
-def test_set_option_wrapper():
-    assert "TEST_SETTING" not in globals()
-    set_option("TEST_SETTING", "world")
-    assert globals()["TEST_SETTING"] == "world"
+def test_set_option_global(globals_fixture):
+    g = globals_fixture
+    settings = SettingsManager(g)
+    settings.set_option("TEST_SETTING", "world")
+    assert g["TEST_SETTING"] == "world"
+
+
+def test_settings_manager():
+    scope = {}
+    settings = SettingsManager(scope)
+    assert settings.scope == scope
+
+
+def test_set_from_env(envvar_fixture):
+    scope = {}
+    settings = SettingsManager(scope)
+    settings.set_from_env("TEST_SETTING")
+    assert scope["TEST_SETTING"] == "world"
+
+
+def test_set_from_env_no_env_no_default():
+    scope = {}
+    settings = SettingsManager(scope)
+    assert os.environ.get("TEST_SETTING") is None
+    settings.set_from_env("TEST_SETTING")
+    assert scope.get("TEST_SETTING") is None
+
+
+def test_set_from_env_no_env_w_default():
+    scope = {}
+    settings = SettingsManager(scope)
+    assert os.environ.get("TEST_SETTING") is None
+    settings.set_from_env("TEST_SETTING", default="default")
+    assert scope["TEST_SETTING"] == "default"
 
 
 def test_set_option():
-    context = {}
-    _set_option("TEST_SETTING", "hello", context)
-    assert context["TEST_SETTING"] == "hello"
+    scope = {}
+    settings = SettingsManager(scope)
+    settings.set_option("TEST_SETTING", "hello")
+    assert scope["TEST_SETTING"] == "hello"
 
 
-def test_set_option_w_env_var():
+def test_set_option_w_env_var(envvar_fixture):
     """
     Environment variables take precedence over provided options
     """
-    context = {}
-    os.environ["TEST_SETTING"] = "world"
-    _set_option("TEST_SETTING", "hello", context)
-    assert context["TEST_SETTING"] == "world"
+    scope = {}
+    settings = SettingsManager(scope)
+    settings.set_option("TEST_SETTING", "hello")
+    assert scope["TEST_SETTING"] == "world"
 
 
-def test_set_option_coerce_env_var():
+def test_set_option_coerce_env_var(envvar_fixture):
     """
     We coerce the environment variable to the same type
     as the provided default.
     """
-    context = {}
+    scope = {}
+    settings = SettingsManager(scope)
     # env variables can never be set as integers
     os.environ["TEST_SETTING"] = "123"
 
     # setting an option with a default integer will coerce the env
     # variable as well (fix for issue #888)
-    _set_option("TEST_SETTING", 321, context)
-    assert context["TEST_SETTING"] == 123
+
+    settings.set_option("TEST_SETTING", 321)
+    assert scope["TEST_SETTING"] == 123
 
     # setting an option with a default string will coerce the env
     # variable as well
-    _set_option("TEST_SETTING", "321", context)
-    assert context["TEST_SETTING"] == "123"
+    settings.set_option("TEST_SETTING", "321")
+    assert scope["TEST_SETTING"] == "123"
 
-    _set_option("TEST_SETTING", 123.1, context)
-    assert context["TEST_SETTING"] == 123.0
+    settings.set_option("TEST_SETTING", 123.1)
+    assert scope["TEST_SETTING"] == 123.0
 
 
-def test_set_option_booleans():
+def test_set_option_booleans(envvar_fixture):
 
-    context = {}
+    scope = {}
+    settings = SettingsManager(scope)
     # env variables can only be set as strings
     os.environ["TEST_SETTING"] = "False"
 
     # setting the option with a boolean
     # will use set_bool to handle the
     # type coercion of the env variable
-    _set_option("TEST_SETTING", False, context)
-    assert context["TEST_SETTING"] is False
+    settings.set_option("TEST_SETTING", False)
+    assert scope["TEST_SETTING"] is False
 
     # the environment variable has precedence
-    _set_option("TEST_SETTING", True, context)
-    assert context["TEST_SETTING"] is False
+    settings.set_option("TEST_SETTING", True)
+    assert scope["TEST_SETTING"] is False
 
     del os.environ["TEST_SETTING"]
-    del context["TEST_SETTING"]
-    _set_option("TEST_SETTING", True, context)
+    del scope["TEST_SETTING"]
+    settings.set_option("TEST_SETTING", True)
     # We can set boolean values without env vars as well
-    assert context["TEST_SETTING"] is True
+    assert scope["TEST_SETTING"] is True
 
 
-def test_set_bool_wrapper():
-    assert "TEST_SETTING" not in globals()
-    set_bool("TEST_SETTING", False)
-    assert globals()["TEST_SETTING"] is False
+def test_set_bool_global(globals_fixture):
+    g = globals_fixture
+    settings = SettingsManager(g)
+
+    assert "TEST_SETTING" not in g
+    settings.set_bool("TEST_SETTING", False)
+    assert g["TEST_SETTING"] is False
 
 
-def test_set_bool():
+def test_set_bool(envvar_fixture):
     """
     We coerce the environment variable to a boolean
     """
-    context = {}
-
+    scope = {}
+    settings = SettingsManager(scope)
     # 0 is interpreted as False
     os.environ["TEST_SETTING"] = "0"
     # env variables can never be set as integers
-    _set_bool("TEST_SETTING", False, context)
-    assert context["TEST_SETTING"] is False
+    settings.set_bool("TEST_SETTING", False)
+    assert scope["TEST_SETTING"] is False
 
     # the environment variable has precedence
-    _set_bool("TEST_SETTING", True, context)
-    assert context["TEST_SETTING"] is False
+    settings.set_bool("TEST_SETTING", True)
+    assert scope["TEST_SETTING"] is False
 
     # We raise an error if the env variable
     # cannot be reasonably coerced to a bool
 
     os.environ["TEST_SETTING"] = "100"
     with pytest.raises(ValueError):
-        _set_option("TEST_SETTING", True, context)
+        settings.set_bool("TEST_SETTING", True)
 
 
-def test_set_options_none():
+def test_set_options_none(envvar_fixture):
     """
     We coerce the environment variable to a boolean
     """
-    context = {}
-
+    scope = {}
+    settings = SettingsManager(scope)
     # 0 is interpreted as False
     os.environ["TEST_SETTING"] = "0"
 
     # setting an option with None without setting the
     # envvar_type raises an error
     with pytest.raises(ValueError):
-        _set_option("TEST_SETTING", None, context)
+        settings.set_option(
+            "TEST_SETTING",
+            None,
+        )
 
     # setting an option with None but setting the
     # envvar_type is fine
-    _set_option("TEST_SETTING", None, context, envvar_type=int)
-    assert context["TEST_SETTING"] == 0
+    settings.set_option("TEST_SETTING", None, envvar_type=int)
+    assert scope["TEST_SETTING"] == 0
 
-    _set_option("TEST_SETTING", None, context, envvar_type=str)
-    assert context["TEST_SETTING"] == "0"
+    settings.set_option("TEST_SETTING", None, envvar_type=str)
+    assert scope["TEST_SETTING"] == "0"
