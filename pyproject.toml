@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "confu"
 repository = "https://github.com/20c/confu"
-version = "1.7.0"
+version = "1.7.0.1"
 description = "Configuration file validation and generation"
 authors = [ "20C <code@20c.com>",]
 license = "Apache-2.0"
