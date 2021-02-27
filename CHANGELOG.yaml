@@ -121,7 +121,8 @@
   fixed:
   - version in pyproject.toml
 Unreleased:
-  added: []
+  added:
+  - '`confu.util.SettingsManager`: scoped settings management with environment variable override support'
   changed: []
   deprecated: []
   fixed: []

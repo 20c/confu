@@ -2,6 +2,8 @@
 
 
 ## Unreleased
+### Added
+- `confu.util.SettingsManager`: scoped settings management with environment variable override support
 
 
 ## 1.6.1
