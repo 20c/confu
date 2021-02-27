@@ -21,9 +21,9 @@ classifiers = [
 python = ">=3.6,<4.0"
 
 # docs
-markdown-include= ">=0.5,<1"
-mkdocs = ">=1.0.0,<2.0.0"
-pymdgen = "<2"
+markdown-include= {vesion=">=0.5,<1", optional=true}
+mkdocs = {version=">=1.0.0,<2.0.0", optional=true}
+pymdgen = {version="<2", optional=true}
 
 
 
