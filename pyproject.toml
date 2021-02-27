@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "confu"
 repository = "https://github.com/20c/confu"
-version = "1.7.0.1"
+version = "1.7.1"
 description = "Configuration file validation and generation"
 authors = [ "20C <code@20c.com>",]
 license = "Apache-2.0"
@@ -28,12 +28,17 @@ black = "^20.8b1"
 isort = "^5.7.0"
 flake8 = "^3.8.4"
 
-# docs
-markdown-include= {version=">=0.5,<1", optional=true}
-mkdocs = {version=">=1.0.0,<2.0.0", optional=true}
-pymdgen = {version="<2", optional=true}
-
-
-
 [tool.poetry.extras]
 docs = [ "mark-down-include", "mkdocs", "pymdgen",]
+
+[tool.poetry.dev-dependencies.markdown-include]
+version = ">=0.5,<1"
+optional = true
+
+[tool.poetry.dev-dependencies.mkdocs]
+version = ">=1.0.0,<2.0.0"
+optional = true
+
+[tool.poetry.dev-dependencies.pymdgen]
+version = "<2"
+optional = true
