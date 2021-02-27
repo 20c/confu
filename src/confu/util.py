@@ -24,7 +24,19 @@ _DEFAULT_ARG = object()
 
 
 class SettingsManager:
+
+    """
+    Scoped settings management with environment variable override support
+    """
+
     def __init__(self, scope):
+
+        """
+        Arguments:
+
+        - scope (`dict`)
+        """
+
         self.scope = scope
 
     def set_from_env(self, name, default=_DEFAULT_ARG):
