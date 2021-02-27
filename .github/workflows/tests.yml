@@ -36,7 +36,7 @@ jobs:
           flake8 .
           black . --check
           isort .
-  
+
   test:
     needs: linting
     strategy:
@@ -69,6 +69,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Run tests
         run: |
+          source .venv/bin/activate
           poetry run pytest tests/ --cov="confu" --cov-report=xml --cov-report=term-missing
           poetry run coverage report
       # upload coverage stats
