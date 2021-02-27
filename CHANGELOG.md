@@ -4,6 +4,11 @@
 ## Unreleased
 
 
+## 1.7.1
+### Fixed
+- mkdocs no longer a requirement for a normal installation of the package
+
+
 ## 1.7.0
 ### Added
 - `confu.util.SettingsManager`: scoped settings management with environment variable override support

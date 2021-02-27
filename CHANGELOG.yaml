@@ -124,6 +124,9 @@
   added:
   - '`confu.util.SettingsManager`: scoped settings management with environment variable
     override support'
+1.7.1:
+  fixed:
+  - mkdocs no longer a requirement for a normal installation of the package
 Unreleased:
   added: []
   changed: []
