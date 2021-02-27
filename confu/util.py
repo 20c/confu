@@ -31,8 +31,8 @@ class SettingsManager:
         """
         Sets a scope variable from a environment variable of the same name.
 
-        This is useful to leave the option unset and use Django's default
-        (which may change).
+        This is useful to leave the option unset and use default if it
+        already exists in the scope (which may change).
         """
         if default is _DEFAULT_ARG and name not in os.environ:
             return
