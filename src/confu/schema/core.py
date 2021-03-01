@@ -4,7 +4,7 @@ Fundamental schema attributes
 These can be imported directly from `confu.schema`
 """
 
-import collections
+import collections.abc
 import configparser
 import copy
 import os
@@ -589,7 +589,7 @@ class Schema(Attribute):
             warnings = ValidationErrorProcessor()
 
         # munge Config support without having to import munge
-        if isinstance(config, collections.MutableMapping) and hasattr(config, "data"):
+        if isinstance(config, collections.abc.MutableMapping) and hasattr(config, "data"):
             config = config.data
         elif isinstance(config, configparser.ConfigParser):
             config = config_parser_dict(config)
