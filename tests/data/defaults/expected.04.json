@@ -1,5 +1,5 @@
 {
-  "proxy" : { 
+  "proxy" : {
     "str_attr_nd" : "single proxy",
     "int_attr" : 123,
     "str_attr_null" : null,

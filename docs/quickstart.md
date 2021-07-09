@@ -69,5 +69,3 @@ Will output
 [Config Error] sub: missing
 2 errors, 0 warnings in config
 ```
-
-

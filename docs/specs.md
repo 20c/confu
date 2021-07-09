@@ -4,7 +4,7 @@
 
 Implementation of configuration schema in python. Something that can be used to validate configuration files as well as generate configuration files.
 
-We have a form of this implemented in [vodka/config](https://github.com/20c/vodka/tree/master/vodka/config), should take all the schema definition code from there and re-use it here. 
+We have a form of this implemented in [vodka/config](https://github.com/20c/vodka/tree/master/vodka/config), should take all the schema definition code from there and re-use it here.
 
 ## Feature requirements
 
@@ -36,7 +36,7 @@ Most yaml configurations will come with some sort of nesting. So need to be able
 #### Type
 
 Describes the config variable type - this should be a function that can be used to validate the value. So for example
-could be the `int` function that comes with python or a custom function that can take a value and then validate it 
+could be the `int` function that comes with python or a custom function that can take a value and then validate it
 
 ## Validation
 
