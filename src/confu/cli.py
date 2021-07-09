@@ -39,7 +39,7 @@ def destination_name(path, delimiter="__"):
 
     cli destination name (`str`)
     """
-    return "{}".format(delimiter.join(path))
+    return f"{delimiter.join(path)}"
 
 
 def default(value, path, defaults):

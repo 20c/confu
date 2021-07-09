@@ -143,7 +143,7 @@ def test_argparse_default_config():
     path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "data/argparse/config.json"
     )
-    with open(path, "r") as file:
+    with open(path) as file:
         config = json.load(file)
 
     parser = argparse.ArgumentParser()

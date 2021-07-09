@@ -123,5 +123,3 @@ Options:
   --some-bool / --no-some-bool
   --help                          Show this message and exit.
 ```
-
-

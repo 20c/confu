@@ -95,7 +95,7 @@ class SettingsManager:
                 self.scope[name] = False
             else:
                 raise ValueError(
-                    "{} is a boolean, cannot match '{}'".format(name, os.environ[name])
+                    f"{name} is a boolean, cannot match '{os.environ[name]}'"
                 )
         self.set_default(name, value)
 
