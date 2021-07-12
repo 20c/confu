@@ -153,3 +153,73 @@ class IpAddress(Str):
         elif self.protocol is None and not value_v4 and not value_v6:
             raise ValidationError(self, path, value, "invalid ip (v4 or v6)")
         return value_v4 or value_v6
+
+
+class IpNetwork(Str):
+
+    """
+    Describes a IPv4 or IPv6 IP prefix
+    """
+
+    def __init__(self, name="", protocol=None, **kwargs):
+
+        """
+        Initialize attribute
+
+        **Keyword Arguments**
+
+        - name (`str`): describes the attribute name, if not specified
+          explicitly will be set through the schema that instantiates
+          the attribute.
+        - protocol (`int`): ip version, can be 4, 6 or None - if it is none
+          the attribute can hold either a v4 or a v6 IP address.
+        - default (`mixed`): the default value of this attribute. Once a default
+          value is set, schema validation will no longer raise a
+          validation error if the attribute is missing from the
+          configuration.
+        - choices (`list`): if specified on values in this list may be set
+          for this attribute
+        - help (`str`): help description
+        - cli (`bool=True`): enable CLI support for this attribute
+        - deprecated (`str`): version id of when this attribute will be deprecated
+        - added (`str`): version id of when this attribute was added to the schema
+        - removed (`str`): version id of when this attribute will be removed
+        """
+
+        super().__init__(name=name, **kwargs)
+
+        if protocol not in [None, 4, 6]:
+            raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
+        self.protocol = protocol
+
+    def validate_v4(self, value, path, **kwargs):
+        try:
+            return ipaddress.IPv4Network(value)
+        except ipaddress.AddressValueError:
+            return False
+
+    def validate_v6(self, value, path, **kwargs):
+        try:
+            return ipaddress.IPv6Network(value)
+        except ipaddress.AddressValueError:
+            return False
+
+    def validate(self, value, path, **kwargs):
+        value = super().validate(value, path, **kwargs)
+
+        if value is None and self.default_is_none:
+            return value
+
+        if self.blank and value == "":
+            return value
+
+        value = f"{value}"
+        value_v4 = self.validate_v4(value, path, **kwargs)
+        value_v6 = self.validate_v6(value, path, **kwargs)
+        if self.protocol == 4 and not value_v4:
+            raise ValidationError(self, path, value, "invalid network (v4)")
+        elif self.protocol == 6 and not value_v6:
+            raise ValidationError(self, path, value, "invalid network (v6)")
+        elif self.protocol is None and not value_v4 and not value_v6:
+            raise ValidationError(self, path, value, "invalid network (v4 or v6)")
+        return value_v4 or value_v6
