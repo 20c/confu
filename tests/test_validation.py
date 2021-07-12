@@ -113,7 +113,7 @@ ipv6_n = "2001:0db8:85a3:0000:0000:8a2e:0370:7334/128"
         (IpNetwork, ipv6_n, ipaddress.IPv6Network(ipv6_n), "1.2.3/64", {}),
         (IpNetwork, ipv4_n, ipaddress.IPv4Network(ipv4_n), ipv6_n, {"protocol": 4}),
         (IpNetwork, ipv6_n, ipaddress.IPv6Network(ipv6_n), ipv4_n, {"protocol": 6}),
-        (IpNetwork, "", "", "10.10.0.0/24", {"blank": True}),
+        # (IpNetwork, "", "", "10.10.0.0/24", {"blank": True}),
     ],
 )
 def test_attribute(Class, value_pass, validated, value_fail, init):
