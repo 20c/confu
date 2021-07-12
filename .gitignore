@@ -8,4 +8,4 @@ release.sh
 .tox
 coverage.xml
 /dist
-.vscode
+/.vscode
