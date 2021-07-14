@@ -128,7 +128,8 @@
   fixed:
   - mkdocs no longer a requirement for a normal installation of the package
 Unreleased:
-  added: []
+  added: 
+    - '`IpNetwork` attribute'
   changed: []
   deprecated: []
   fixed:
