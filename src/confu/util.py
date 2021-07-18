@@ -86,7 +86,7 @@ class SettingsManager:
             self.set_default(name, value)
 
     def set_bool(self, name, value):
-        """ Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed. """
+        """Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed."""
         if name in os.environ:
             envval = os.environ.get(name).lower()
             if envval in ["1", "true", "y", "yes"]:
@@ -100,6 +100,6 @@ class SettingsManager:
         self.set_default(name, value)
 
     def set_default(self, name, value):
-        """ Sets the default value for the option if it's not already set. """
+        """Sets the default value for the option if it's not already set."""
         if name not in self.scope:
             self.scope[name] = value

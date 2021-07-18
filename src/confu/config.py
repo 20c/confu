@@ -38,12 +38,12 @@ class Config(collections.abc.Mapping):
         self.data = data if data else {}
 
     def copy(self):
-        """ return a read only copy of data """
+        """return a read only copy of data"""
         return copy.deepcopy(self.data)
 
     @property
     def data(self):
-        """ config data, should be used for read only """
+        """config data, should be used for read only"""
         if self._data:
             return self._data
 
@@ -71,7 +71,7 @@ class Config(collections.abc.Mapping):
 
     @property
     def schema(self):
-        """ return a read only copy of schema """
+        """return a read only copy of schema"""
         return copy.deepcopy(self._schema)
 
     def get_nested(self, *args):
