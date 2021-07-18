@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "confu"
-version = "1.7.1.1"
+version = "1.8.0"
 description = "Configuration file validation and generation"
 readme = "README.md"
 repository = "https://github.com/20c/confu"

@@ -4,6 +4,13 @@
 ## Unreleased
 
 
+## 1.8.0
+### Added
+- inet type `IpNetwork`
+### Fixed
+- collections.abc deprecation warning
+
+
 ## 1.7.1
 ### Fixed
 - mkdocs no longer a requirement for a normal installation of the package

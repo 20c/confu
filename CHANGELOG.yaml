@@ -127,12 +127,15 @@
 1.7.1:
   fixed:
   - mkdocs no longer a requirement for a normal installation of the package
-Unreleased:
+1.8.0:
   added:
   - inet type `IpNetwork`
+  fixed:
+  - collections.abc deprecation warning
+Unreleased:
+  added: []
   changed: []
   deprecated: []
-  fixed:
-    - collections.abc deprecation warning
+  fixed: []
   removed: []
   security: []
