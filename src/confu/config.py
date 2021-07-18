@@ -9,7 +9,7 @@ import copy
 import confu.schema
 
 
-class Config(collections.Mapping):
+class Config(collections.abc.Mapping):
     """
     class for storing and manipulating config data
     """

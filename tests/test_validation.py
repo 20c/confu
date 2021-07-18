@@ -15,6 +15,7 @@ from confu.schema import (
     Float,
     Int,
     IpAddress,
+    IpNetwork,
     List,
     Schema,
     Str,
@@ -37,6 +38,8 @@ relative_file = "__init__.py"
 absolute_file = os.path.abspath(relative_file)
 ipv4 = "127.0.0.1"
 ipv6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+ipv4_n = "10.10.0.0/24"
+ipv6_n = "2001:0db8:85a3:0000:0000:8a2e:0370:7334/128"
 
 
 @pytest.mark.parametrize(
@@ -106,6 +109,11 @@ ipv6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
         (IpAddress, ipv4, ipaddress.IPv4Address(ipv4), ipv6, {"protocol": 4}),
         (IpAddress, ipv6, ipaddress.IPv6Address(ipv6), ipv4, {"protocol": 6}),
         (IpAddress, "", "", "1.2.3", {"blank": True}),
+        (IpNetwork, ipv4_n, ipaddress.IPv4Network(ipv4_n), "1.2.3/24", {}),
+        (IpNetwork, ipv6_n, ipaddress.IPv6Network(ipv6_n), "1.2.3/64", {}),
+        (IpNetwork, ipv4_n, ipaddress.IPv4Network(ipv4_n), ipv6_n, {"protocol": 4}),
+        (IpNetwork, ipv6_n, ipaddress.IPv6Network(ipv6_n), ipv4_n, {"protocol": 6}),
+        (IpNetwork, "", "", "10.10.0/24", {"blank": True}),
     ],
 )
 def test_attribute(Class, value_pass, validated, value_fail, init):
