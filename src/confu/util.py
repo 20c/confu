@@ -103,3 +103,12 @@ class SettingsManager:
         """Sets the default value for the option if it's not already set."""
         if name not in self.scope:
             self.scope[name] = value
+
+    def try_include(self, filepath):
+        """Tries to include another file into current scope."""
+        try:
+            with open(filepath) as f:
+                exec(compile(f.read(), filepath, "exec"), self.scope)
+
+        except FileNotFoundError:
+            pass

@@ -192,3 +192,15 @@ def test_set_options_none(envvar_fixture):
 
     settings.set_option("TEST_SETTING", None, envvar_type=str)
     assert scope["TEST_SETTING"] == "0"
+
+
+def test_try_include(envvar_fixture):
+    """
+    We test using dev.py
+    """
+    scope = {}
+    settings = SettingsManager(scope)
+
+    env_file = os.path.join(os.path.dirname(__file__), f"../../tests/dev.py")
+    settings.try_include(env_file)
+    assert scope["TEST_SETTING"] == "hello"
