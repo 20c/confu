@@ -35,6 +35,7 @@ class SettingsManager:
         Arguments:
 
         - scope (`dict`)
+        - name (`str`): name of variable, default = "settings_manager"
         """
 
         self.scope = scope
@@ -106,7 +107,12 @@ class SettingsManager:
             self.scope[name] = value
 
     def try_include(self, filepath):
-        """Tries to include another file into current scope."""
+        """Tries to include another file into current scope.
+
+        Arguments:
+
+        - filepath (`str`): path to file trying to be included
+        """
         try:
             with open(filepath) as f:
                 self.scope[self.name] = self
