@@ -201,6 +201,6 @@ def test_try_include(envvar_fixture):
     scope = {}
     settings = SettingsManager(scope)
 
-    env_file = os.path.join(os.path.dirname(__file__), f"../../tests/dev.py")
+    env_file = os.path.join(os.path.dirname(__file__), "dev.py")
     settings.try_include(env_file)
     assert scope["TEST_SETTING"] == "hello"
