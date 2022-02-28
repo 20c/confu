@@ -196,11 +196,24 @@ def test_set_options_none(envvar_fixture):
 
 def test_try_include():
     """
-    We test using dev.py
+    We test using dev-default.py
     """
     scope = {}
     settings_manager = SettingsManager(scope)
 
     env_file = os.path.join(os.path.dirname(__file__), "dev-default.py")
     settings_manager.try_include(env_file)
+    assert scope["TEST_SETTING"] == "hello"
+
+
+def test_try_include_non_default():
+    """
+    We test instantiating SettingsManager with name 'settings'
+    and using dev-non-default.py
+    """
+    scope = {}
+    settings = SettingsManager(scope, 'settings')
+
+    env_file = os.path.join(os.path.dirname(__file__), "dev-non-default.py")
+    settings.try_include(env_file)
     assert scope["TEST_SETTING"] == "hello"
