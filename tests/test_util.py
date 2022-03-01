@@ -212,7 +212,7 @@ def test_try_include_non_default():
     and using dev-non-default.py
     """
     scope = {}
-    settings = SettingsManager(scope, 'settings')
+    settings = SettingsManager(scope, "settings")
 
     env_file = os.path.join(os.path.dirname(__file__), "dev-non-default.py")
     settings.try_include(env_file)
