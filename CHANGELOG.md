@@ -4,6 +4,8 @@
 ## Unreleased
 ### Added
 - add `SettingsManager.try_include()`
+### Removed
+- Python 3.6 support
 
 
 ## 1.8.0

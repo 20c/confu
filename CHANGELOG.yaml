@@ -138,5 +138,6 @@ Unreleased:
   changed: []
   deprecated: []
   fixed: []
-  removed: []
+  removed:
+  - Python 3.6 support
   security: []
