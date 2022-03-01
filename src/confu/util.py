@@ -29,15 +29,17 @@ class SettingsManager:
     Scoped settings management with environment variable override support
     """
 
-    def __init__(self, scope):
+    def __init__(self, scope, name="settings_manager"):
 
         """
         Arguments:
 
         - scope (`dict`)
+        - name (`str`): name of variable, default = "settings_manager"
         """
 
         self.scope = scope
+        self.name = name
 
     def set_from_env(self, name, default=_DEFAULT_ARG):
         """
@@ -103,3 +105,18 @@ class SettingsManager:
         """Sets the default value for the option if it's not already set."""
         if name not in self.scope:
             self.scope[name] = value
+
+    def try_include(self, filepath):
+        """Tries to include another file into current scope.
+
+        Arguments:
+
+        - filepath (`str`): path to file trying to be included
+        """
+        try:
+            with open(filepath) as f:
+                self.scope[self.name] = self
+                exec(compile(f.read(), filepath, "exec"), self.scope)
+
+        except FileNotFoundError:
+            pass
