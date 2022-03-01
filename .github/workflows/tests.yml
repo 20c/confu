@@ -35,6 +35,7 @@ jobs:
             poetry run isort src/
             poetry run black --check src/
             poetry run pre-commit run --all-files
+            poetry run flake8 src/
   test:
 # XXX    needs: linting
     strategy:
