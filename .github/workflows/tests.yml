@@ -42,7 +42,6 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.7", "3.8", "3.9" ]
-        #django-version: [ "django>=2.2,<3", "django>=3.1,<4" ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
@@ -54,7 +53,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tox tox-gh-actions
+          pip install poetry tox tox-gh-actions
       - name: Run tests
         run: tox
       - name: Upload coverage
