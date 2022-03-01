@@ -133,7 +133,8 @@
   fixed:
   - collections.abc deprecation warning
 Unreleased:
-  added: []
+  added:
+  - add `SettingsManager.try_include()`
   changed: []
   deprecated: []
   fixed: []

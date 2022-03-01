@@ -2,6 +2,8 @@
 
 
 ## Unreleased
+### Added
+- add `SettingsManager.try_include()`
 
 
 ## 1.8.0
