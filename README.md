@@ -20,7 +20,7 @@ All current releases will use the name `confu`. Please change any package requir
 
 ## License
 
-Copyright 2016-2021 20C, LLC
+Copyright 2016-2022 20C, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this software except in compliance with the License.
