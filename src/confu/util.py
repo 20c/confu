@@ -38,7 +38,7 @@ class SettingsManager:
 
         **Keyword Arguments**
 
-        - name (`str`): name of the variable used for the object, default = "settings_manager"
+        - name (`str`): name of the variable used for the object instance, default = "settings_manager"
         """
 
         self.scope = scope
@@ -66,7 +66,7 @@ class SettingsManager:
 
     def set_option(self, name, value, envvar_type=None):
         """
-        Sets an option, first checking for env vars,
+        Sets an option, first checking for environment variables,
         then checking for value already set,
         then going to the default value if passed.
         Environment variables are always strings, but
@@ -108,7 +108,12 @@ class SettingsManager:
             self.set_default(name, value)
 
     def set_bool(self, name, value):
-        """Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed.
+        """
+        Sets an option, first checking for environment variables,
+        then checking for value already set,
+        then going to the default value if passed.
+        Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered `True`.
+        Environment variable values of "0", "false", "n" or "no" (can be in any case) are considered `False`.
 
         **Arguments**
 
@@ -140,7 +145,7 @@ class SettingsManager:
 
         **Arguments**
 
-        - filepath (`str`): path to file trying to be included
+        - filepath (`str`): path to the file trying to be included.
         """
         try:
             with open(filepath) as f:
