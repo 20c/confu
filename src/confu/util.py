@@ -136,6 +136,11 @@ class SettingsManager:
     def set_default(self, name, value):
         """
         Sets the default value for the option if it's not already set.
+
+        **Arguments**
+
+        - name (`str`)
+        - value
         """
         if name not in self.scope:
             self.scope[name] = value
