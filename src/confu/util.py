@@ -24,13 +24,11 @@ _DEFAULT_ARG = object()
 
 
 class SettingsManager:
-
     """
     Scoped settings management with environment variable override support
     """
 
     def __init__(self, scope, name="settings_manager"):
-
         """
         **Arguments**
 
@@ -136,12 +134,15 @@ class SettingsManager:
         self.set_default(name, value)
 
     def set_default(self, name, value):
-        """Sets the default value for the option if it's not already set."""
+        """
+        Sets the default value for the option if it's not already set.
+        """
         if name not in self.scope:
             self.scope[name] = value
 
     def try_include(self, filepath):
-        """Tries to include another file into current scope.
+        """
+        Tries to include another file into current scope.
 
         **Arguments**
 
