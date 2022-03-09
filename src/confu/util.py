@@ -32,10 +32,13 @@ class SettingsManager:
     def __init__(self, scope, name="settings_manager"):
 
         """
-        Arguments:
+        **Arguments**
 
         - scope (`dict`)
-        - name (`str`): name of variable, default = "settings_manager"
+
+        **Keyword Arguments**
+
+        - name (`str`): name of the variable used for the object, default = "settings_manager"
         """
 
         self.scope = scope
@@ -47,6 +50,14 @@ class SettingsManager:
 
         This is useful to leave the option unset and use default if it
         already exists in the scope (which may change).
+
+        **Arguments**
+
+        - name (`str`)
+
+        **Keyword Arguments**
+
+        - default: value to be used incase there is no environment variable
         """
         if default is _DEFAULT_ARG and name not in os.environ:
             return
@@ -62,6 +73,15 @@ class SettingsManager:
         we try to coerce them to the correct type first by checking
         the type of the default value provided. If the default
         value is None, then we check the optional envvar_type arg.
+
+        **Arguments**
+
+        - name (`str`): name of variable, default = "settings_manager"
+        - value
+
+        **Keyword Arguments**
+
+        - envar_type
         """
 
         # If value is in True or False we
@@ -88,7 +108,16 @@ class SettingsManager:
             self.set_default(name, value)
 
     def set_bool(self, name, value):
-        """Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed."""
+        """Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed.
+
+        **Arguments**
+
+        - name (`str`)
+
+        **Keyword Arguments**
+
+        - value
+        """
         if name in os.environ:
             envval = os.environ.get(name).lower()
             if envval in ["1", "true", "y", "yes"]:
@@ -109,7 +138,7 @@ class SettingsManager:
     def try_include(self, filepath):
         """Tries to include another file into current scope.
 
-        Arguments:
+        **Arguments**
 
         - filepath (`str`): path to file trying to be included
         """
