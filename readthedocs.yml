@@ -8,8 +8,6 @@ python:
   version: 3.8
   install:
     - method: pip
-      path: "mkdocs>=1.2.3"
-    - method: pip
       path: .
       extra_requirements:
         - docs
