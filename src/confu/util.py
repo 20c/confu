@@ -7,7 +7,7 @@ import os
 def config_parser_dict(config):
     """
     Takes a configparser.ConfigParser instance and returns a dict
-    of sections and their keys and values
+    of sections and their keys and values.
 
     **Arguments**
 
@@ -25,7 +25,7 @@ _DEFAULT_ARG = object()
 
 class SettingsManager:
     """
-    Scoped settings management with environment variable override support
+    Scoped settings management with environment variable override support.
     """
 
     def __init__(self, scope, name="settings_manager"):
@@ -46,8 +46,8 @@ class SettingsManager:
         """
         Sets a scope variable from a environment variable of the same name.
 
-        This is useful to leave the option unset and use default if it
-        already exists in the scope (which may change).
+        It is useful to leave the option unset and use default if it
+        already exists in the scope.
 
         **Arguments**
 
@@ -66,7 +66,7 @@ class SettingsManager:
         """
         Sets an option, first checking for environment variables,
         then checking for value already set,
-        then going to the default value if passed.
+        then going to the value passed.
         Environment variables are always strings, but
         we try to coerce them to the correct type first by checking
         the type of the default value provided. If the default
@@ -75,7 +75,7 @@ class SettingsManager:
         **Arguments**
 
         - name (`str`): name of variable, default = "settings_manager"
-        - value
+        - value : If None is passed a envar_type needs to be given
 
         **Keyword Arguments**
 
@@ -109,7 +109,7 @@ class SettingsManager:
         """
         Sets an option, first checking for environment variables,
         then checking for value already set,
-        then going to the default value if passed.
+        then going to the value passed.
         Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered `True`.
         Environment variable values of "0", "false", "n" or "no" (can be in any case) are considered `False`.
 
@@ -135,7 +135,7 @@ class SettingsManager:
 
     def set_default(self, name, value):
         """
-        Sets the default value for the option if it's not already set.
+        Sets the default value for the option if a value is not already set.
 
         **Arguments**
 
