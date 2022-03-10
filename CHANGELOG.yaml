@@ -135,7 +135,8 @@
 Unreleased:
   added:
   - add `SettingsManager.try_include()`
-  changed: []
+  changed:
+  - documentation moved to github pages
   deprecated: []
   fixed: []
   removed:
