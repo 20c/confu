@@ -55,7 +55,7 @@ class SettingsManager:
 
         **Keyword Arguments**
 
-        - default: value to be used if there is no environment variable 
+        - default: value to be used if there is no environment variable
         of the same name
         """
         if default is _DEFAULT_ARG and name not in os.environ:
@@ -70,7 +70,7 @@ class SettingsManager:
         then going to the `value` argument passed.
         Environment variables are always strings, but
         we try to coerce them to the correct type first by checking
-        the type of the `value` argument. If the value 
+        the type of the `value` argument. If the value
         passed is `None`, then we check the optional envvar_type arg
         (If you want to set the option to `None`, pass the envvar_type
         as `type(None)`).
