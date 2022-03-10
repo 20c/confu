@@ -9,4 +9,4 @@ python:
   install:
     - method: pip
       path: .
-      requirements: Ctl/requirements-rtd.txt
+    - requirements: Ctl/requirements-rtd.txt
