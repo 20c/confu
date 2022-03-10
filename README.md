@@ -15,8 +15,7 @@ All current releases will use the name `confu`. Please change any package requir
 
 ## Documentation
 
-  - **stable**: https://confu.readthedocs.io/en/stable/quickstart/
-  - **latest**: https://confu.readthedocs.io/en/latest/quickstart/
+  - https://20c.github.io/confu/
 
 ## License
 
