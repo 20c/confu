@@ -55,7 +55,8 @@ class SettingsManager:
 
         **Keyword Arguments**
 
-        - default: value to be used incase there is no environment variable
+        - default: value to be used if there is no environment variable 
+        of the same name
         """
         if default is _DEFAULT_ARG and name not in os.environ:
             return
@@ -66,20 +67,22 @@ class SettingsManager:
         """
         Sets an option, first checking for environment variables,
         then checking for value already set,
-        then going to the value passed.
+        then going to the `value` argument passed.
         Environment variables are always strings, but
         we try to coerce them to the correct type first by checking
-        the type of the default value provided. If the default
-        value is None, then we check the optional envvar_type arg.
+        the type of the `value` argument. If the value 
+        passed is `None`, then we check the optional envvar_type arg
+        (If you want to set the option to `None`, pass the envvar_type
+        as `type(None)`).
 
         **Arguments**
 
         - name (`str`): name of variable, default = "settings_manager"
-        - value : If None is passed a envar_type needs to be given
+        - value: If `None` is passed a envar_type needs to be given
 
         **Keyword Arguments**
 
-        - envar_type
+        - envvar_type
         """
 
         # If value is in True or False we
@@ -109,7 +112,7 @@ class SettingsManager:
         """
         Sets an option, first checking for environment variables,
         then checking for value already set,
-        then going to the value passed.
+        then going to the `value` argument passed.
         Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered `True`.
         Environment variable values of "0", "false", "n" or "no" (can be in any case) are considered `False`.
 
