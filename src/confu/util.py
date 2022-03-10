@@ -116,9 +116,6 @@ class SettingsManager:
         **Arguments**
 
         - name (`str`)
-
-        **Keyword Arguments**
-
         - value
         """
         if name in os.environ:
