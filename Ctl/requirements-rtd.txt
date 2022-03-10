@@ -1,0 +1,4 @@
+# readthedocs does not properly support poetry and still needs a file like this
+markdown-include>=0.5,<1
+mkdocs>=1.0.0,<2.0.0
+pymdgen<2
