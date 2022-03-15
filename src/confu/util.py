@@ -68,11 +68,11 @@ class SettingsManager:
         Sets an option by first checking for environment variables,
         then checking for value already set,
         then going to the `value` argument passed.
-        Environment variables are always strings that are 
+        Environment variables are always strings that are
         first coerced to the correct type by checking
         the type of the `value` argument. If the value
-        passed is `None`, then the optional envvar_type argument 
-        is checked (If you want to set the option to `None`, 
+        passed is `None`, then the optional envvar_type argument
+        is checked (If you want to set the option to `None`,
         pass the envvar_type as `type(None)`).
 
         **Arguments**
