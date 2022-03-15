@@ -7,7 +7,7 @@ import os
 def config_parser_dict(config):
     """
     Takes a configparser.ConfigParser instance and returns a dict
-    of sections and their keys and values.
+    of sections with their keys and values.
 
     **Arguments**
 
@@ -44,7 +44,7 @@ class SettingsManager:
 
     def set_from_env(self, name, default=_DEFAULT_ARG):
         """
-        Sets a scope variable from a environment variable of the same name.
+        Sets a scope variable from an environment variable of the same name.
 
         It is useful to leave the option unset and use default if it
         already exists in the scope.
@@ -65,15 +65,15 @@ class SettingsManager:
 
     def set_option(self, name, value, envvar_type=None):
         """
-        Sets an option, first checking for environment variables,
+        Sets an option by first checking for environment variables,
         then checking for value already set,
         then going to the `value` argument passed.
-        Environment variables are always strings, but
-        we try to coerce them to the correct type first by checking
+        Environment variables are always strings that are 
+        first coerced to the correct type by checking
         the type of the `value` argument. If the value
-        passed is `None`, then we check the optional envvar_type arg
-        (If you want to set the option to `None`, pass the envvar_type
-        as `type(None)`).
+        passed is `None`, then the optional envvar_type argument 
+        is checked (If you want to set the option to `None`, 
+        pass the envvar_type as `type(None)`).
 
         **Arguments**
 
@@ -110,7 +110,7 @@ class SettingsManager:
 
     def set_bool(self, name, value):
         """
-        Sets an option, first checking for environment variables,
+        Sets an option by first checking for environment variables,
         then checking for value already set,
         then going to the `value` argument passed.
         Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered `True`.
@@ -147,7 +147,7 @@ class SettingsManager:
 
     def try_include(self, filepath):
         """
-        Tries to include another file into current scope.
+        Tries to include another file into the current scope.
 
         **Arguments**
 
