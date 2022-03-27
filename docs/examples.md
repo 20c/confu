@@ -19,3 +19,9 @@
 ```py
 {!examples/settingsmanager/test.py!}
 ```
+
+## Examples with Config
+
+```py
+{!examples/config/example.py!}
+```
