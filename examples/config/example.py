@@ -33,12 +33,13 @@ cfg_kwargs = Config(
     meta={"meta_attr": "meta data"},
 )
 print(cfg_kwargs.data)
+print(cfg_kwargs.meta)
 
 # copy the data of a schema
 cfg_copy = cfg.copy()
 print(cfg_copy)
 
-# nested schema attribute
+# get nested schema value
 nested_value = cfg.get_nested("nested")
 print(nested_value)
 nested_value = cfg.get_nested("nonexistentnested")
