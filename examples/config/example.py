@@ -4,22 +4,20 @@ from confu.schema import Int, List, Schema, Str
 
 # declaring schema classes
 class Nested_Schema(Schema):
-    int_attr = Int("int_attr", default=10)
-    int_attr_choices = Int(
-        "int_attr_choices", choices=[1, 2, 3], default=1, help="This can be 1,2 or 3"
-    )
+    int_attr = Int(default=10)
+    int_attr_choices = Int(choices=[1, 2, 3], default=1, help="This can be 1,2 or 3")
 
 
 class Example_Schema(Schema):
-    int_attr = Int("int_attr", default=123)
-    str_attr = Str("str_attr", default="test")
+    int_attr = Int(default=123)
+    str_attr = Str(default="test")
     str_attr_null = Str(default=None)
-    list_attr_w_default = List("list_attr_w_default", item=Int(), default=[1, 2, 3])
-    nested = Nested_Schema("nested")
+    list_attr_w_default = List(item=Int(), default=[1, 2, 3])
+    nested = Nested_Schema()
 
 
 class Simple_Example_Schema(Schema):
-    str_attr = Str("str_attr", default="test")
+    str_attr = Str(default="test")
 
 
 # config without kwargs
