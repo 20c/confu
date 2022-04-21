@@ -352,6 +352,7 @@ class TimeDuration(Attribute):
                 raise ValueError("unknown unit from interval string '%s'" % val)
         return super().validate(total, path, **kwargs)
 
+
 class Int(Attribute):
 
     """
