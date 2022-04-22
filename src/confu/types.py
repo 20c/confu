@@ -31,9 +31,7 @@ class TimeDuration(float):
 
             total = 0.0
             if not re.fullmatch(re_validate, formatted_val):
-                raise ValueError(
-                    "unknown unit or format in interval string '%s'" % value
-                )
+                raise ValueError(f"unknown unit or format in interval string '{value}'")
             for match in re_intv.findall(formatted_val):
                 unit = match[1]
                 count = float(match[0])
