@@ -18,6 +18,7 @@ class TimeDuration(float):
 
     - val (`str`)
     """
+
     def __new__(cls, value, **kwargs):
         re_intv = re.compile(r"([\d\.]+)([a-zA-Z]+)")
         re_validate = re.compile(r"(([\d\.]+)([s,m,ms,h,d]+))*")
