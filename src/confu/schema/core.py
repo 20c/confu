@@ -8,7 +8,6 @@ import collections.abc
 import configparser
 import copy
 import os
-import re
 from inspect import isclass
 
 from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
@@ -327,30 +326,6 @@ class Bool(Attribute):
                 param["help"] = "DISABLE {}".format(param["help"])
             name = "--no-{}".format(name.strip("-"))
         return name
-
-
-class TimeDuration(Attribute):
-    def validate(self, value, path, **kwargs):
-        re_intv = re.compile(r"([\d\.]+)([a-zA-Z]+)")
-        val = value.strip()
-
-        total = 0.0
-        for match in re_intv.findall(val):
-            unit = match[1]
-            count = float(match[0])
-            if unit == "s":
-                total += count
-            elif unit == "m":
-                total += count * 60
-            elif unit == "ms":
-                total += count / 1000
-            elif unit == "h":
-                total += count * 3600
-            elif unit == "d":
-                total += count * 86400
-            else:
-                raise ValueError("unknown unit from interval string '%s'" % val)
-        return super().validate(total, path, **kwargs)
 
 
 class Int(Attribute):
