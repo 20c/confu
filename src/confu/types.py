@@ -13,7 +13,7 @@ class TimeDuration(float):
         90 = 1m30s
     units accepted are d(days), h(hours), m(minutes),
     s(seconds) and ms(milliseconds).
-    Can also take a `float`, `int` or string without 
+    Can also take a `float`, `int` or `string` without
     unit instead.
 
     **Arguments**
@@ -31,7 +31,9 @@ class TimeDuration(float):
 
             total = 0.0
             if not re.fullmatch(re_validate, formatted_val):
-                raise ValueError("unknown unit or format in interval string '%s'" % value)
+                raise ValueError(
+                    "unknown unit or format in interval string '%s'" % value
+                )
             for match in re_intv.findall(formatted_val):
                 unit = match[1]
                 count = float(match[0])
