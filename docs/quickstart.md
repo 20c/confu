@@ -69,3 +69,7 @@ Will output
 [Config Error] sub: missing
 2 errors, 0 warnings in config
 ```
+
+# SettingsManager
+
+SettingsManager is a utility class that allows the definition and management of scoped configuration variables that can be overridden by environment variables.  [Example use-cases](./examples.md#examples-with-settingsmanager).

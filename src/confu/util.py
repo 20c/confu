@@ -7,7 +7,7 @@ import os
 def config_parser_dict(config):
     """
     Takes a configparser.ConfigParser instance and returns a dict
-    of sections and their keys and values
+    of sections with their keys and values.
 
     **Arguments**
 
@@ -24,18 +24,19 @@ _DEFAULT_ARG = object()
 
 
 class SettingsManager:
-
     """
-    Scoped settings management with environment variable override support
+    Scoped settings management with environment variable override support.
     """
 
     def __init__(self, scope, name="settings_manager"):
-
         """
-        Arguments:
+        **Arguments**
 
         - scope (`dict`)
-        - name (`str`): name of variable, default = "settings_manager"
+
+        **Keyword Arguments**
+
+        - name (`str`): name of the variable used for the object instance, default = "settings_manager"
         """
 
         self.scope = scope
@@ -43,10 +44,19 @@ class SettingsManager:
 
     def set_from_env(self, name, default=_DEFAULT_ARG):
         """
-        Sets a scope variable from a environment variable of the same name.
+        Sets a scope variable from an environment variable of the same name.
 
-        This is useful to leave the option unset and use default if it
-        already exists in the scope (which may change).
+        It is useful to leave the option unset and use default if it
+        already exists in the scope.
+
+        **Arguments**
+
+        - name (`str`)
+
+        **Keyword Arguments**
+
+        - default: value to be used if there is no environment variable
+        of the same name
         """
         if default is _DEFAULT_ARG and name not in os.environ:
             return
@@ -55,13 +65,24 @@ class SettingsManager:
 
     def set_option(self, name, value, envvar_type=None):
         """
-        Sets an option, first checking for env vars,
+        Sets an option by first checking for environment variables,
         then checking for value already set,
-        then going to the default value if passed.
-        Environment variables are always strings, but
-        we try to coerce them to the correct type first by checking
-        the type of the default value provided. If the default
-        value is None, then we check the optional envvar_type arg.
+        then going to the `value` argument passed.
+        Environment variables are always strings that are
+        first coerced to the correct type by checking
+        the type of the `value` argument. If the value
+        passed is `None`, then the optional envvar_type argument
+        is checked (If you want to set the option to `None`,
+        pass the envvar_type as `type(None)`).
+
+        **Arguments**
+
+        - name (`str`): name of variable, default = "settings_manager"
+        - value: If `None` is passed a envar_type needs to be given
+
+        **Keyword Arguments**
+
+        - envvar_type
         """
 
         # If value is in True or False we
@@ -88,7 +109,18 @@ class SettingsManager:
             self.set_default(name, value)
 
     def set_bool(self, name, value):
-        """Sets and option, first checking for env vars, then checking for value already set, then going to the default value if passed."""
+        """
+        Sets an option by first checking for environment variables,
+        then checking for value already set,
+        then going to the `value` argument passed.
+        Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered `True`.
+        Environment variable values of "0", "false", "n" or "no" (can be in any case) are considered `False`.
+
+        **Arguments**
+
+        - name (`str`)
+        - value
+        """
         if name in os.environ:
             envval = os.environ.get(name).lower()
             if envval in ["1", "true", "y", "yes"]:
@@ -102,16 +134,24 @@ class SettingsManager:
         self.set_default(name, value)
 
     def set_default(self, name, value):
-        """Sets the default value for the option if it's not already set."""
+        """
+        Sets the default value for the option if a value is not already set.
+
+        **Arguments**
+
+        - name (`str`)
+        - value
+        """
         if name not in self.scope:
             self.scope[name] = value
 
     def try_include(self, filepath):
-        """Tries to include another file into current scope.
+        """
+        Tries to include another file into the current scope.
 
-        Arguments:
+        **Arguments**
 
-        - filepath (`str`): path to file trying to be included
+        - filepath (`str`): path to the file trying to be included.
         """
         try:
             with open(filepath) as f:
