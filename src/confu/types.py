@@ -26,7 +26,7 @@ class TimeDuration(float):
             total = float(value)
         except ValueError:
             re_intv = re.compile(r"([\d\.]+)([a-zA-Z]+)")
-            re_validate = re.compile(r"(([\d\.]+)([s,m,ms,h,d]+))*")
+            re_validate = re.compile(r"(([\d\.]+)((ms)|[smhd]{1}))*")
             formatted_val = value.replace(" ", "")
 
             total = 0.0
