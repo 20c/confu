@@ -11,6 +11,7 @@ import os
 from inspect import isclass
 
 from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
+from confu.types import TimeDuration as type_TimeDuration
 from confu.util import config_parser_dict
 
 
@@ -357,6 +358,23 @@ class Float(Attribute):
             value = float(value)
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "float expected")
+        return super().validate(value, path, **kwargs)
+
+
+class TimeDuration(Attribute):
+
+    """
+    Attribute that requires an TimeDuration type value.
+    TimeDuration is defined in `confu.types`
+    """
+
+    def validate(self, value, path, **kwargs):
+        if value is None and self.default_is_none:
+            return value
+        try:
+            value = type_TimeDuration(value)
+        except (TypeError, ValueError):
+            raise ValidationError(self, path, value, "TimeDuration expected")
         return super().validate(value, path, **kwargs)
 
 
