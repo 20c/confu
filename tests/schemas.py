@@ -1,4 +1,4 @@
-from confu.schema import Bool, Float, Int, List, ProxySchema, Schema, Str
+from confu.schema import Bool, Float, Int, TimeDuration, List, ProxySchema, Schema, Str
 
 
 class NestedSchema_01(Schema):
@@ -38,6 +38,8 @@ class Schema_03(Schema):
         "bool_attr_w_dflt_yes", default=True, help="a boolean attribute"
     )
     float_attr = Float("float_attr", default=1.23, help="a float attribute")
+    time_duration_attr = TimeDuration(default=120.2, help="a TimeDuration attribute")
+    time_duration_w_str_attr = TimeDuration(default='2d 2h 2m 2s 2ms', help="a TimeDuration attribute")
     list_attr_int = List("list_attr_int", Int("list_attr_int_item"))
     list_attr_str = List("list_attr_str", Str("list_attr_str_item"))
     list_attr_schema = List(name="list_attr_schema", item=NestedSchema_01())
@@ -120,6 +122,7 @@ class Schema_13(Schema):
 class Schema_14(Schema):
     schema_attr = Schema_13()
     float_attr = Float(default=12.3)
+    time_duration_attr = TimeDuration(default='123')
 
 
 class Schema_15(Schema):
