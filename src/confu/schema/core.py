@@ -377,6 +377,18 @@ class TimeDuration(Attribute):
             raise ValidationError(self, path, value, "TimeDuration expected")
         return super().validate(value, path, **kwargs)
 
+    @property
+    def default(self):
+        default = super().default
+        if default is None:
+            return None
+        else:
+            return type_TimeDuration(default)
+
+    @property
+    def choices(self):
+        return list(map(type_TimeDuration, super().choices))
+
 
 class List(Attribute):
 
