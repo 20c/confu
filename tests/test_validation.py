@@ -19,6 +19,7 @@ from confu.schema import (
     List,
     Schema,
     Str,
+    TimeDuration,
     Url,
 )
 from tests.schemas import Schema_01, Schema_05, Schema_06
@@ -50,6 +51,8 @@ ipv6_n = "2001:0db8:85a3:0000:0000:8a2e:0370:7334/128"
         (Str, "", "", 123, {"blank": True}),
         (Int, 123, 123, "test", {}),
         (Float, 1.23, 1.23, "test", {}),
+        (TimeDuration, 1.23, 1.23, "test", {}),
+        (TimeDuration, "2d 2h 2m 2s 2ms", 180122.002, "test", {}),
         (Bool, True, True, "test", {}),
         (Bool, "True", True, "test", {}),
         (Bool, "yes", True, "test", {}),
