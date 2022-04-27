@@ -24,7 +24,7 @@ def test_argparse():
     assert parsed.int_attr == 123
     assert parsed.float_attr == 1.23
     assert parsed.time_duration_attr == 120.2
-    assert parsed.time_duration_w_str_attr == 180122.002
+    assert parsed.time_duration_w_str_attr == 63295322.002
     assert parsed.bool_attr is None
     assert parsed.bool_attr_w_dflt is False
     assert parsed.bool_attr_w_dflt_yes is True
@@ -88,7 +88,7 @@ def test_argparse_dynamic_defaults():
     assert parsed.int_attr == 123
     assert parsed.float_attr == 1.23
     assert parsed.time_duration_attr == 120.2
-    assert parsed.time_duration_w_str_attr == 180122.002
+    assert parsed.time_duration_w_str_attr == 63295322.002
     assert parsed.bool_attr is None
     assert parsed.bool_attr_w_dflt is False
     assert parsed.bool_attr_w_dflt_yes is True
@@ -329,7 +329,7 @@ def test_apply_argparse_15():
     args = parser.parse_args(
         [
             "--nested-schema.time-duration-attr",
-            "2d 2h 2m 2s 2ms",
+            "2y 2d 2h 2m 2s 2ms",
             "--nested-schema.float-attr",
             "9.87",
             "--nested-schema.schema-attr.int-attr",
@@ -342,6 +342,6 @@ def test_apply_argparse_15():
 
     # Config should be overwritten by arguments
     assert config["nested_schema"]["float_attr"] == 9.87
-    assert config["nested_schema"]["time_duration_attr"] == 180122.002
+    assert config["nested_schema"]["time_duration_attr"] == 63295322.002
     assert config["nested_schema"]["schema_attr"]["int_attr"] == 90210
     assert config["nested_schema"]["schema_attr"]["str_attr"] == "updated"

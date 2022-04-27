@@ -27,7 +27,7 @@ def test_click():
     assert result["int_attr"] == 123
     assert result["float_attr"] == 1.23
     assert result["time_duration_attr"] == 120.2
-    assert result["time_duration_w_str_attr"] == 180122.002
+    assert result["time_duration_w_str_attr"] == 63295322.002
     assert result["bool_attr"] is None
     assert result["bool_attr_w_dflt"] is False
     assert result["bool_attr_w_dflt_yes"] is True
@@ -94,7 +94,7 @@ def test_click_dynamic_defaults():
     assert result["int_attr"] == 123
     assert result["float_attr"] == 1.23
     assert result["time_duration_attr"] == 120.2
-    assert result["time_duration_w_str_attr"] == 180122.002
+    assert result["time_duration_w_str_attr"] == 63295322.002
     assert result["bool_attr"] is None
     assert result["bool_attr_w_dflt"] is False
     assert result["bool_attr_w_dflt_yes"] is True

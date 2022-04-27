@@ -40,7 +40,7 @@ class Schema_03(Schema):
     float_attr = Float("float_attr", default=1.23, help="a float attribute")
     time_duration_attr = TimeDuration(default=120.2, help="a TimeDuration attribute")
     time_duration_w_str_attr = TimeDuration(
-        default="2d 2h 2m 2s 2ms", help="a TimeDuration attribute"
+        default="2y 2d 2h 2m 2s 2ms", help="a TimeDuration attribute"
     )
     list_attr_int = List("list_attr_int", Int("list_attr_int_item"))
     list_attr_str = List("list_attr_str", Str("list_attr_str_item"))

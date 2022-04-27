@@ -80,8 +80,8 @@ def test_set_option():
 def test_set_custom_type_TimeDuration():
     scope = {}
     settings_manager = SettingsManager(scope)
-    settings_manager.set_option("TEST_SETTING", TimeDuration("2d 2h 2m 2s 2ms"))
-    assert scope["TEST_SETTING"] == 180122.002
+    settings_manager.set_option("TEST_SETTING", TimeDuration("2y 2d 2h 2m 2s 2ms"))
+    assert scope["TEST_SETTING"] == 63295322.002
 
 
 def test_set_option_w_env_var(envvar_fixture):
