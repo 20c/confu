@@ -22,16 +22,19 @@ class TimeDuration(float):
     """
 
     def __new__(cls, value, **kwargs):
-        try:
-            total = float(value)
-        except ValueError:
+        if isinstance(value, str):
             re_intv = re.compile(r"([\d\.]+)((ms)|[smhd]{1})")
             re_validate = re.compile(r"(([\d\.]+)((ms)|[smhd]{1}))*")
             formatted_val = value.replace(" ", "")
 
             total = 0.0
             if not re.fullmatch(re_validate, formatted_val):
-                raise ValueError(f"unknown unit or format in interval string '{value}'")
+                try:
+                    total = float(value)
+                except ValueError:
+                    raise ValueError(
+                        f"unknown unit or format in interval string '{value}'"
+                    )
             for match in re_intv.findall(formatted_val):
                 unit = match[1]
                 count = float(match[0])
@@ -45,4 +48,9 @@ class TimeDuration(float):
                     total += count * 3600
                 elif unit == "d":
                     total += count * 86400
+        elif isinstance(value, int) or isinstance(value, float):
+            total = float(value)
+        else:
+            raise ValueError(f"unknown unit or format in interval string '{value}'")
+
         return super(TimeDuration, cls).__new__(cls, total)
