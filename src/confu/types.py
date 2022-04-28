@@ -49,10 +49,10 @@ class TimeDuration(float):
 
     def __new__(cls, value, **kwargs):
         try:
-            return super(TimeDuration, cls).__new__(cls, float(value))
+            return super().__new__(cls, float(value))
         except ValueError:
             pass
         if not isinstance(value, str):
             raise TypeError("float, int or string expected")
 
-        return super(TimeDuration, cls).__new__(cls, cls.parse_string(value))
+        return super().__new__(cls, cls.parse_string(value))
