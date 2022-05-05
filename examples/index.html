@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://github.com/20c/confu/examples/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Examples - confu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Examples";
+    var mkdocs_page_input_path = "examples.md";
+    var mkdocs_page_url = "/20c/confu/examples/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> confu</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../attributes/">Attributes</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Examples</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.config/">confu.config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.cli/">confu.cli</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.exceptions/">confu.exceptions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.generator/">confu.generator</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.schema.core/">confu.schema.core</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.schema.inet/">confu.schema.inet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.util/">confu.util</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">confu</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Examples</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="use-with-configparser-instance">Use with ConfigParser instance</h2>
+<pre><code class="language-ini">[server]
+host = 127.0.0.1
+port = 80
+</code></pre>
+<pre><code class="language-py">import configparser
+
+from confu.schema import Int, IpAddress, Schema, validate
+
+
+# this schema describes the [server] section
+class ServerSchema(Schema):
+    host = IpAddress()
+    port = Int(default=80)
+
+
+# this schema describes the entire config
+class ConfigSchema(Schema):
+    # server schema as sub schema
+    server = ServerSchema()
+
+
+# read config
+config = configparser.ConfigParser()
+config.read(&quot;config.cfg&quot;)
+
+# validate config
+success, errors, warnings = validate(ConfigSchema(), config, log=print)
+</code></pre>
+<h2 id="examples-with-settingsmanager">Examples with SettingsManager</h2>
+<pre><code class="language-py">import os
+
+from confu.util import SettingsManager
+
+# using local scope g
+g = {}
+settings_manager = SettingsManager(g)
+settings_manager.set_option(&quot;TEST_SETTING&quot;, &quot;world&quot;)
+print(g[&quot;TEST_SETTING&quot;])
+
+# using Global scope
+settings_manager = SettingsManager(globals())
+settings_manager.set_option(&quot;TEST_SETTING&quot;, &quot;world&quot;)
+print(TEST_SETTING)
+
+# setting from env
+os.environ[&quot;ENV_SETTING&quot;] = &quot;my_setting&quot;  # setting env variable
+settings_manager.set_from_env(&quot;ENV_SETTING&quot;)
+print(ENV_SETTING)
+
+# setting boolean
+settings_manager.set_bool(&quot;BOOL_SETTING&quot;, False)
+print(BOOL_SETTING)
+
+# setting boolean overriden from env var from env
+os.environ[&quot;ENV_BOOL&quot;] = &quot;True&quot;  # setting env variable
+settings_manager.set_bool(&quot;ENV_BOOL&quot;, False)
+print(ENV_BOOL)
+
+# setting int from env
+os.environ[&quot;ENV_INT&quot;] = &quot;123&quot;  # setting env variable
+settings_manager.set_option(&quot;ENV_INT&quot;, None, envvar_type=int)
+print(ENV_INT)
+
+# setting default
+settings_manager.set_default(&quot;DEFAULT_SETTING&quot;, &quot;my_defualt&quot;)
+print(DEFAULT_SETTING)
+
+# include another file (./test.py)
+settings_manager.try_include(&quot;./test.py&quot;)
+print(EXTERNAL_SETTING)
+</code></pre>
+<h3 id="file-testpy">File <code>test.py</code></h3>
+<pre><code class="language-py">settings_manager.set_option(&quot;EXTERNAL_SETTING&quot;, &quot;my_external&quot;)
+</code></pre>
+<h2 id="examples-with-config">Examples with Config</h2>
+<pre><code class="language-py">from confu.config import Config
+from confu.schema import Int, List, Schema, Str
+
+
+# declaring schema classes
+class Nested_Schema(Schema):
+    int_attr = Int(default=10)
+    int_attr_choices = Int(choices=[1, 2, 3], default=1, help=&quot;This can be 1,2 or 3&quot;)
+
+
+class Example_Schema(Schema):
+    int_attr = Int(default=123)
+    str_attr = Str(default=&quot;test&quot;)
+    str_attr_null = Str(default=None)
+    list_attr_w_default = List(item=Int(), default=[1, 2, 3])
+    nested = Nested_Schema()
+
+
+class Simple_Example_Schema(Schema):
+    str_attr = Str(default=&quot;test&quot;)
+
+
+# config without kwargs
+cfg = Config(Example_Schema())
+print(cfg.data)
+
+# config with data and meta kwrags
+cfg_kwargs = Config(
+    Simple_Example_Schema(),
+    data={&quot;int_attr&quot;: 42, &quot;list_attr&quot;: [1, 2, 3]},
+    meta={&quot;meta_attr&quot;: &quot;meta data&quot;},
+)
+print(cfg_kwargs.data)
+print(cfg_kwargs.meta)
+
+# copy the data of a schema
+cfg_copy = cfg.copy()
+print(cfg_copy)
+
+# get nested schema value
+nested_value = cfg.get_nested(&quot;nested&quot;)
+print(nested_value)
+nested_value = cfg.get_nested(&quot;nonexistentnested&quot;)
+print(nested_value)
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cli/" class="btn btn-neutral float-right" title="CLI">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../attributes/" class="btn btn-neutral" title="Attributes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../attributes/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cli/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

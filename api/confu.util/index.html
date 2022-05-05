@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://github.com/20c/confu/api/confu.util/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>confu.util - confu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "confu.util";
+    var mkdocs_page_input_path = "api/confu.util.md";
+    var mkdocs_page_url = "/20c/confu/api/confu.util/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> confu</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../attributes/">Attributes</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../examples/">Examples</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cli/">CLI</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.config/">confu.config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.cli/">confu.cli</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.exceptions/">confu.exceptions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.generator/">confu.generator</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.schema.core/">confu.schema.core</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.schema.inet/">confu.schema.inet</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">confu.util</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">confu</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API &raquo;</li>
+        
+      
+    
+    <li>confu.util</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="confuutil">confu.util</h1>
+<p>utility functions / classes</p>
+<h1 id="functions">Functions</h1>
+<hr />
+<h2 id="config_parser_dict">config_parser_dict</h2>
+<p><code>def config_parser_dict(config)</code></p>
+<p>Takes a configparser.ConfigParser instance and returns a dict
+of sections with their keys and values.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>config (<code>configparser.ConfigParsers</code>)</li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>dict</p>
+<hr />
+<h1 id="classes">Classes</h1>
+<hr />
+<h2 id="settingsmanager">SettingsManager</h2>
+<pre><code>SettingsManager(builtins.object)
+</code></pre>
+<p>Scoped settings management with environment variable override support.</p>
+<h3 id="methods">Methods</h3>
+<h4 id="__init__">__init__</h4>
+<p><code>def __init__(self, scope, name=settings_manager)</code></p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>scope (<code>dict</code>)</li>
+</ul>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): name of the variable used for the object instance, default = "settings_manager"</li>
+</ul>
+<hr />
+<h4 id="set_bool">set_bool</h4>
+<p><code>def set_bool(self, name, value)</code></p>
+<p>Sets an option by first checking for environment variables,
+then checking for value already set,
+then going to the <code>value</code> argument passed.
+Environment variable values of "1", "true", "y" or "yes" (can be in any case) are considered <code>True</code>.
+Environment variable values of "0", "false", "n" or "no" (can be in any case) are considered <code>False</code>.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>)</li>
+<li>value</li>
+</ul>
+<hr />
+<h4 id="set_default">set_default</h4>
+<p><code>def set_default(self, name, value)</code></p>
+<p>Sets the default value for the option if a value is not already set.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>)</li>
+<li>value</li>
+</ul>
+<hr />
+<h4 id="set_from_env">set_from_env</h4>
+<p><code>def set_from_env(self, name, default=&lt;object object at 0x7effab452340&gt;)</code></p>
+<p>Sets a scope variable from an environment variable of the same name.</p>
+<p>It is useful to leave the option unset and use default if it
+already exists in the scope.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>)</li>
+</ul>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>default: value to be used if there is no environment variable
+of the same name</li>
+</ul>
+<hr />
+<h4 id="set_option">set_option</h4>
+<p><code>def set_option(self, name, value, envvar_type=None)</code></p>
+<p>Sets an option by first checking for environment variables,
+then checking for value already set,
+then going to the <code>value</code> argument passed.
+Environment variables are always strings that are
+first coerced to the correct type by checking
+the type of the <code>value</code> argument. If the value
+passed is <code>None</code>, then the optional envvar_type argument
+is checked (If you want to set the option to <code>None</code>,
+pass the envvar_type as <code>type(None)</code>).</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): name of variable, default = "settings_manager"</li>
+<li>value: If <code>None</code> is passed a envar_type needs to be given</li>
+</ul>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>envvar_type</li>
+</ul>
+<hr />
+<h4 id="try_include">try_include</h4>
+<p><code>def try_include(self, filepath)</code></p>
+<p>Tries to include another file into the current scope.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>filepath (<code>str</code>): path to the file trying to be included.</li>
+</ul>
+<hr />
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../confu.schema.inet/" class="btn btn-neutral" title="confu.schema.inet"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../confu.schema.inet/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

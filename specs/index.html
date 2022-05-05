@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://github.com/20c/confu/specs/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Specifications - confu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Specifications";
+    var mkdocs_page_input_path = "specs.md";
+    var mkdocs_page_url = "/20c/confu/specs/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> confu</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../attributes/">Attributes</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../examples/">Examples</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.config/">confu.config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.cli/">confu.cli</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.exceptions/">confu.exceptions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.generator/">confu.generator</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.schema.core/">confu.schema.core</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.schema.inet/">confu.schema.inet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/confu.util/">confu.util</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">confu</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Specifications</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="specifications">Specifications</h1>
+<h2 id="overview">Overview</h2>
+<p>Implementation of configuration schema in python. Something that can be used to validate configuration files as well as generate configuration files.</p>
+<p>We have a form of this implemented in <a href="https://github.com/20c/vodka/tree/master/vodka/config">vodka/config</a>, should take all the schema definition code from there and re-use it here.</p>
+<h2 id="feature-requirements">Feature requirements</h2>
+<ul>
+<li>Use <a href="https://github.com/20c/munge">munge</a> for config file loading and saving</li>
+<li>Work with munge.Config</li>
+<li>Generate config file with default values (python -&gt; yaml)</li>
+<li>Generate schema from config file (yaml -&gt; python)</li>
+<li>Validate a config file - think django field validation but for config variables.</li>
+<li>Work with click and argparse</li>
+</ul>
+<h2 id="schema-requirements">Schema requirements</h2>
+<h3 id="required">Required</h3>
+<ul>
+<li><code>type</code>: config variable type (for example <code>int</code> or <code>str</code> or <code>url</code>), custom types should be allowed. This will also be used as a validator when validating the config)</li>
+<li><code>name</code>: config variable name (this could come from an attribute or could be the property name in the schema)</li>
+</ul>
+<h3 id="optional">Optional</h3>
+<ul>
+<li><code>default</code>: default value to use if variable is missing from config file</li>
+<li><code>help</code>: arbitrary help text describing the config variable and how to use it</li>
+<li><code>deprecated_in</code>: version this config variable will be deprecated</li>
+<li><code>added_in</code> : version this config variable was added</li>
+<li><code>removed_in</code> : version this config variable was remove</li>
+<li><code>choices</code> : array of possible value choices</li>
+</ul>
+<p>Most yaml configurations will come with some sort of nesting. So need to be able to handle that, whether it's via lists or object literals or a combination.</p>
+<h4 id="type">Type</h4>
+<p>Describes the config variable type - this should be a function that can be used to validate the value. So for example
+could be the <code>int</code> function that comes with python or a custom function that can take a value and then validate it</p>
+<h2 id="validation">Validation</h2>
+<p>When validating a config file list error messages for all validation errors. The vodka implementation has errors and warnings, might make sense to have this separation here as well. Warnings could be used for exmaple to alert the user when they have config variables in their config file that the schema knows nothing about.</p>
+<h2 id="config-file-generation">Config file generation</h2>
+<p>Should be able to generate both ways.</p>
+<h3 id="python-yaml">Python -&gt; yaml</h3>
+<p>Generate a yaml file with default values from the schema</p>
+<h3 id="yaml-python">Yaml -&gt; Python</h3>
+<p>Generate a confu schema from a yaml file (name, type (str/int/float?) and possibly help from inline comments?)</p>
+<h2 id="cli">CLI</h2>
+<p>Should work with <code>click</code> and <code>argparse</code> to generate and validate files.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://github.com/20c/confu/api/confu.schema.core/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>confu.schema.core - confu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "confu.schema.core";
+    var mkdocs_page_input_path = "api/confu.schema.core.md";
+    var mkdocs_page_url = "/20c/confu/api/confu.schema.core/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> confu</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../attributes/">Attributes</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../examples/">Examples</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../cli/">CLI</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">API</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.config/">confu.config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.cli/">confu.cli</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.exceptions/">confu.exceptions</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.generator/">confu.generator</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">confu.schema.core</a>
+    <ul class="current">
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.schema.inet/">confu.schema.inet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../confu.util/">confu.util</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">confu</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API &raquo;</li>
+        
+      
+    
+    <li>confu.schema.core</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="confuschemacore">confu.schema.core</h1>
+<p>Fundamental schema attributes</p>
+<p>These can be imported directly from <code>confu.schema</code></p>
+<h1 id="functions">Functions</h1>
+<hr />
+<h2 id="apply_default">apply_default</h2>
+<p><code>def apply_default(config, attribute, path)</code></p>
+<p>Apply attribute default to config dict at the specified path</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>config (<code>dict</code>): the config dictonary</li>
+<li>attribute (<code>Attribute</code>): attribute instance</li>
+<li>path (<code>list(str)</code>): full path of the attribute in the schema</li>
+</ul>
+<hr />
+<h2 id="apply_defaults">apply_defaults</h2>
+<p><code>def apply_defaults(schema, config, debug=False)</code></p>
+<p>Take a config object and apply a schema's default values to keys that
+are missing.</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>schema (<code>Schema</code>): schema instance</li>
+<li>config (<code>dict</code>): the config dictonary</li>
+</ul>
+<hr />
+<h2 id="validate">validate</h2>
+<p><code>def validate(schema, config, raise_errors=False, log=None, **kwargs)</code></p>
+<p>Helper function that allows schema validation to either collect or raise errors</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>schema (<code>Schema</code>): schema instance</li>
+<li>config (<code>dict|munge.Config</code>)</li>
+</ul>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>raise_errors (<code>bool=False</code>): if <code>True</code> will raise a ValidationError exception
+  if it encounters validation errors</li>
+</ul>
+<p>If <code>False</code> it will instead collect errors and warnings and return a tuple:</p>
+<p><code>success(bool), errors(CollectValidationExceptions), warnings(CollectValidationException)</code></p>
+<ul>
+<li>log (<code>callable</code>): function to use to log errors, will be passed
+  a str message</li>
+<li>any additional kwargs will be passed on to <code>Schema.validate</code></li>
+</ul>
+<hr />
+<h1 id="classes">Classes</h1>
+<hr />
+<h2 id="attribute">Attribute</h2>
+<pre><code>Attribute(builtins.object)
+</code></pre>
+<p>Base confu schema attribute. All other schema attributes
+should extend this</p>
+<h3 id="instanced-attributes">Instanced Attributes</h3>
+<p>These attributes / properties will be available on instances of the class</p>
+<ul>
+<li>choices (<code>@property</code>): Return a list of possible value choices for this attribute</li>
+</ul>
+<p>Will return an empty list if the attribute is <strong>NOT</strong> limited by
+choices
+- cli (<code>@property</code>): Returns whether or not the attribute is available
+in as a cli argument  when confu is used to generated
+argparse or click arguments
+- default (<code>@property</code>): Return the default value for this attribute
+- default_is_none (<code>@property</code>): None
+- has_default (<code>@property</code>): None</p>
+<h3 id="methods">Methods</h3>
+<h4 id="__init__">__init__</h4>
+<p><code>def __init__(self, name=, **kwargs)</code></p>
+<p>Initialize attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>choices (<code>list</code>): if specified on values in this list may be set
+  for this attribute</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True|function</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_1">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="bool">Bool</h2>
+<pre><code>Bool(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires a boolean value</p>
+<h3 id="methods_1">Methods</h3>
+<h4 id="__init___1">__init__</h4>
+<p><code>def __init__(self, name=, **kwargs)</code></p>
+<p>Initialize attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>choices (<code>list</code>): if specified on values in this list may be set
+  for this attribute</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True|function</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_2">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="collectvalidationexceptions">CollectValidationExceptions</h2>
+<pre><code>CollectValidationExceptions(confu.schema.core.ValidationErrorProcessor)
+</code></pre>
+<p>This validation error processor will store all errors and warnings it encounters
+and NOT raise any exceptions</p>
+<h3 id="methods_2">Methods</h3>
+<h4 id="__init___2">__init__</h4>
+<p><code>def __init__(self)</code></p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h2 id="dict">Dict</h2>
+<pre><code>Dict(confu.schema.core.Schema)
+</code></pre>
+<p>Wrapper for schema with arbitrary keys</p>
+<p>For this the <code>item</code> property needs to be set.</p>
+<h3 id="methods_3">Methods</h3>
+<h4 id="__init___3">__init__</h4>
+<p><code>def __init__(self, name=None, item=None, *args, **kwargs)</code></p>
+<p>Initialize schema</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>item (<code>Attribute</code>): allows you to specify an arbitrary attribute
+  to use for all values in the schema. This is only allowed if your
+  schema does <strong>NOT</strong> explicitly set any attributes in it's definition</li>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h2 id="directory">Directory</h2>
+<pre><code>Directory(confu.schema.core.Str)
+</code></pre>
+<p>Attribute that requires an existing directory path</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>require_exist ('bool=True'): if <code>True</code> directory needs to exist</li>
+<li>create (<code>octal</code>): if set, instead of raising a ValidationError
+on a non-existing directory, attempt to create directory first
+using the value passed as mode (chmod) e.g., create=0o777</li>
+</ul>
+<h3 id="methods_4">Methods</h3>
+<h4 id="__init___4">__init__</h4>
+<p><code>def __init__(self, name=, **kwargs)</code></p>
+<p>Initialize attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>choices (<code>list</code>): if specified on values in this list may be set
+  for this attribute</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True|function</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_3">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="file">File</h2>
+<pre><code>File(confu.schema.core.Str)
+</code></pre>
+<p>Attribute that requires a file to exist at path</p>
+<p><strong>Keyword Attributes</strong></p>
+<ul>
+<li>require_exist ('bool=True'): if <code>True</code> file needs to exist</li>
+</ul>
+<h3 id="methods_5">Methods</h3>
+<h4 id="__init___5">__init__</h4>
+<p><code>def __init__(self, name=, **kwargs)</code></p>
+<p>Initialize attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>choices (<code>list</code>): if specified on values in this list may be set
+  for this attribute</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True|function</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_4">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="float">Float</h2>
+<pre><code>Float(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires a float value</p>
+<h3 id="methods_6">Methods</h3>
+<h4 id="validate_5">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="int">Int</h2>
+<pre><code>Int(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires an integer value</p>
+<h3 id="methods_7">Methods</h3>
+<h4 id="validate_6">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="list">List</h2>
+<pre><code>List(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires a list value</p>
+<h3 id="instanced-attributes_1">Instanced Attributes</h3>
+<p>These attributes / properties will be available on instances of the class</p>
+<ul>
+<li>cli (<code>@property</code>): None</li>
+</ul>
+<h3 id="methods_8">Methods</h3>
+<h4 id="__init___6">__init__</h4>
+<p><code>def __init__(self, name=None, item=None, **kwargs)</code></p>
+<p>Initialize List attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>item (<code>Attribute</code>): allows you to specify an arbitrary attribute
+  to use for all values in the list.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_7">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="proxyschema">ProxySchema</h2>
+<pre><code>ProxySchema(confu.schema.core.Schema)
+</code></pre>
+<p>An object that can be used in place of a schema in order to
+dynamically obtain a schema instance from somewhere else during
+validate</p>
+<h3 id="methods_9">Methods</h3>
+<h4 id="schema">schema</h4>
+<p><code>def schema(self, config)</code></p>
+<p>return a schema instance</p>
+<hr />
+<h4 id="validate_8">validate</h4>
+<p><code>def validate(self, config, path=None, errors=None, warnings=None)</code></p>
+<p>call validate on the schema returned by self.schema</p>
+<hr />
+<h2 id="schema_1">Schema</h2>
+<pre><code>Schema(confu.schema.core.Attribute)
+</code></pre>
+<p>Describes a confu schema.</p>
+<p>Instantiate confu attributes as properties of the schema.</p>
+<p>As the schema itself is a confu attribute, you may nest schemas
+within schemas</p>
+<p><strong>Example</strong></p>
+<pre><code>class MySchema(Schema):
+    str_attr = Str()
+</code></pre>
+<h3 id="methods_10">Methods</h3>
+<h4 id="__init___7">__init__</h4>
+<p><code>def __init__(self, *args, **kwargs)</code></p>
+<p>Initialize schema</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>item (<code>Attribute</code>): allows you to specify an arbitrary attribute
+  to use for all values in the schema. This is only allowed if your
+  schema does <strong>NOT</strong> explicitly set any attributes in it's definition</li>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_9">validate</h4>
+<p><code>def validate(self, config, path=None, errors=None, warnings=None)</code></p>
+<p>Validate config data against this schema</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li>config (<code>dict</code>): config to validate</li>
+</ul>
+<p><strong>Keyword Attributes</strong></p>
+<ul>
+<li>path (<code>list</code>): current path in the config data, this can be
+  ignored on the initial call and will be set automatically
+  on any subsequent calls (nested schemas)</li>
+<li>errors (<code>ValidationErrorProcessor</code>)</li>
+<li>warnigns (<code>ValidationErrorProcessor</code>)</li>
+</ul>
+<hr />
+<h2 id="str">Str</h2>
+<pre><code>Str(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires a string value</p>
+<p>Keyword Attributes:
+    - blank <bool=False>: if True allow "" as a value</p>
+<h3 id="instanced-attributes_2">Instanced Attributes</h3>
+<p>These attributes / properties will be available on instances of the class</p>
+<ul>
+<li>default_is_blank (<code>@property</code>): None</li>
+</ul>
+<h3 id="methods_11">Methods</h3>
+<h4 id="__init___8">__init__</h4>
+<p><code>def __init__(self, name=, **kwargs)</code></p>
+<p>Initialize attribute</p>
+<p><strong>Keyword Arguments</strong></p>
+<ul>
+<li>name (<code>str</code>): describes the attribute name, if not specified
+  explicitly will be set through the schema that instantiates
+  the attribute.</li>
+<li>default (<code>mixed</code>): the default value of this attribute. Once a default
+  value is set, schema validation will no longer raise a
+  validation error if the attribute is missing from the
+  configuration.</li>
+<li>choices (<code>list</code>): if specified on values in this list may be set
+  for this attribute</li>
+<li>help (<code>str</code>): help description</li>
+<li>cli (<code>bool=True|function</code>): enable CLI support for this attribute</li>
+<li>deprecated (<code>str</code>): version id of when this attribute will be deprecated</li>
+<li>added (<code>str</code>): version id of when this attribute was added to the schema</li>
+<li>removed (<code>str</code>): version id of when this attribute will be removed</li>
+</ul>
+<hr />
+<h4 id="validate_10">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="timeduration">TimeDuration</h2>
+<pre><code>TimeDuration(confu.schema.core.Attribute)
+</code></pre>
+<p>Attribute that requires an TimeDuration type value.
+TimeDuration is defined in <code>confu.types</code></p>
+<h3 id="instanced-attributes_3">Instanced Attributes</h3>
+<p>These attributes / properties will be available on instances of the class</p>
+<ul>
+<li>choices (<code>@property</code>): None</li>
+<li>default (<code>@property</code>): None</li>
+</ul>
+<h3 id="methods_12">Methods</h3>
+<h4 id="validate_11">validate</h4>
+<p><code>def validate(self, value, path, **kwargs)</code></p>
+<p>Validate a value for this attribute</p>
+<p>Will raise a <code>ValidationError</code> or <code>ValidationWarning</code> exception on
+validation failure</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li>value (<code>mixed</code>): the value to validate</li>
+<li>path (<code>list</code>): current path in the config schema, this is mostly
+  used to identify where an error occured when validating
+  against config data, you can pass an empty list to it when
+  calling this manually</li>
+</ul>
+<hr />
+<h2 id="validationerrorprocessor">ValidationErrorProcessor</h2>
+<pre><code>ValidationErrorProcessor(builtins.object)
+</code></pre>
+<p>This the default validation error processor, it will raise an exception
+when a warning or error is encountered</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../confu.schema.inet/" class="btn btn-neutral float-right" title="confu.schema.inet">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../confu.generator/" class="btn btn-neutral" title="confu.generator"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../confu.generator/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../confu.schema.inet/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
