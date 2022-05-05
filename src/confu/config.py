@@ -37,6 +37,12 @@ class Config(collections.abc.Mapping):
         # use property setter to apply
         self.data = data if data else {}
 
+    def __eq__(self, other):
+        return self.data == other.data
+
+    def __ne__(self, other):
+        return not self.data == other.data
+
     def copy(self):
         """return a read only copy of data"""
         return copy.deepcopy(self.data)
