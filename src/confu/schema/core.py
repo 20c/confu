@@ -10,6 +10,7 @@ import copy
 import os
 from inspect import isclass
 
+from confu import types
 from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
 from confu.util import config_parser_dict
 
@@ -358,6 +359,35 @@ class Float(Attribute):
         except (TypeError, ValueError):
             raise ValidationError(self, path, value, "float expected")
         return super().validate(value, path, **kwargs)
+
+
+class TimeDuration(Attribute):
+
+    """
+    Attribute that requires an TimeDuration type value.
+    TimeDuration is defined in `confu.types`
+    """
+
+    def validate(self, value, path, **kwargs):
+        if value is None and self.default_is_none:
+            return value
+        try:
+            value = types.TimeDuration(value)
+        except (TypeError, ValueError):
+            raise ValidationError(self, path, value, "TimeDuration expected")
+        return super().validate(value, path, **kwargs)
+
+    @property
+    def default(self):
+        default = super().default
+        if default is None:
+            return None
+        else:
+            return types.TimeDuration(default)
+
+    @property
+    def choices(self):
+        return list(map(types.TimeDuration, super().choices))
 
 
 class List(Attribute):

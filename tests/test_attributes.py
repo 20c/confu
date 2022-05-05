@@ -1,6 +1,6 @@
 import pytest
 
-from confu.schema import Bool, Directory, Float, Int, List, Schema, Str
+from confu.schema import Bool, Directory, Float, Int, List, Schema, Str, TimeDuration
 
 
 @pytest.mark.parametrize("Class", [Str, Int, Float, Bool, Directory])
@@ -22,6 +22,12 @@ def test_init(Class):
         (Int, lambda x: [1, 2], [1, 2]),
         (Float, [1.2, 2.3], [1.2, 2.3]),
         (Float, lambda x: [1.2, 2.3], [1.2, 2.3]),
+        (TimeDuration, [" 2y 2d 2h 2m 2s 2ms", "3m", 120], [63295322.002, 180, 120]),
+        (
+            TimeDuration,
+            lambda x: ["2y 2d 2h 2m 2s 2ms", "3m", 120],
+            [63295322.002, 180, 120],
+        ),
         (Directory, ["/a", "/b"], ["/a", "/b"]),
         (Directory, lambda x: ["/a", "/b"], ["/a", "/b"]),
     ],
@@ -44,6 +50,10 @@ def test_choices(Class, choices_in, choices_out):
         (Int, lambda x: 123, 123),
         (Float, 1.23, 1.23),
         (Float, lambda x: 1.23, 1.23),
+        (TimeDuration, "2y 2d 2h 2m 2s 2ms", 63295322.002),
+        (TimeDuration, lambda x: "2y 2d 2h 2m 2s 2ms", 63295322.002),
+        (TimeDuration, 180122.002, 180122.002),
+        (TimeDuration, lambda x: 180122.002, 180122.002),
         (Bool, True, True),
         (Bool, lambda x: True, True),
         (Directory, "/test", "/test"),
@@ -79,7 +89,7 @@ def test_list():
     attribute = List(name="test", item=Int())
 
 
-@pytest.mark.parametrize("Class", [Str, Int, Bool, Float])
+@pytest.mark.parametrize("Class", [Str, Int, Bool, Float, TimeDuration])
 def test_none_default(Class):
     attribute = Class("test", default=None)
     assert attribute.has_default is True
