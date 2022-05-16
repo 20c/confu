@@ -2,6 +2,19 @@
 functions that allow you to generate CLI parameters from a confu schema for
 argparse or click
 """
+from typing import Any
+from confu.schema.core import Bool
+from confu.schema.core import Float
+from confu.schema.core import Int
+from typing import List
+from typing import Union
+from tests.schemas import Schema_03
+from typing import Dict
+from typing import Optional
+from typing import Callable
+from argparse import ArgumentParser
+from argparse import Namespace
+from confu.config import Config
 
 try:
     import click
@@ -9,7 +22,7 @@ except ImportError:
     pass
 
 
-def option_name(path, delimiter="--"):
+def option_name(path: List[str], delimiter: str = "--") -> str:
     """
     Returns a cli option name from attribute path
 
@@ -26,7 +39,7 @@ def option_name(path, delimiter="--"):
     return "--{}".format(delimiter.join(path).replace("_", "-"))
 
 
-def destination_name(path, delimiter="__"):
+def destination_name(path: List[str], delimiter: str = "__") -> str:
     """
     Returns a cli option destination name from attribute path
 
@@ -42,7 +55,7 @@ def destination_name(path, delimiter="__"):
     return f"{delimiter.join(path)}"
 
 
-def default(value, path, defaults):
+def default(value: Optional[float], path: List[str], defaults: Optional[Dict[str, Any]]) -> Optional[float]:
     if not defaults or not path:
         return value
     container = defaults
@@ -54,8 +67,8 @@ def default(value, path, defaults):
 
 
 def argparse_options(
-    parser, schema, defaults=None, attributes=None, default_from_schema=True
-):
+    parser: ArgumentParser, schema: Any, defaults: Optional[Dict[str, Any]] = None, attributes: Optional[List[str]] = None, default_from_schema: bool = True
+) -> None:
 
     """
     Add cli options to an argparse ArgumentParser instance
@@ -74,7 +87,7 @@ def argparse_options(
     argparser should come from the schema
     """
 
-    def optionize(attribute, path):
+    def optionize(attribute: Any, path: List[str]) -> None:
         if not attribute.cli:
             return
 
@@ -106,7 +119,7 @@ def argparse_options(
     schema.walk(optionize)
 
 
-def apply_argparse(args, config):
+def apply_argparse(args: Namespace, config: Config) -> Config:
 
     """
     Takes the output of a parser and applies it to a Config object.
@@ -126,7 +139,7 @@ def apply_argparse(args, config):
     return config
 
 
-def apply_arg(original_key, args, config):
+def apply_arg(original_key: str, args: Namespace, config: Config) -> None:
 
     """
     Function for applying arguments to a config. Applies to nested
@@ -201,24 +214,24 @@ class click_options:
     if specified only matching attributes will be aded
     """
 
-    def __init__(self, schema, defaults=None, attributes=None):
+    def __init__(self, schema: Schema_03, defaults: Optional[Dict[str, Any]] = None, attributes: Optional[List[str]] = None) -> None:
         self.schema = schema
         self.defaults = defaults
         self.attributes = attributes
 
-    def __call__(self, fn):
+    def __call__(self, fn: Callable) -> Callable:
         container = {"fn": fn}
         defaults = self.defaults
         attributes = self.attributes
 
-        def optionize(attribute, path):
+        def optionize(attribute: Union[Bool, Float, Int], path: List[str]) -> None:
             if not attribute.cli:
                 return
 
             if attributes and destination_name(path) not in attributes:
                 return
 
-            def validate_and_convert(value):
+            def validate_and_convert(value: Any) -> Any:
                 return attribute.validate(value, path)
 
             validate_and_convert.__name__ = attribute.__class__.__name__

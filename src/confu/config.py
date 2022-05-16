@@ -7,6 +7,9 @@ import collections
 import copy
 
 import confu.schema
+from typing import Any
+from typing import Dict
+from typing import Optional
 
 
 class Config(collections.abc.Mapping):
@@ -14,7 +17,7 @@ class Config(collections.abc.Mapping):
     class for storing and manipulating config data
     """
 
-    def __init__(self, schema, data=None, meta=None):
+    def __init__(self, schema: Any, data: Optional[Dict[str, Any]] = None, meta: Optional[Any] = None) -> None:
         """
         **Arguments**
 
@@ -43,12 +46,12 @@ class Config(collections.abc.Mapping):
     def __ne__(self, other):
         return not self.data == other.data
 
-    def copy(self):
+    def copy(self) -> Dict[str, Any]:
         """return a read only copy of data"""
         return copy.deepcopy(self.data)
 
     @property
-    def data(self):
+    def data(self) -> Dict[str, Any]:
         """config data, should be used for read only"""
         if self._data:
             return self._data
@@ -71,16 +74,16 @@ class Config(collections.abc.Mapping):
         return self._data
 
     @data.setter
-    def data(self, value):
+    def data(self, value: Dict[str, Any]) -> None:
         self._base_data = value
         self._data = None
 
     @property
-    def schema(self):
+    def schema(self) -> Any:
         """return a read only copy of schema"""
         return copy.deepcopy(self._schema)
 
-    def get_nested(self, *args):
+    def get_nested(self, *args: str) -> Optional[Dict[str, int]]:
         """
         get a nested value, returns None if path does not exist
         """
@@ -91,11 +94,11 @@ class Config(collections.abc.Mapping):
             data = data[key]
         return data
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         return self.data[key]
 
-    def __iter__(self):
+    def __iter__(self) -> dict_keyiterator:
         return iter(self.data)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.data)

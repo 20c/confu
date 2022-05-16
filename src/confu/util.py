@@ -2,9 +2,15 @@
 utility functions / classes
 """
 import os
+from typing import Any
+from typing import Dict
+from typing import Union
+from typing import Optional
+from confu.types import TimeDuration
+from configparser import ConfigParser
 
 
-def config_parser_dict(config):
+def config_parser_dict(config: ConfigParser) -> Dict[str, Dict[str, str]]:
     """
     Takes a configparser.ConfigParser instance and returns a dict
     of sections with their keys and values.
@@ -28,7 +34,7 @@ class SettingsManager:
     Scoped settings management with environment variable override support.
     """
 
-    def __init__(self, scope, name="settings_manager"):
+    def __init__(self, scope: Dict[str, Any], name: str = "settings_manager") -> None:
         """
         **Arguments**
 
@@ -42,7 +48,7 @@ class SettingsManager:
         self.scope = scope
         self.name = name
 
-    def set_from_env(self, name, default=_DEFAULT_ARG):
+    def set_from_env(self, name: str, default: Union[object, str] = _DEFAULT_ARG) -> None:
         """
         Sets a scope variable from an environment variable of the same name.
 
@@ -63,7 +69,7 @@ class SettingsManager:
 
         self.scope[name] = os.environ.get(name, default)
 
-    def set_option(self, name, value, envvar_type=None):
+    def set_option(self, name: str, value: Any, envvar_type: Optional[type] = None) -> Optional[Any]:
         """
         Sets an option by first checking for environment variables,
         then checking for value already set,
@@ -108,7 +114,7 @@ class SettingsManager:
         else:
             self.set_default(name, value)
 
-    def set_bool(self, name, value):
+    def set_bool(self, name: str, value: bool) -> None:
         """
         Sets an option by first checking for environment variables,
         then checking for value already set,
@@ -133,7 +139,7 @@ class SettingsManager:
                 )
         self.set_default(name, value)
 
-    def set_default(self, name, value):
+    def set_default(self, name: str, value: Union[bool, TimeDuration, str]) -> None:
         """
         Sets the default value for the option if a value is not already set.
 
@@ -145,7 +151,7 @@ class SettingsManager:
         if name not in self.scope:
             self.scope[name] = value
 
-    def try_include(self, filepath):
+    def try_include(self, filepath: str) -> None:
         """
         Tries to include another file into the current scope.
 
