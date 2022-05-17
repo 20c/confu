@@ -1,14 +1,11 @@
 """
 Schema to data generators
 """
+from __future__ import annotations
+
+from typing import Dict, Optional, Union
+
 from confu.schema import Attribute, Schema
-from typing import Any
-from typing import List
-from typing import Union
-from confu.generator import ConfigGenerator
-from tests.schemas import Schema_02
-from typing import Dict
-from typing import Optional
 
 
 class ConfigGenerator:
@@ -19,7 +16,7 @@ class ConfigGenerator:
     def __init__(self) -> None:
         pass
 
-    def generate(self, schema: Any) -> Union[List, int]:
+    def generate(self, schema: Union[Schema, Attribute]) -> Dict:
 
         """
         Generate confug from schema using default values
@@ -45,7 +42,7 @@ class ConfigGenerator:
         return schema
 
 
-def generate(schema: Schema_02, generator: Optional[ConfigGenerator] = None) -> Dict[str, Any]:
+def generate(schema: Schema, generator: Optional[ConfigGenerator] = None) -> Dict:
     """
     generate config shortcut function
 
