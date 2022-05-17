@@ -22,7 +22,7 @@ class ValidationErrorBase(ValueError):
     def __init__(
         self,
         attribute: confu.schema.Attribute,
-        path: list,
+        path: list[str],
         value: Any,
         reason: str,
     ) -> None:

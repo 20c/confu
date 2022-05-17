@@ -26,7 +26,7 @@ class Email(Str):
     Describes an email address
     """
 
-    def validate(self, value: str | None, path: list, **kwargs: Any) -> str | None:
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value == "" and self.blank:
@@ -52,7 +52,7 @@ class Url(Str):
         super().__init__(name=name, **kwargs)
         self.schemes = kwargs.get("schemes", [])
 
-    def validate(self, value: str | None, path: list, **kwargs: Any) -> str | None:
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         """
         Currently only validates by running urlparse against it
         and checking that a scheme and netloc is set - and if a list of allowed
@@ -128,19 +128,19 @@ class IpAddress(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: list, **kwargs: Any) -> bool | IPv4Address:
+    def validate_v4(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv4Address:
         try:
             return ipaddress.IPv4Address(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: list, **kwargs: Any) -> bool | IPv6Address:
+    def validate_v6(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv6Address:
         try:
             return ipaddress.IPv6Address(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate(self, value: str | None, path: list, **kwargs: Any) -> Any:
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> Any:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -200,20 +200,20 @@ class IpNetwork(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: list, **kwargs: Any) -> bool | IPv4Network:
+    def validate_v4(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv4Network:
         try:
             return ipaddress.IPv4Network(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: list, **kwargs: Any) -> bool | IPv6Network:
+    def validate_v6(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv6Network:
         try:
             return ipaddress.IPv6Network(value)
         except ipaddress.AddressValueError:
             return False
 
     def validate(
-        self, value: str, path: list, **kwargs: Any
+        self, value: str, path: list[str], **kwargs: Any
     ) -> IPv4Network | IPv6Network | str:
         value = super().validate(value, path, **kwargs)
 

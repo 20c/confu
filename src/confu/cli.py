@@ -17,7 +17,7 @@ except ImportError:
     pass
 
 
-def option_name(path: list, delimiter: str = "--") -> str:
+def option_name(path: list[str], delimiter: str = "--") -> str:
     """
     Returns a cli option name from attribute path
 
@@ -34,7 +34,7 @@ def option_name(path: list, delimiter: str = "--") -> str:
     return "--{}".format(delimiter.join(path).replace("_", "-"))
 
 
-def destination_name(path: list, delimiter: str = "__") -> str:
+def destination_name(path: list[str], delimiter: str = "__") -> str:
     """
     Returns a cli option destination name from attribute path
 
@@ -50,7 +50,7 @@ def destination_name(path: list, delimiter: str = "__") -> str:
     return f"{delimiter.join(path)}"
 
 
-def default(value: Any, path: list, defaults: dict | None) -> Any:
+def default(value: Any, path: list[str], defaults: dict | None) -> Any:
     if not defaults or not path:
         return value
     container = defaults
@@ -86,7 +86,7 @@ def argparse_options(
     argparser should come from the schema
     """
 
-    def optionize(attribute: Attribute, path: list) -> None:
+    def optionize(attribute: Attribute, path: list[str]) -> None:
         if not attribute.cli:
             return
 
