@@ -8,20 +8,16 @@ These can be imported directly from `confu.schema`
 - `ipaddress` for ip address validation
 """
 
+from __future__ import annotations
+
 import ipaddress
 import re
+from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+from typing import Any, List, Optional, Union
 from urllib.parse import urlparse
 
-from confu.exceptions import SoftDependencyError
-from confu.schema.core import Str, ValidationError
-from typing import Any
-from typing import List
-from typing import Optional
-from ipaddress import IPv4Address
-from typing import Union
-from ipaddress import IPv6Address
-from ipaddress import IPv4Network
-from ipaddress import IPv6Network
+from confu.exceptions import SoftDependencyError, ValidationError
+from confu.schema.core import Str
 
 
 class Email(Str):
@@ -30,7 +26,9 @@ class Email(Str):
     Describes an email address
     """
 
-    def validate(self, value: Optional[str], path: List, **kwargs: Any) -> Optional[str]:
+    def validate(
+        self, value: Optional[str], path: List, **kwargs: Any
+    ) -> Optional[str]:
         value = super().validate(value, path, **kwargs)
 
         if value == "" and self.blank:
@@ -56,7 +54,9 @@ class Url(Str):
         super().__init__(name=name, **kwargs)
         self.schemes = kwargs.get("schemes", [])
 
-    def validate(self, value: Optional[str], path: List, **kwargs: Any) -> Optional[str]:
+    def validate(
+        self, value: Optional[str], path: List, **kwargs: Any
+    ) -> Optional[str]:
         """
         Currently only validates by running urlparse against it
         and checking that a scheme and netloc is set - and if a list of allowed
@@ -98,7 +98,9 @@ class IpAddress(Str):
     Describes a IPv4 or IPv6 address
     """
 
-    def __init__(self, name: str = "", protocol: Optional[int] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, name: str = "", protocol: Optional[int] = None, **kwargs: Any
+    ) -> None:
 
         """
         Initialize attribute
@@ -130,13 +132,17 @@ class IpAddress(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: List, **kwargs: Any) -> Union[bool, IPv4Address]:
+    def validate_v4(
+        self, value: str, path: List, **kwargs: Any
+    ) -> Union[bool, IPv4Address]:
         try:
             return ipaddress.IPv4Address(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: List, **kwargs: Any) -> Union[bool, IPv6Address]:
+    def validate_v6(
+        self, value: str, path: List, **kwargs: Any
+    ) -> Union[bool, IPv6Address]:
         try:
             return ipaddress.IPv6Address(value)
         except ipaddress.AddressValueError:
@@ -169,7 +175,9 @@ class IpNetwork(Str):
     Describes a IPv4 or IPv6 IP prefix
     """
 
-    def __init__(self, name: str = "", protocol: Optional[int] = None, **kwargs: Any) -> None:
+    def __init__(
+        self, name: str = "", protocol: Optional[int] = None, **kwargs: Any
+    ) -> None:
 
         """
         Initialize attribute
@@ -200,19 +208,25 @@ class IpNetwork(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: List, **kwargs: Any) -> Union[bool, IPv4Network]:
+    def validate_v4(
+        self, value: str, path: List, **kwargs: Any
+    ) -> Union[bool, IPv4Network]:
         try:
             return ipaddress.IPv4Network(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: List, **kwargs: Any) -> Union[bool, IPv6Network]:
+    def validate_v6(
+        self, value: str, path: List, **kwargs: Any
+    ) -> Union[bool, IPv6Network]:
         try:
             return ipaddress.IPv6Network(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate(self, value: str, path: List, **kwargs: Any) -> Union[IPv4Network, IPv6Network, str]:
+    def validate(
+        self, value: str, path: List, **kwargs: Any
+    ) -> Union[IPv4Network, IPv6Network, str]:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
