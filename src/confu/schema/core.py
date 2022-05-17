@@ -3,30 +3,22 @@ Fundamental schema attributes
 
 These can be imported directly from `confu.schema`
 """
+from __future__ import annotations
 
 import collections.abc
 import configparser
 import copy
 import os
 from inspect import isclass
+from typing import Any, Callable
+from typing import Dict as typing_Dict
+from typing import Iterator, NoReturn
+
+import munge
 
 from confu import types
 from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
 from confu.util import config_parser_dict
-from typing import Any
-from confu.types import TimeDuration
-from typing import Optional
-from typing import List
-from typing import Union
-from typing import Dict
-from confu.schema.core import Int
-from confu.schema.core import Str
-from mypy_extensions import NoReturn
-from typing import Iterator
-from typing import Callable
-from confu.schema.core import CollectValidationExceptions
-from confu.schema.core import ValidationErrorProcessor
-from typing import Tuple
 
 
 class Attribute:
@@ -142,7 +134,7 @@ class Attribute:
             return toggle(self)
         return toggle
 
-    def validate(self, value: Any, path: Union[List[Union[int, str]], List[str]], **kwargs: Any) -> Any:
+    def validate(self, value: Any, path: List, **kwargs: Any) -> Any:
         """
         Validate a value for this attribute
 
@@ -188,7 +180,12 @@ class Str(Attribute):
     def default_is_blank(self) -> bool:
         return self.default == ""
 
-    def validate(self, value: Union[None, int, str], path: Union[List[Union[int, str]], List[int], List[str]], **kwargs: Any) -> Optional[str]:
+    def validate(
+        self,
+        value: str | None,
+        path: List,
+        **kwargs: Any,
+    ) -> str | None:
         if not isinstance(value, str) and not self.default_is_none:
             raise ValidationError(self, path, value, "string expected")
 
@@ -211,7 +208,7 @@ class File(Str):
         super().__init__(name=name, **kwargs)
         self.require_exist = kwargs.get("require_exist", True)
 
-    def validate(self, value: Optional[str], path: List, **kwargs: Any) -> Optional[str]:
+    def validate(self, value: str | None, path: List, **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -268,7 +265,7 @@ class Directory(Str):
                 "tried to create directory  but failed with error" ": {}".format(err),
             )
 
-    def validate(self, value: Optional[str], path: List, **kwargs: Any) -> Optional[str]:
+    def validate(self, value: str | None, path: List, **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -317,7 +314,7 @@ class Bool(Attribute):
         super().__init__(name=name, **kwargs)
         self.cli_show_default = False
 
-    def validate(self, value: Union[int, str], path: List[str], **kwargs: Any) -> bool:
+    def validate(self, value: int | str, path: List, **kwargs: Any) -> bool:
         if isinstance(value, str):
             if value.lower() in self.true_values:
                 value = True
@@ -327,11 +324,11 @@ class Bool(Attribute):
                 raise ValidationError(self, path, value, "boolean expected")
         return super().validate(bool(value), path, **kwargs)
 
-    def finalize_click(self, param: Dict[str, Any], name: str) -> str:
+    def finalize_click(self, param: typing_Dict[str, Any], name: str) -> str:
         del param["type"]
         return "{}/--no-{}".format(name, name.strip("-"))
 
-    def finalize_argparse(self, param: Dict[str, Any], name: str) -> str:
+    def finalize_argparse(self, param: typing_Dict[str, Any], name: str) -> str:
         del param["type"]
         if not param["default"]:
             param.update(action="store_true")
@@ -349,7 +346,12 @@ class Int(Attribute):
     Attribute that requires an integer value
     """
 
-    def validate(self, value: Union[int, str], path: Union[List[Union[int, str]], List[int], List[str]], **kwargs: Any) -> int:
+    def validate(
+        self,
+        value: int | str | None,
+        path: List,
+        **kwargs: Any,
+    ) -> int | None:
         if value is None and self.default_is_none:
             return value
         try:
@@ -365,7 +367,9 @@ class Float(Attribute):
     Attribute that requires a float value
     """
 
-    def validate(self, value: Union[None, float, str], path: List[str], **kwargs: Any) -> Optional[float]:
+    def validate(
+        self, value: float | str | None, path: List, **kwargs: Any
+    ) -> float | None:
         if value is None and self.default_is_none:
             return value
         try:
@@ -382,7 +386,9 @@ class TimeDuration(Attribute):
     TimeDuration is defined in `confu.types`
     """
 
-    def validate(self, value: Union[TimeDuration, float, str], path: List[str], **kwargs: Any) -> TimeDuration:
+    def validate(
+        self, value: types.TimeDuration | float | str | None, path: List, **kwargs: Any
+    ) -> TimeDuration:
         if value is None and self.default_is_none:
             return value
         try:
@@ -392,7 +398,7 @@ class TimeDuration(Attribute):
         return super().validate(value, path, **kwargs)
 
     @property
-    def default(self) -> Optional[TimeDuration]:
+    def default(self) -> TimeDuration | None:
         default = super().default
         if default is None:
             return None
@@ -400,7 +406,7 @@ class TimeDuration(Attribute):
             return types.TimeDuration(default)
 
     @property
-    def choices(self) -> List[TimeDuration]:
+    def choices(self) -> List:
         return list(map(types.TimeDuration, super().choices))
 
 
@@ -414,7 +420,12 @@ class List(Attribute):
     # doing so means flipping the order with name, which breaks
     # peoples schemas (major version fix?)
 
-    def __init__(self, name: Optional[str] = None, item: Union[Int, Str, int] = None, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        name: str | None = None,
+        item: Attribute | None = None,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize List attribute
 
@@ -458,7 +469,12 @@ class List(Attribute):
             return False
         return super().cli
 
-    def validate(self, value: Union[List[Dict[str, Any]], List[Dict[str, Dict[str, Any]]], str], path: Union[List[Union[int, str]], List[str]], **kwargs: Any) -> Any:
+    def validate(
+        self,
+        value: List | str,
+        path: List,
+        **kwargs: Any,
+    ) -> Any:
 
         if isinstance(value, str):
             value = value.split(",")
@@ -597,7 +613,7 @@ class Schema(Attribute):
         # redundant?
         yield from list(self._attr.items())
 
-    def walk(self, callback: Callable, path: Optional[List[str]] = None) -> None:
+    def walk(self, callback: Callable, path: List | None = None) -> None:
         if not path:
             path = []
         for name, attribute in self.attributes():
@@ -607,7 +623,13 @@ class Schema(Attribute):
             else:
                 callback(attribute, path + [name])
 
-    def validate(self, config: Dict[str, Any], path: Union[List[Union[int, str]], List[str], None] = None, errors: CollectValidationExceptions = None, warnings: CollectValidationExceptions = None) -> Dict[str, Any]:
+    def validate(
+        self,
+        config: typing_Dict,
+        path: List | None = None,
+        errors: ValidationErrorProcessor | None = None,
+        warnings: ValidationErrorProcessor | None = None,
+    ) -> typing_Dict[str, Any]:
 
         """
         Validate config data against this schema
@@ -676,7 +698,13 @@ class Dict(Schema):
     For this the `item` property needs to be set.
     """
 
-    def __init__(self, name: str = None, item: Int = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        name: str | None = None,
+        item: Int | None = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(name=name, item=item, *args, **kwargs)
 
 
@@ -694,7 +722,13 @@ class ProxySchema(Schema):
         """
         raise NotImplementedError()
 
-    def validate(self, config: Dict[str, Any], path: List[Union[int, str]] = None, errors: ValidationErrorProcessor = None, warnings: ValidationErrorProcessor = None) -> Dict[str, Any]:
+    def validate(
+        self,
+        config: typing_Dict,
+        path: List | None = None,
+        errors: ValidationErrorProcessor | None = None,
+        warnings: ValidationErrorProcessor | None = None,
+    ) -> typing_Dict:
         """
         call validate on the schema returned by self.schema
         """
@@ -703,7 +737,13 @@ class ProxySchema(Schema):
         )
 
 
-def validate(schema: Any, config: Dict[str, Any], raise_errors: bool = False, log: Optional[Any] = None, **kwargs: Any) -> Tuple[bool, CollectValidationExceptions, CollectValidationExceptions]:
+def validate(
+    schema: Schema,
+    config: typing_Dict | munge.Config,
+    raise_errors: bool = False,
+    log: Callable | None = None,
+    **kwargs: Any,
+) -> tuple[bool, CollectValidationExceptions, CollectValidationExceptions] | None:
     """
     Helper function that allows schema validation to either collect or raise errors
 
@@ -752,7 +792,7 @@ def validate(schema: Any, config: Dict[str, Any], raise_errors: bool = False, lo
         return (success, errors, warnings)
 
 
-def apply_default(config: Dict[str, Any], attribute: Any, path: List[str]) -> None:
+def apply_default(config: typing_Dict, attribute: Attribute, path: List[str]) -> None:
     """
     Apply attribute default to config dict at the specified path
 
@@ -825,7 +865,7 @@ def apply_default(config: Dict[str, Any], attribute: Any, path: List[str]) -> No
         prev[section] = attribute.default
 
 
-def apply_defaults(schema: Any, config: Dict[str, Any], debug: bool = False) -> None:
+def apply_defaults(schema: Schema, config: typing_Dict, debug: bool = False) -> None:
     """
     Take a config object and apply a schema's default values to keys that
     are missing.
