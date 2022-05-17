@@ -1,16 +1,16 @@
 """
 utility functions / classes
 """
+from __future__ import annotations
+
 import os
-from typing import Any
-from typing import Dict
-from typing import Union
-from typing import Optional
-from confu.types import TimeDuration
 from configparser import ConfigParser
+from typing import Any
+
+from confu.types import TimeDuration
 
 
-def config_parser_dict(config: ConfigParser) -> Dict[str, Dict[str, str]]:
+def config_parser_dict(config: ConfigParser) -> dict:
     """
     Takes a configparser.ConfigParser instance and returns a dict
     of sections with their keys and values.
@@ -34,7 +34,7 @@ class SettingsManager:
     Scoped settings management with environment variable override support.
     """
 
-    def __init__(self, scope: Dict[str, Any], name: str = "settings_manager") -> None:
+    def __init__(self, scope: dict[str, Any], name: str = "settings_manager") -> None:
         """
         **Arguments**
 
@@ -48,7 +48,7 @@ class SettingsManager:
         self.scope = scope
         self.name = name
 
-    def set_from_env(self, name: str, default: Union[object, str] = _DEFAULT_ARG) -> None:
+    def set_from_env(self, name: str, default: object | str = _DEFAULT_ARG) -> None:
         """
         Sets a scope variable from an environment variable of the same name.
 
@@ -69,7 +69,9 @@ class SettingsManager:
 
         self.scope[name] = os.environ.get(name, default)
 
-    def set_option(self, name: str, value: Any, envvar_type: Optional[type] = None) -> Optional[Any]:
+    def set_option(
+        self, name: str, value: Any, envvar_type: type | None = None
+    ) -> Any | None:
         """
         Sets an option by first checking for environment variables,
         then checking for value already set,
@@ -139,7 +141,7 @@ class SettingsManager:
                 )
         self.set_default(name, value)
 
-    def set_default(self, name: str, value: Union[bool, TimeDuration, str]) -> None:
+    def set_default(self, name: str, value: bool | TimeDuration | str) -> None:
         """
         Sets the default value for the option if a value is not already set.
 
