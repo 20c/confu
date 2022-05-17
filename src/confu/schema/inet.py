@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import ipaddress
 import re
-from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 from typing import Any
 from urllib.parse import urlparse
 
@@ -130,7 +129,7 @@ class IpAddress(Str):
 
     def validate_v4(
         self, value: str, path: list[str], **kwargs: Any
-    ) -> bool | IPv4Address:
+    ) -> bool | ipaddress.IPv4Address:
         try:
             return ipaddress.IPv4Address(value)
         except ipaddress.AddressValueError:
@@ -138,7 +137,7 @@ class IpAddress(Str):
 
     def validate_v6(
         self, value: str, path: list[str], **kwargs: Any
-    ) -> bool | IPv6Address:
+    ) -> bool | ipaddress.IPv6Address:
         try:
             return ipaddress.IPv6Address(value)
         except ipaddress.AddressValueError:
@@ -206,7 +205,7 @@ class IpNetwork(Str):
 
     def validate_v4(
         self, value: str, path: list[str], **kwargs: Any
-    ) -> bool | IPv4Network:
+    ) -> bool | ipaddress.IPv4Network:
         try:
             return ipaddress.IPv4Network(value)
         except ipaddress.AddressValueError:
@@ -214,7 +213,7 @@ class IpNetwork(Str):
 
     def validate_v6(
         self, value: str, path: list[str], **kwargs: Any
-    ) -> bool | IPv6Network:
+    ) -> bool | ipaddress.IPv6Network:
         try:
             return ipaddress.IPv6Network(value)
         except ipaddress.AddressValueError:
@@ -222,7 +221,7 @@ class IpNetwork(Str):
 
     def validate(
         self, value: str, path: list[str], **kwargs: Any
-    ) -> IPv4Network | IPv6Network | str:
+    ) -> ipaddress.IPv4Network | ipaddress.IPv6Network | str:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:

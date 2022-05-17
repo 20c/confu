@@ -9,7 +9,6 @@ import copy
 from typing import Any, Iterator
 
 import confu.schema
-from confu.schema import Schema
 
 
 class Config(collections.abc.Mapping):
@@ -19,7 +18,7 @@ class Config(collections.abc.Mapping):
 
     def __init__(
         self,
-        schema: Schema,
+        schema: confu.schema.Schema,
         data: dict | None = None,
         meta: dict | None = None,
     ) -> None:
@@ -84,7 +83,7 @@ class Config(collections.abc.Mapping):
         self._data = None
 
     @property
-    def schema(self) -> Schema:
+    def schema(self) -> confu.schema.Schema:
         """return a read only copy of schema"""
         return copy.deepcopy(self._schema)
 

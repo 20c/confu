@@ -10,9 +10,7 @@ import configparser
 import copy
 import os
 from inspect import isclass
-from typing import Any, Callable
-from typing import Dict as typing_Dict
-from typing import Iterator, NoReturn
+from typing import Any, Callable, Iterator, NoReturn
 
 import munge
 
@@ -324,11 +322,11 @@ class Bool(Attribute):
                 raise ValidationError(self, path, value, "boolean expected")
         return super().validate(bool(value), path, **kwargs)
 
-    def finalize_click(self, param: typing_Dict[str, Any], name: str) -> str:
+    def finalize_click(self, param: dict[str, Any], name: str) -> str:
         del param["type"]
         return "{}/--no-{}".format(name, name.strip("-"))
 
-    def finalize_argparse(self, param: typing_Dict[str, Any], name: str) -> str:
+    def finalize_argparse(self, param: dict[str, Any], name: str) -> str:
         del param["type"]
         if not param["default"]:
             param.update(action="store_true")
@@ -628,11 +626,11 @@ class Schema(Attribute):
 
     def validate(
         self,
-        config: typing_Dict,
+        config: dict,
         path: List[str] | None = None,
         errors: ValidationErrorProcessor | None = None,
         warnings: ValidationErrorProcessor | None = None,
-    ) -> typing_Dict[str, Any]:
+    ) -> dict[str, Any]:
 
         """
         Validate config data against this schema
@@ -727,11 +725,11 @@ class ProxySchema(Schema):
 
     def validate(
         self,
-        config: typing_Dict,
+        config: dict,
         path: List[str] | None = None,
         errors: ValidationErrorProcessor | None = None,
         warnings: ValidationErrorProcessor | None = None,
-    ) -> typing_Dict:
+    ) -> dict:
         """
         call validate on the schema returned by self.schema
         """
@@ -742,7 +740,7 @@ class ProxySchema(Schema):
 
 def validate(
     schema: Schema,
-    config: typing_Dict | munge.Config,
+    config: dict | munge.Config,
     raise_errors: bool = False,
     log: Callable | None = None,
     **kwargs: Any,
@@ -795,7 +793,7 @@ def validate(
         return (success, errors, warnings)
 
 
-def apply_default(config: typing_Dict, attribute: Attribute, path: List[str]) -> None:
+def apply_default(config: dict, attribute: Attribute, path: List[str]) -> None:
     """
     Apply attribute default to config dict at the specified path
 
@@ -868,7 +866,7 @@ def apply_default(config: typing_Dict, attribute: Attribute, path: List[str]) ->
         prev[section] = attribute.default
 
 
-def apply_defaults(schema: Schema, config: typing_Dict, debug: bool = False) -> None:
+def apply_defaults(schema: Schema, config: dict, debug: bool = False) -> None:
     """
     Take a config object and apply a schema's default values to keys that
     are missing.
