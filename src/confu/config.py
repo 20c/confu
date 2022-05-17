@@ -5,11 +5,10 @@ config management
 
 import collections
 import copy
+from typing import Any, Dict, Iterator, Optional
 
 import confu.schema
-from typing import Any
-from typing import Dict
-from typing import Optional
+from confu.schema import Schema
 
 
 class Config(collections.abc.Mapping):
@@ -17,7 +16,12 @@ class Config(collections.abc.Mapping):
     class for storing and manipulating config data
     """
 
-    def __init__(self, schema: Any, data: Optional[Dict[str, Any]] = None, meta: Optional[Any] = None) -> None:
+    def __init__(
+        self,
+        schema: Schema,
+        data: Optional[Dict] = None,
+        meta: Optional[Dict] = None,
+    ) -> None:
         """
         **Arguments**
 
@@ -51,7 +55,7 @@ class Config(collections.abc.Mapping):
         return copy.deepcopy(self.data)
 
     @property
-    def data(self) -> Dict[str, Any]:
+    def data(self) -> Dict:
         """config data, should be used for read only"""
         if self._data:
             return self._data
@@ -74,16 +78,16 @@ class Config(collections.abc.Mapping):
         return self._data
 
     @data.setter
-    def data(self, value: Dict[str, Any]) -> None:
+    def data(self, value: Dict) -> None:
         self._base_data = value
         self._data = None
 
     @property
-    def schema(self) -> Any:
+    def schema(self) -> Schema:
         """return a read only copy of schema"""
         return copy.deepcopy(self._schema)
 
-    def get_nested(self, *args: str) -> Optional[Dict[str, int]]:
+    def get_nested(self, *args: str) -> Optional[Dict]:
         """
         get a nested value, returns None if path does not exist
         """
@@ -97,7 +101,7 @@ class Config(collections.abc.Mapping):
     def __getitem__(self, key: str) -> Any:
         return self.data[key]
 
-    def __iter__(self) -> dict_keyiterator:
+    def __iter__(self) -> Iterator[Dict.keys]:
         return iter(self.data)
 
     def __len__(self) -> int:
