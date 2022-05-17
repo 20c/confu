@@ -16,13 +16,6 @@ jobs:
             poetry run isort src/
             poetry run black --check src/
             poetry run pre-commit run --all-files
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: python
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
-
 
   test:
     needs: linting
