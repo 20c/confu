@@ -128,13 +128,17 @@ class IpAddress(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv4Address:
+    def validate_v4(
+        self, value: str, path: list[str], **kwargs: Any
+    ) -> bool | IPv4Address:
         try:
             return ipaddress.IPv4Address(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv6Address:
+    def validate_v6(
+        self, value: str, path: list[str], **kwargs: Any
+    ) -> bool | IPv6Address:
         try:
             return ipaddress.IPv6Address(value)
         except ipaddress.AddressValueError:
@@ -200,13 +204,17 @@ class IpNetwork(Str):
             raise ValueError("IpAddress protocol needs to be either 4, 6 or None")
         self.protocol = protocol
 
-    def validate_v4(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv4Network:
+    def validate_v4(
+        self, value: str, path: list[str], **kwargs: Any
+    ) -> bool | IPv4Network:
         try:
             return ipaddress.IPv4Network(value)
         except ipaddress.AddressValueError:
             return False
 
-    def validate_v6(self, value: str, path: list[str], **kwargs: Any) -> bool | IPv6Network:
+    def validate_v6(
+        self, value: str, path: list[str], **kwargs: Any
+    ) -> bool | IPv6Network:
         try:
             return ipaddress.IPv6Network(value)
         except ipaddress.AddressValueError:

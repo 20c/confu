@@ -387,7 +387,10 @@ class TimeDuration(Attribute):
     """
 
     def validate(
-        self, value: types.TimeDuration | float | str | None, path: List[str], **kwargs: Any
+        self,
+        value: types.TimeDuration | float | str | None,
+        path: List[str],
+        **kwargs: Any,
     ) -> TimeDuration:
         if value is None and self.default_is_none:
             return value
