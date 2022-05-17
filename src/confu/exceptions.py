@@ -1,8 +1,10 @@
-from confu.schema.core import Bool
-from confu.schema.core import Int
-from typing import List
-from typing import Union
-from confu.exceptions import ValidationError
+from __future__ import annotations
+
+from typing import Any
+
+import confu.schema
+
+
 class SoftDependencyError(ImportError):
     """
     Raised when a feature requires a dependency that is missing
@@ -17,7 +19,13 @@ class ValidationErrorBase(ValueError):
     Config validation error interface
     """
 
-    def __init__(self, attribute: Union[Bool, Int, str], path: Union[List[Union[int, str]], List[str]], value: Union[None, int, str], reason: str) -> None:
+    def __init__(
+        self,
+        attribute: confu.schema.Attribute,
+        path: list,
+        value: Any,
+        reason: str,
+    ) -> None:
         """
         **Arguments**
 
