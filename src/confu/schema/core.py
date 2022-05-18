@@ -132,7 +132,7 @@ class Attribute:
             return toggle(self)
         return toggle
 
-    def validate(self, value: Any, path: List[str], **kwargs: Any) -> Any:
+    def validate(self, value: Any, path: list[str], **kwargs: Any) -> Any:
         """
         Validate a value for this attribute
 
@@ -181,7 +181,7 @@ class Str(Attribute):
     def validate(
         self,
         value: str | None,
-        path: List[str],
+        path: list[str],
         **kwargs: Any,
     ) -> str | None:
         if not isinstance(value, str) and not self.default_is_none:
@@ -206,7 +206,7 @@ class File(Str):
         super().__init__(name=name, **kwargs)
         self.require_exist = kwargs.get("require_exist", True)
 
-    def validate(self, value: str | None, path: List[str], **kwargs: Any) -> str | None:
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -252,7 +252,7 @@ class Directory(Str):
         self.create = kwargs.get("create")
         self.require_exist = kwargs.get("require_exist", True)
 
-    def makedir(self, value: str, config_path: List[str]) -> None:
+    def makedir(self, value: str, config_path: list[str]) -> None:
         try:
             os.makedirs(value, self.create)
         except Exception as err:
@@ -263,7 +263,7 @@ class Directory(Str):
                 "tried to create directory  but failed with error" ": {}".format(err),
             )
 
-    def validate(self, value: str | None, path: List[str], **kwargs: Any) -> str | None:
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -312,7 +312,7 @@ class Bool(Attribute):
         super().__init__(name=name, **kwargs)
         self.cli_show_default = False
 
-    def validate(self, value: int | str, path: List[str], **kwargs: Any) -> bool:
+    def validate(self, value: int | str, path: list[str], **kwargs: Any) -> bool:
         if isinstance(value, str):
             if value.lower() in self.true_values:
                 value = True
@@ -347,7 +347,7 @@ class Int(Attribute):
     def validate(
         self,
         value: int | str | None,
-        path: List[str],
+        path: list[str],
         **kwargs: Any,
     ) -> int | None:
         if value is None and self.default_is_none:
@@ -366,7 +366,7 @@ class Float(Attribute):
     """
 
     def validate(
-        self, value: float | str | None, path: List[str], **kwargs: Any
+        self, value: float | str | None, path: list[str], **kwargs: Any
     ) -> float | None:
         if value is None and self.default_is_none:
             return value
@@ -387,7 +387,7 @@ class TimeDuration(Attribute):
     def validate(
         self,
         value: types.TimeDuration | float | str | None,
-        path: List[str],
+        path: list[str],
         **kwargs: Any,
     ) -> TimeDuration:
         if value is None and self.default_is_none:
@@ -407,7 +407,7 @@ class TimeDuration(Attribute):
             return types.TimeDuration(default)
 
     @property
-    def choices(self) -> List:
+    def choices(self) -> list:
         return list(map(types.TimeDuration, super().choices))
 
 
@@ -472,8 +472,8 @@ class List(Attribute):
 
     def validate(
         self,
-        value: List | str,
-        path: List[str],
+        value: list | str,
+        path: list[str],
         **kwargs: Any,
     ) -> Any:
 
@@ -614,7 +614,7 @@ class Schema(Attribute):
         # redundant?
         yield from list(self._attr.items())
 
-    def walk(self, callback: Callable, path: List[str] | None = None) -> None:
+    def walk(self, callback: Callable, path: list[str] | None = None) -> None:
         if not path:
             path = []
         for name, attribute in self.attributes():
@@ -627,7 +627,7 @@ class Schema(Attribute):
     def validate(
         self,
         config: dict,
-        path: List[str] | None = None,
+        path: list[str] | None = None,
         errors: ValidationErrorProcessor | None = None,
         warnings: ValidationErrorProcessor | None = None,
     ) -> dict[str, Any]:
@@ -726,7 +726,7 @@ class ProxySchema(Schema):
     def validate(
         self,
         config: dict,
-        path: List[str] | None = None,
+        path: list[str] | None = None,
         errors: ValidationErrorProcessor | None = None,
         warnings: ValidationErrorProcessor | None = None,
     ) -> dict:
@@ -793,7 +793,7 @@ def validate(
         return (success, errors, warnings)
 
 
-def apply_default(config: dict, attribute: Attribute, path: List[str]) -> None:
+def apply_default(config: dict, attribute: Attribute, path: list[str]) -> None:
     """
     Apply attribute default to config dict at the specified path
 
@@ -894,7 +894,7 @@ def apply_defaults(schema: Schema, config: dict, debug: bool = False) -> None:
         return
 
     # normal schema, walk it's attributes and apply defaults
-    def callback(attribute: Any, path: List[str]) -> None:
+    def callback(attribute: Any, path: list[str]) -> None:
         try:
             apply_default(config, attribute, path)
         except Exception as exc:
