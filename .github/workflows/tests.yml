@@ -33,7 +33,7 @@ jobs:
           install-options: -Eall
       - name: Run tests
         run: |
-          poetry run pytest -vv --cov-report=term-missing --cov=${{ github.event.repository.name }} --cov-report=xml tests/
+          poetry run tox
           poetry run coverage report
       # upload coverage stats
       - name: Upload coverage
