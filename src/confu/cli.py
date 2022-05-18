@@ -2,6 +2,14 @@
 functions that allow you to generate CLI parameters from a confu schema for
 argparse or click
 """
+from __future__ import annotations
+
+from argparse import ArgumentParser, Namespace
+from typing import Any, Callable
+
+from confu.config import Config
+from confu.schema import Attribute
+from confu.schema.core import Bool, Float, Int, Schema
 
 try:
     import click
@@ -9,7 +17,7 @@ except ImportError:
     pass
 
 
-def option_name(path, delimiter="--"):
+def option_name(path: list[str], delimiter: str = "--") -> str:
     """
     Returns a cli option name from attribute path
 
@@ -26,7 +34,7 @@ def option_name(path, delimiter="--"):
     return "--{}".format(delimiter.join(path).replace("_", "-"))
 
 
-def destination_name(path, delimiter="__"):
+def destination_name(path: list[str], delimiter: str = "__") -> str:
     """
     Returns a cli option destination name from attribute path
 
@@ -42,7 +50,7 @@ def destination_name(path, delimiter="__"):
     return f"{delimiter.join(path)}"
 
 
-def default(value, path, defaults):
+def default(value: Any, path: list[str], defaults: dict | None) -> Any:
     if not defaults or not path:
         return value
     container = defaults
@@ -54,8 +62,12 @@ def default(value, path, defaults):
 
 
 def argparse_options(
-    parser, schema, defaults=None, attributes=None, default_from_schema=True
-):
+    parser: ArgumentParser,
+    schema: Schema,
+    defaults: dict | None = None,
+    attributes: list[str] | None = None,
+    default_from_schema: bool = True,
+) -> None:
 
     """
     Add cli options to an argparse ArgumentParser instance
@@ -74,7 +86,7 @@ def argparse_options(
     argparser should come from the schema
     """
 
-    def optionize(attribute, path):
+    def optionize(attribute: Attribute, path: list[str]) -> None:
         if not attribute.cli:
             return
 
@@ -106,7 +118,7 @@ def argparse_options(
     schema.walk(optionize)
 
 
-def apply_argparse(args, config):
+def apply_argparse(args: Namespace, config: Config) -> Config:
 
     """
     Takes the output of a parser and applies it to a Config object.
@@ -126,7 +138,7 @@ def apply_argparse(args, config):
     return config
 
 
-def apply_arg(original_key, args, config):
+def apply_arg(original_key: str, args: Namespace, config: Config) -> None:
 
     """
     Function for applying arguments to a config. Applies to nested
@@ -201,24 +213,29 @@ class click_options:
     if specified only matching attributes will be aded
     """
 
-    def __init__(self, schema, defaults=None, attributes=None):
+    def __init__(
+        self,
+        schema: Schema,
+        defaults: dict | None = None,
+        attributes: list | None = None,
+    ) -> None:
         self.schema = schema
         self.defaults = defaults
         self.attributes = attributes
 
-    def __call__(self, fn):
+    def __call__(self, fn: Callable) -> Callable:
         container = {"fn": fn}
         defaults = self.defaults
         attributes = self.attributes
 
-        def optionize(attribute, path):
+        def optionize(attribute: Bool | Float | Int, path: list[str]) -> None:
             if not attribute.cli:
                 return
 
             if attributes and destination_name(path) not in attributes:
                 return
 
-            def validate_and_convert(value):
+            def validate_and_convert(value: Any) -> Any:
                 return attribute.validate(value, path)
 
             validate_and_convert.__name__ = attribute.__class__.__name__

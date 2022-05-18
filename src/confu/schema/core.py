@@ -3,12 +3,16 @@ Fundamental schema attributes
 
 These can be imported directly from `confu.schema`
 """
+from __future__ import annotations
 
 import collections.abc
 import configparser
 import copy
 import os
 from inspect import isclass
+from typing import Any, Callable, Iterator, NoReturn
+
+import munge
 
 from confu import types
 from confu.exceptions import ApplyDefaultError, ValidationError, ValidationWarning
@@ -23,7 +27,7 @@ class Attribute:
 
     """
 
-    def __init__(self, name="", **kwargs):
+    def __init__(self, name: str = "", **kwargs: Any) -> None:
 
         """
         Initialize attribute
@@ -83,15 +87,15 @@ class Attribute:
         self.container = None
 
     @property
-    def has_default(self):
+    def has_default(self) -> bool:
         return hasattr(self, "default_handler")
 
     @property
-    def default_is_none(self):
+    def default_is_none(self) -> bool:
         return self.has_default and self.default is None
 
     @property
-    def default(self):
+    def default(self) -> Any:
         """
         Return the default value for this attribute
         """
@@ -101,7 +105,7 @@ class Attribute:
         return default
 
     @property
-    def choices(self):
+    def choices(self) -> Any:
         """
         Return a list of possible value choices for this attribute
 
@@ -116,7 +120,7 @@ class Attribute:
         return choices_handler
 
     @property
-    def cli(self):
+    def cli(self) -> bool:
         """
         Returns whether or not the attribute is available
         in as a cli argument  when confu is used to generated
@@ -128,7 +132,7 @@ class Attribute:
             return toggle(self)
         return toggle
 
-    def validate(self, value, path, **kwargs):
+    def validate(self, value: Any, path: list[str], **kwargs: Any) -> Any:
         """
         Validate a value for this attribute
 
@@ -164,17 +168,22 @@ class Str(Attribute):
         - blank <bool=False>: if True allow "" as a value
     """
 
-    def __init__(self, name="", **kwargs):
+    def __init__(self, name: str = "", **kwargs: Any) -> None:
         super().__init__(name=name, **kwargs)
         self.blank = kwargs.get("blank", False)
         if not self.blank and self.default_is_blank:
             self.blank = True
 
     @property
-    def default_is_blank(self):
+    def default_is_blank(self) -> bool:
         return self.default == ""
 
-    def validate(self, value, path, **kwargs):
+    def validate(
+        self,
+        value: str | None,
+        path: list[str],
+        **kwargs: Any,
+    ) -> str | None:
         if not isinstance(value, str) and not self.default_is_none:
             raise ValidationError(self, path, value, "string expected")
 
@@ -193,11 +202,11 @@ class File(Str):
     - require_exist ('bool=True'): if `True` file needs to exist
     """
 
-    def __init__(self, name="", **kwargs):
+    def __init__(self, name: str = "", **kwargs: Any) -> None:
         super().__init__(name=name, **kwargs)
         self.require_exist = kwargs.get("require_exist", True)
 
-    def validate(self, value, path, **kwargs):
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -237,13 +246,13 @@ class Directory(Str):
     using the value passed as mode (chmod) e.g., create=0o777
     """
 
-    def __init__(self, name="", **kwargs):
+    def __init__(self, name: str = "", **kwargs: Any) -> None:
         super().__init__(name=name, **kwargs)
 
         self.create = kwargs.get("create")
         self.require_exist = kwargs.get("require_exist", True)
 
-    def makedir(self, value, config_path):
+    def makedir(self, value: str, config_path: list[str]) -> None:
         try:
             os.makedirs(value, self.create)
         except Exception as err:
@@ -254,7 +263,7 @@ class Directory(Str):
                 "tried to create directory  but failed with error" ": {}".format(err),
             )
 
-    def validate(self, value, path, **kwargs):
+    def validate(self, value: str | None, path: list[str], **kwargs: Any) -> str | None:
         value = super().validate(value, path, **kwargs)
 
         if value is None and self.default_is_none:
@@ -299,11 +308,11 @@ class Bool(Attribute):
     true_values = ["true", "yes", "1"]
     false_values = ["false", "no", "0"]
 
-    def __init__(self, name="", **kwargs):
+    def __init__(self, name: str = "", **kwargs: Any) -> None:
         super().__init__(name=name, **kwargs)
         self.cli_show_default = False
 
-    def validate(self, value, path, **kwargs):
+    def validate(self, value: int | str, path: list[str], **kwargs: Any) -> bool:
         if isinstance(value, str):
             if value.lower() in self.true_values:
                 value = True
@@ -313,11 +322,11 @@ class Bool(Attribute):
                 raise ValidationError(self, path, value, "boolean expected")
         return super().validate(bool(value), path, **kwargs)
 
-    def finalize_click(self, param, name):
+    def finalize_click(self, param: dict[str, Any], name: str) -> str:
         del param["type"]
         return "{}/--no-{}".format(name, name.strip("-"))
 
-    def finalize_argparse(self, param, name):
+    def finalize_argparse(self, param: dict[str, Any], name: str) -> str:
         del param["type"]
         if not param["default"]:
             param.update(action="store_true")
@@ -335,7 +344,12 @@ class Int(Attribute):
     Attribute that requires an integer value
     """
 
-    def validate(self, value, path, **kwargs):
+    def validate(
+        self,
+        value: int | str | None,
+        path: list[str],
+        **kwargs: Any,
+    ) -> int | None:
         if value is None and self.default_is_none:
             return value
         try:
@@ -351,7 +365,9 @@ class Float(Attribute):
     Attribute that requires a float value
     """
 
-    def validate(self, value, path, **kwargs):
+    def validate(
+        self, value: float | str | None, path: list[str], **kwargs: Any
+    ) -> float | None:
         if value is None and self.default_is_none:
             return value
         try:
@@ -368,7 +384,12 @@ class TimeDuration(Attribute):
     TimeDuration is defined in `confu.types`
     """
 
-    def validate(self, value, path, **kwargs):
+    def validate(
+        self,
+        value: types.TimeDuration | float | str | None,
+        path: list[str],
+        **kwargs: Any,
+    ) -> TimeDuration:
         if value is None and self.default_is_none:
             return value
         try:
@@ -378,7 +399,7 @@ class TimeDuration(Attribute):
         return super().validate(value, path, **kwargs)
 
     @property
-    def default(self):
+    def default(self) -> TimeDuration | None:
         default = super().default
         if default is None:
             return None
@@ -386,7 +407,7 @@ class TimeDuration(Attribute):
             return types.TimeDuration(default)
 
     @property
-    def choices(self):
+    def choices(self) -> list:
         return list(map(types.TimeDuration, super().choices))
 
 
@@ -400,7 +421,12 @@ class List(Attribute):
     # doing so means flipping the order with name, which breaks
     # peoples schemas (major version fix?)
 
-    def __init__(self, name=None, item=None, **kwargs):
+    def __init__(
+        self,
+        name: str | None = None,
+        item: Attribute | None = None,
+        **kwargs: Any,
+    ) -> None:
         """
         Initialize List attribute
 
@@ -439,12 +465,17 @@ class List(Attribute):
         self.item = item
 
     @property
-    def cli(self):
+    def cli(self) -> bool:
         if isinstance(self.item, Schema):
             return False
         return super().cli
 
-    def validate(self, value, path, **kwargs):
+    def validate(
+        self,
+        value: list | str,
+        path: list[str],
+        **kwargs: Any,
+    ) -> Any:
 
         if isinstance(value, str):
             value = value.split(",")
@@ -481,7 +512,7 @@ class ValidationErrorProcessor:
     when a warning or error is encountered
     """
 
-    def error(self, error):
+    def error(self, error: ValidationError) -> NoReturn:
         raise error
 
     def warning(self, warning):
@@ -494,22 +525,22 @@ class CollectValidationExceptions(ValidationErrorProcessor):
     and NOT raise any exceptions
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.exceptions = []
 
     def __iter__(self):
         yield from self.exceptions
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.exceptions)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> ValidationError:
         return self.exceptions[key]
 
-    def error(self, error):
+    def error(self, error: ValidationError) -> None:
         self.exceptions.append(error)
 
-    def warning(self, warning):
+    def warning(self, warning: ValidationWarning) -> None:
         self.exceptions.append(warning)
 
 
@@ -531,7 +562,7 @@ class Schema(Attribute):
     ```
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: Any) -> None:
         """
         Initialize schema
 
@@ -579,11 +610,11 @@ class Schema(Attribute):
 
         super().__init__(*args, **kwargs)
 
-    def attributes(self):
+    def attributes(self) -> Iterator:
         # redundant?
         yield from list(self._attr.items())
 
-    def walk(self, callback, path=None):
+    def walk(self, callback: Callable, path: list[str] | None = None) -> None:
         if not path:
             path = []
         for name, attribute in self.attributes():
@@ -593,7 +624,13 @@ class Schema(Attribute):
             else:
                 callback(attribute, path + [name])
 
-    def validate(self, config, path=None, errors=None, warnings=None):
+    def validate(
+        self,
+        config: dict,
+        path: list[str] | None = None,
+        errors: ValidationErrorProcessor | None = None,
+        warnings: ValidationErrorProcessor | None = None,
+    ) -> dict[str, Any]:
 
         """
         Validate config data against this schema
@@ -662,7 +699,13 @@ class Dict(Schema):
     For this the `item` property needs to be set.
     """
 
-    def __init__(self, name=None, item=None, *args, **kwargs):
+    def __init__(
+        self,
+        name: str | None = None,
+        item: Int | None = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(name=name, item=item, *args, **kwargs)
 
 
@@ -680,7 +723,13 @@ class ProxySchema(Schema):
         """
         raise NotImplementedError()
 
-    def validate(self, config, path=None, errors=None, warnings=None):
+    def validate(
+        self,
+        config: dict,
+        path: list[str] | None = None,
+        errors: ValidationErrorProcessor | None = None,
+        warnings: ValidationErrorProcessor | None = None,
+    ) -> dict:
         """
         call validate on the schema returned by self.schema
         """
@@ -689,7 +738,13 @@ class ProxySchema(Schema):
         )
 
 
-def validate(schema, config, raise_errors=False, log=None, **kwargs):
+def validate(
+    schema: Schema,
+    config: dict | munge.Config,
+    raise_errors: bool = False,
+    log: Callable | None = None,
+    **kwargs: Any,
+) -> tuple[bool, CollectValidationExceptions, CollectValidationExceptions] | None:
     """
     Helper function that allows schema validation to either collect or raise errors
 
@@ -738,7 +793,7 @@ def validate(schema, config, raise_errors=False, log=None, **kwargs):
         return (success, errors, warnings)
 
 
-def apply_default(config, attribute, path):
+def apply_default(config: dict, attribute: Attribute, path: list[str]) -> None:
     """
     Apply attribute default to config dict at the specified path
 
@@ -811,7 +866,7 @@ def apply_default(config, attribute, path):
         prev[section] = attribute.default
 
 
-def apply_defaults(schema, config, debug=False):
+def apply_defaults(schema: Schema, config: dict, debug: bool = False) -> None:
     """
     Take a config object and apply a schema's default values to keys that
     are missing.
@@ -839,7 +894,7 @@ def apply_defaults(schema, config, debug=False):
         return
 
     # normal schema, walk it's attributes and apply defaults
-    def callback(attribute, path):
+    def callback(attribute: Any, path: list[str]) -> None:
         try:
             apply_default(config, attribute, path)
         except Exception as exc:

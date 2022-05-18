@@ -2,9 +2,11 @@
 config management
 """
 
+from __future__ import annotations
 
 import collections
 import copy
+from typing import Any, Iterator
 
 import confu.schema
 
@@ -14,7 +16,12 @@ class Config(collections.abc.Mapping):
     class for storing and manipulating config data
     """
 
-    def __init__(self, schema, data=None, meta=None):
+    def __init__(
+        self,
+        schema: confu.schema.Schema,
+        data: dict | None = None,
+        meta: dict | None = None,
+    ) -> None:
         """
         **Arguments**
 
@@ -43,12 +50,12 @@ class Config(collections.abc.Mapping):
     def __ne__(self, other):
         return not self.data == other.data
 
-    def copy(self):
+    def copy(self) -> dict:
         """return a read only copy of data"""
         return copy.deepcopy(self.data)
 
     @property
-    def data(self):
+    def data(self) -> dict:
         """config data, should be used for read only"""
         if self._data:
             return self._data
@@ -71,16 +78,16 @@ class Config(collections.abc.Mapping):
         return self._data
 
     @data.setter
-    def data(self, value):
+    def data(self, value: dict) -> None:
         self._base_data = value
         self._data = None
 
     @property
-    def schema(self):
+    def schema(self) -> confu.schema.Schema:
         """return a read only copy of schema"""
         return copy.deepcopy(self._schema)
 
-    def get_nested(self, *args):
+    def get_nested(self, *args: str) -> dict | None:
         """
         get a nested value, returns None if path does not exist
         """
@@ -91,11 +98,11 @@ class Config(collections.abc.Mapping):
             data = data[key]
         return data
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         return self.data[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[dict.keys]:
         return iter(self.data)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.data)

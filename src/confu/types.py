@@ -22,7 +22,7 @@ class TimeDuration(float):
     """
 
     @classmethod
-    def parse_string(self, value):
+    def parse_string(self, value: str) -> float:
         re_validate = re.compile(r"(([\d\.]+)((ms)|[smhdy]{1}))*")
         value = value.replace(" ", "")
         if not re.fullmatch(re_validate, value):

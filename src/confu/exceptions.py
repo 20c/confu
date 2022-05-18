@@ -1,3 +1,10 @@
+from __future__ import annotations
+
+from typing import Any
+
+import confu.schema
+
+
 class SoftDependencyError(ImportError):
     """
     Raised when a feature requires a dependency that is missing
@@ -12,7 +19,13 @@ class ValidationErrorBase(ValueError):
     Config validation error interface
     """
 
-    def __init__(self, attribute, path, value, reason):
+    def __init__(
+        self,
+        attribute: confu.schema.Attribute,
+        path: list[str],
+        value: Any,
+        reason: str,
+    ) -> None:
         """
         **Arguments**
 
@@ -32,7 +45,7 @@ class ValidationErrorBase(ValueError):
         super().__init__(msg)
 
     @property
-    def pretty(self):
+    def pretty(self) -> str:
         """
         pretty formatted error message
         """
@@ -40,7 +53,7 @@ class ValidationErrorBase(ValueError):
             ".".join([str(i) for i in self.details["path"]]), self.details["reason"]
         )
 
-    def __eq__(self, other):
+    def __eq__(self, other: ValidationError) -> bool:
         if type(other) != type(self):
             return False
 
@@ -72,5 +85,5 @@ class ApplyDefaultError(ValidationErrorBase):
     Raised when an exception occured during apply_defaults
     """
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.pretty
