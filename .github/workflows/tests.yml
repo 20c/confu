@@ -13,8 +13,6 @@ jobs:
       # poetry run pre-commit run --all-files
       - name: Run linters
         run: |
-            poetry run isort src/
-            poetry run black --check src/
             poetry run pre-commit run --all-files
 
   test:
@@ -22,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ "ubuntu-latest" ]
+        os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.7", "3.8", "3.9", "3.10" ]
     runs-on: ${{ matrix.os }}
     steps:
