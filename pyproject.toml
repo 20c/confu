@@ -18,7 +18,7 @@ classifiers = [
 packages = [{ include = "confu", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 munge = "^1.2.1"
 
 [tool.poetry.dev-dependencies]
