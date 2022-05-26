@@ -135,6 +135,7 @@
 Unreleased:
   added:
   - add `SettingsManager.try_include()`
+  - Python 3.10 support (#64)
   changed:
   - documentation moved to github pages
   deprecated: []
