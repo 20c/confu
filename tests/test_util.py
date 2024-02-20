@@ -120,7 +120,6 @@ def test_set_option_coerce_env_var(envvar_fixture):
 
 
 def test_set_option_booleans(envvar_fixture):
-
     scope = {}
     settings_manager = SettingsManager(scope)
     # env variables can only be set as strings
@@ -178,7 +177,7 @@ def test_set_bool(envvar_fixture):
 
 def test_set_options_none(envvar_fixture):
     """
-    We coerce the environment variable to a boolean
+    We coerce the environment variable based on the envvar_type
     """
     scope = {}
     settings_manager = SettingsManager(scope)
@@ -225,3 +224,77 @@ def test_try_include_non_default():
     env_file = os.path.join(os.path.dirname(__file__), "dev-non-default.py")
     settings.try_include(env_file)
     assert scope["TEST_SETTING"] == "hello"
+
+
+def test_set_list(envvar_fixture):
+    """
+    Setting arrays from environment variables
+    """
+    scope = {}
+    settings_manager = SettingsManager(scope)
+
+    settings_manager.set_list("TEST_ARRAY", ["3", "4", "5"])
+    assert scope["TEST_ARRAY"] == ["3", "4", "5"]
+
+
+def test_set_list_w_env_var(envvar_fixture):
+    """
+    Environment variables take precedence over provided options
+    """
+    scope = {}
+    settings_manager = SettingsManager(scope)
+
+    os.environ["TEST_SETTING"] = "0,1,2"
+    settings_manager.set_list("TEST_SETTING", ["3", "4", "5"])
+    assert scope["TEST_SETTING"] == ["0", "1", "2"]
+
+
+def test_set_list_coerce(envvar_fixture):
+    """
+    We coerce the environment variable to the same type
+    as the provided default.
+    """
+    scope = {}
+    settings_manager = SettingsManager(scope)
+
+    os.environ["TEST_SETTING"] = "0,1,2"
+    settings_manager.set_list("TEST_SETTING", [3, 4, 5])
+    assert scope["TEST_SETTING"] == [0, 1, 2]
+
+
+def test_set_list_none(envvar_fixture):
+    """
+    We coerce the environment variable to the envvar_element_type
+    if the value is None or an empty list
+    """
+    scope = {}
+    settings_manager = SettingsManager(scope)
+
+    with pytest.raises(ValueError):
+        settings_manager.set_list(
+            "TEST_SETTING",
+            None,
+        )
+
+    os.environ["TEST_SETTING"] = "0,1,2"
+    settings_manager.set_list("TEST_SETTING", None, envvar_element_type=int)
+    assert scope["TEST_SETTING"] == [0, 1, 2]
+
+    settings_manager.set_list("TEST_SETTING", [], envvar_element_type=int)
+    assert scope["TEST_SETTING"] == [0, 1, 2]
+
+    # value type should take precedence
+    settings_manager.set_list("TEST_SETTING", [""], envvar_element_type=int)
+    assert scope["TEST_SETTING"] == ["0", "1", "2"]
+
+
+def test_set_list_delimiter(envvar_fixture):
+    """
+    We specify a delimiter to split the environment variable
+    """
+    scope = {}
+    settings_manager = SettingsManager(scope)
+
+    os.environ["TEST_SETTING"] = "0 1 2"
+    settings_manager.set_list("TEST_SETTING", [""], delimiter=" ")
+    assert scope["TEST_SETTING"] == ["0", "1", "2"]
