@@ -10,7 +10,6 @@ from tests.schemas import Schema_02, Schema_03, Schema_10, Schema_15
 
 
 def test_argparse():
-
     parser = argparse.ArgumentParser()
     argparse_options(parser, Schema_03())
 
@@ -69,7 +68,6 @@ def test_argparse():
 
 
 def test_argparse_dynamic_defaults():
-
     defaults = {
         "str_attr": "test dynamic",
         "nested": {"int_attr_choices": 2, "int_attr": 3},
@@ -97,7 +95,6 @@ def test_argparse_dynamic_defaults():
 
 
 def test_argparse_filter_attributes():
-
     parser = argparse.ArgumentParser()
     argparse_options(parser, Schema_03(), attributes=["str_attr", "nested__int_attr"])
 

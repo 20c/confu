@@ -96,7 +96,6 @@ class IpAddress(Str):
     def __init__(
         self, name: str = "", protocol: int | None = None, **kwargs: Any
     ) -> None:
-
         """
         Initialize attribute
 
@@ -173,7 +172,6 @@ class IpNetwork(Str):
     def __init__(
         self, name: str = "", protocol: int | None = None, **kwargs: Any
     ) -> None:
-
         """
         Initialize attribute
 

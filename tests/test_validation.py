@@ -207,7 +207,6 @@ def test_schema_collect_exc(SchemaClass, config_fail, error):
 
 
 def test_attr_name_validation():
-
     attr = Str()
     with pytest.raises(ValidationError):
         attr.validate("test", [])

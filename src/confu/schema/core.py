@@ -28,7 +28,6 @@ class Attribute:
     """
 
     def __init__(self, name: str = "", **kwargs: Any) -> None:
-
         """
         Initialize attribute
 
@@ -476,7 +475,6 @@ class List(Attribute):
         path: list[str],
         **kwargs: Any,
     ) -> Any:
-
         if isinstance(value, str):
             value = value.split(",")
 
@@ -631,7 +629,6 @@ class Schema(Attribute):
         errors: ValidationErrorProcessor | None = None,
         warnings: ValidationErrorProcessor | None = None,
     ) -> dict[str, Any]:
-
         """
         Validate config data against this schema
 
@@ -812,31 +809,26 @@ def apply_default(config: dict, attribute: Attribute, path: list[str]) -> None:
         _config = _config.get(section)
 
     if isinstance(attribute, List):
-
         # attribute is a List, need to handle items
         # accordingly
         if _config and isinstance(attribute.item, Schema):
-
             # list is holding schemas, apply defaults
             # to each item in the list
             for item in _config:
                 apply_defaults(attribute.item, item, debug=True)
 
         if _config and isinstance(attribute.item, List):
-
             # list is holding lists, apply defaults
             # to each item in the list
             for item in _config:
                 apply_default(item, attribute.item, [])
 
         elif _config is None and attribute.has_default:
-
             # list is holding normal attribute, set default
             # value
             prev[section] = attribute.default
 
     elif isinstance(attribute, Schema):
-
         # attribute is a Schema
 
         if isinstance(attribute, ProxySchema):

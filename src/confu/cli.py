@@ -68,7 +68,6 @@ def argparse_options(
     attributes: list[str] | None = None,
     default_from_schema: bool = True,
 ) -> None:
-
     """
     Add cli options to an argparse ArgumentParser instance
 
@@ -119,7 +118,6 @@ def argparse_options(
 
 
 def apply_argparse(args: Namespace, config: Config) -> Config:
-
     """
     Takes the output of a parser and applies it to a Config object.
 
@@ -139,7 +137,6 @@ def apply_argparse(args: Namespace, config: Config) -> Config:
 
 
 def apply_arg(original_key: str, args: Namespace, config: Config) -> None:
-
     """
     Function for applying arguments to a config. Applies to nested
     configs as well.
@@ -165,7 +162,6 @@ def apply_arg(original_key: str, args: Namespace, config: Config) -> None:
         current_schema = schema._attr
 
         for key in path:
-
             if isinstance(current_schema.get(key), Schema):
                 current_schema = current_schema.get(key)._attr
 

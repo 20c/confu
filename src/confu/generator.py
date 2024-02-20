@@ -15,7 +15,6 @@ class ConfigGenerator:
         pass
 
     def generate(self, schema: Schema | Attribute) -> dict:
-
         """
         Generate confug from schema using default values
 
