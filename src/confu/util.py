@@ -116,6 +116,52 @@ class SettingsManager:
         else:
             self.set_default(name, value)
 
+    def set_list(
+        self,
+        name: str,
+        value: list[str],
+        envvar_element_type: type | None = None,
+        delimiter: str = ",",
+    ) -> None:
+        """
+        Sets an option to be a list by first checking for environment variables,
+        then checking for value already set,
+        then going to the `value` argument passed.
+        Environment variable values are split by commas.
+
+        Supports only single level single type lists.
+
+        The `value` arguments's first element's type is used to coerce the environment variable's
+        value to the correct type.
+        If the value passed is `None`, or an empty list, then the optional element_type argument
+        is used to coerce the list elements to the correct type.
+
+        **Arguments**
+
+        - name (`str`)
+        - value
+
+        **Keyword Arguments**
+
+        - envvar_element_type
+        - delimiter
+        """
+        if value is not None and len(value) > 0:
+            envvar_element_type = type(value[0])
+        else:
+            # If value is None or value array is empty, we'll use the provided envvar_type, if it is not None
+            if envvar_element_type is None:
+                raise ValueError(
+                    f"If no default value is provided for the setting {name} the envvar_element_type argument must be set."
+                )
+
+        if name in os.environ:
+            array = os.environ.get(name).split(delimiter)
+            # coerce elements to the correct type
+            self.scope[name] = [envvar_element_type(element) for element in array]
+        else:
+            self.set_default(name, value)
+
     def set_bool(self, name: str, value: bool) -> None:
         """
         Sets an option by first checking for environment variables,
