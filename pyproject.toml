@@ -30,11 +30,11 @@ click = ">=7,<8"
 
 # lint
 black = { version = ">=20", allow-prereleases = true }
-isort = "^5.7.0"
-flake8 = "^3.8.4"
-mypy = "^0.950"
-pre-commit = "^2.13"
-pyupgrade = "^2.19.4"
+isort = ">=5.7.0"
+flake8 = ">=3.8.4"
+mypy = ">=0.950"
+pre-commit = ">=2.13"
+pyupgrade = ">=2.19.4"
 
 # ctl
 ctl = "^1"
