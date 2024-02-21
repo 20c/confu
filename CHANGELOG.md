@@ -2,6 +2,9 @@
 
 
 ## Unreleased
+
+
+## 1.9.0
 ### Added
 - add `SettingsManager.set_list()`
 - add `SettingsManager.try_include()`

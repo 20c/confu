@@ -1,4 +1,11 @@
 Unreleased:
+  added: []
+  fixed: []
+  changed: []
+  deprecated: []
+  removed: []
+  security: []
+1.9.0:
   added:
   - add `SettingsManager.set_list()`
   - add `SettingsManager.try_include()`
