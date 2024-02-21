@@ -3,11 +3,16 @@
 
 ## Unreleased
 ### Added
+- add `SettingsManager.set_list()`
 - add `SettingsManager.try_include()`
+- Python 3.10 support (#64)
+- Python 3.11 support
+- Python 3.12 support
 ### Changed
 - documentation moved to github pages
 ### Removed
 - Python 3.6 support
+- Python 3.7 support
 
 
 ## 1.8.0
