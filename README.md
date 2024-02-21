@@ -4,7 +4,6 @@
 [![PyPI](https://img.shields.io/pypi/pyversions/confu.svg?maxAge=600)](https://pypi.python.org/pypi/confu)
 [![Tests](https://github.com/20c/confu/workflows/tests/badge.svg)](https://github.com/20c/confu)
 [![Codecov](https://img.shields.io/codecov/c/github/20c/confu/master.svg?maxAge=60)](https://codecov.io/github/20c/confu)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/20c/confu.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/20c/confu/context:python)
 
 Configuration validation and generation
 
